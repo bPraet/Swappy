@@ -7,9 +7,12 @@ const ProductSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
+    },
+    condition: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Condition"
     }
-    //transport: String,
-    //state: String
+    //transport: String
 });
 
 module.exports = mongoose.model('Product', ProductSchema);
