@@ -1,0 +1,17 @@
+
+#logo{
+    width: 150px;
+    margin-bottom: 50px;
+}
+
+#form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+}
+
+#logBtn{
+    margin-top: 50px;
+}
