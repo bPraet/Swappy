@@ -1,3 +1,9 @@
+
+#logo{
+    width: 150px;
+    margin-bottom: 50px;
+}
+
 #form{
     display: flex;
     justify-content: center;
@@ -6,6 +12,6 @@
     flex-direction: column;
 }
 
-#registerBtn{
+#logBtn{
     margin-top: 50px;
 }

@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 module.exports = {
     async register(req, res){
         try {
-            const { firstName, lastName, password, email, roleid } = req.body;
+            const { firstName, lastName, password, email, pseudo, adress, roleid } = req.body;
 
             const existentUser = await User.findOne({email});
 
@@ -15,6 +15,8 @@ module.exports = {
                     lastName: lastName,
                     password: hashedPassword,
                     email: email,
+                    pseudo: pseudo,
+                    adress: adress,
                     role: roleid
                 });
 
