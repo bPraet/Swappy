@@ -46,6 +46,19 @@ module.exports = {
         }
     },
 
+    async getProductByUserId(req, res){
+        const { userid } = req.headers;
+
+        try {
+            const products = await Product.find({user: userid});
+            return res.json(products);
+        } catch (error) {
+            return res.status(400).json({
+                message: 'No products yet'
+            });
+        }
+    },
+
     async getProducts(req, res){
         try {
             const products = await Product.find({});

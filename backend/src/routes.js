@@ -16,6 +16,7 @@ routes.get("/", (req, res) => {
 
 //Product
 routes.get('/products', productController.getProducts);
+routes.get('/productsUser', productController.getProductByUserId);
 routes.get('/product/:productId', productController.getProductById);
 routes.post('/product/add', upload.single("images"), productController.addProduct);
 routes.delete('/product/:productId', productController.delProduct);

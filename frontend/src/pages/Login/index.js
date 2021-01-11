@@ -5,7 +5,7 @@ import './login.css';
 import logo from '../../assets/logo.png';
 
 import { FormControl, TextField, Fab } from '@material-ui/core';
-import { Done } from '@material-ui/icons';
+import { Done, Add } from '@material-ui/icons';
 
 export default function Login({ history }){
 
@@ -20,7 +20,7 @@ export default function Login({ history }){
 
         if(userId){
             localStorage.setItem('user', userId);
-            history.push('/finder');
+            history.push('/products');
         }
         else{
             const { message } = response.data;
@@ -39,9 +39,15 @@ export default function Login({ history }){
                     <TextField id="password" label="Password" type="password" 
                     onChange={event => setPassword(event.target.value)}/>
                 </FormControl>
-            <Fab aria-label="login" id="logBtn" type="submit">
-                <Done />
-            </Fab>
+            <div id="btn">
+                <Fab aria-label="login" id="logBtn" type="submit">
+                    <Done />
+                </Fab>
+                <Fab aria-label="register" id="registerBtn" onClick={() => history.push('/register')}>
+                    <Add />
+                </Fab>
+            </div>
+            
         </form>
     );
 }
