@@ -5,7 +5,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Products from './pages/Products';
 import Matchs from './pages/Matchs';
-import Profil from './pages/Profil';
+import Profile from './pages/Profile';
 import AddProduct from './pages/Products/addProduct';
 
 export default function Routes(){
@@ -18,7 +18,7 @@ export default function Routes(){
                 <Route path='/products' component={Products} />
                 <Route path='/addProduct' component={AddProduct} />
                 <Route path='/matches' component={Matchs} />
-                <Route path='/profile' component={Profil} />
+                <Route path='/profile' component={Profile} />
             </Switch>
         </BrowserRouter>
     )

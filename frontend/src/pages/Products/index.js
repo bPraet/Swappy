@@ -30,7 +30,7 @@ export default function Products(){
                 <BottomNavigation showLabels>
                     <BottomNavigationAction label="Finder" icon={<SwapHoriz />} component={Link} to="/finder"/>
                     <BottomNavigationAction label="Matchs" icon={<Favorite />} component={Link} to="/matches"/>
-                    <BottomNavigationAction disabled label="Produits" icon={<LocalMall />}/>
+                    <BottomNavigationAction disabled label="Produits" icon={<LocalMall />} component={Link} to="/products"/>
                     <BottomNavigationAction label="Profil" icon={<Person />} component={Link} to="/profile"/>
                 </BottomNavigation>
             </AppBar>
