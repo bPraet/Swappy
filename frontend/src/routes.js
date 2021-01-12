@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter, Switch, Route} from 'react-router-dom';
+import {HashRouter, Switch, Route} from 'react-router-dom';
 import Finder from './pages/Finder';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -10,7 +10,7 @@ import AddProduct from './pages/Products/addProduct';
 
 export default function Routes(){
     return(
-        <BrowserRouter>
+        <HashRouter>
             <Switch>
                 <Route path='/' exact component={Login} />
                 <Route path='/register' exact component={Register} />
@@ -20,6 +20,6 @@ export default function Routes(){
                 <Route path='/matches' component={Matchs} />
                 <Route path='/profile' component={Profile} />
             </Switch>
-        </BrowserRouter>
+        </HashRouter>
     )
 }
