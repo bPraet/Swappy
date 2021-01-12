@@ -32,6 +32,7 @@
     display: flex;
     margin: auto;
     top: 10px;
+    height: 5vh;
 }
 
 #preview{
@@ -39,4 +40,16 @@
     height: 50px;
     background-size: contain;
     background-repeat: no-repeat;
+}
+
+#addProductForm{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+}
+
+.productForm{
+    min-width: 320px !important;
 }

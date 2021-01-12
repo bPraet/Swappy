@@ -33,9 +33,9 @@ export default function Login({ history }){
     }
 
     return(
-        <form id="form" onSubmit={handleSubmit}>
+        <form id="loginForm" onSubmit={handleSubmit}>
             <img src={logo} id="logo" alt="logo" />
-                <FormControl className="form"> 
+                <FormControl className="loginForm"> 
                     <TextField id="email" label="Email" type="email"
                     onChange={event => setEmail(event.target.value)}/>
                     <TextField id="password" label="Password" type="password" 

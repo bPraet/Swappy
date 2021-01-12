@@ -1,4 +1,4 @@
-#form{
+#loginForm{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -14,3 +14,6 @@
     margin: 30px;
 }
 
+.loginForm{
+    min-width: 320px !important;
+}

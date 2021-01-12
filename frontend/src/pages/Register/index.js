@@ -35,8 +35,8 @@ export default function Register({ history }){
     };
 
     return(
-        <form id="form" onSubmit={handleSubmit}>
-                <FormControl className="form"> 
+        <form id="registerForm" onSubmit={handleSubmit}>
+                <FormControl className="registerForm"> 
                     <TextField id="email" label="Email" type="email"
                     onChange={event => setEmail(event.target.value)}/>
                     <TextField id="password" label="Mot de passe" type="password" 

@@ -56,17 +56,18 @@ export default function AddProduct( {history} ){
     };
     
     return(
-        <form id="form" onSubmit={handleSubmit}>
-            <FormControl className="form">
+        <form id="addProductForm" onSubmit={handleSubmit}>
+            <FormControl className="productForm">
                 <TextField id="name" label="Nom"
                     onChange={event => setName(event.target.value)} />
                 <TextField id="description" label="Description"
                     onChange={event => setDescription(event.target.value)} />
                 <div id="preview" style={{backgroundImage: `url(${preview})`}}></div>
-                <TextField id="image" label="Image" type="file"
+                
+                <TextField id="image" helperText="Insérez l'image représentant le mieux votre produit !" type="file"
                     onChange={event => setImage(event.target.files[0])} />
             </FormControl>
-            <FormControl className="form">
+            <FormControl className="productForm">
                 <InputLabel htmlFor="conditions">Etat</InputLabel>
                 <NativeSelect
                     required
@@ -78,7 +79,7 @@ export default function AddProduct( {history} ){
                     {conditions.data.map(condition => <option value={condition._id} key={condition._id}>{condition.name}</option>)}
                 </NativeSelect>
             </FormControl>
-            <FormControl className="form">
+            <FormControl className="productForm">
             <InputLabel htmlFor="transports">Transport</InputLabel>
                 <NativeSelect
                     required
@@ -90,7 +91,7 @@ export default function AddProduct( {history} ){
                     {transports.data.map(transport => <option value={transport._id} key={transport._id}>{transport.name}</option>)}
                 </NativeSelect>
             </FormControl>
-            <Fab aria-label="add" id="addBtn" type="submit">
+            <Fab aria-label="add" id="addProductBtn" type="submit">
                 <Done />
             </Fab>
         </form>

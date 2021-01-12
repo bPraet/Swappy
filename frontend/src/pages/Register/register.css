@@ -3,7 +3,7 @@
     margin-bottom: 50px;
 }
 
-#form{
+#registerForm{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -11,3 +11,6 @@
     flex-direction: column;
 }
 
+.registerForm{
+    min-width: 320px !important;
+}
