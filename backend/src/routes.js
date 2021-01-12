@@ -18,11 +18,16 @@ routes.get("/", (req, res) => {
 routes.get('/products', productController.getProducts);
 routes.get('/productsUser', productController.getProductByUserId);
 routes.get('/product/:productId', productController.getProductById);
-routes.post('/product/add', upload.single("images"), productController.addProduct);
+routes.post('/product/add', upload.single("image"), productController.addProduct);
 routes.delete('/product/:productId', productController.delProduct);
 
 //Condition
+routes.get('/conditions', productController.getConditions);
 routes.post('/condition/add', productController.addCondition);
+
+//Transport
+routes.get('/transports', productController.getTransports);
+routes.post('/transport/add', productController.addTransport);
 
 //User
 routes.get('/user/:userId', userController.getUserById);

@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const ProductSchema = new mongoose.Schema({
     name: String,
     description: String,
-    images: String,
+    image: String,
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
@@ -11,8 +11,11 @@ const ProductSchema = new mongoose.Schema({
     condition: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Condition"
+    },
+    transport: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Transport"
     }
-    //transport: String
 });
 
 module.exports = mongoose.model('Product', ProductSchema);

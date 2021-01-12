@@ -1,12 +1,13 @@
 const Condition = require('../models/Condition');
 const Product = require('../models/Product');
+const Transport = require('../models/Transport');
 const User = require('../models/User');
 
 module.exports = {
     async addProduct(req, res){
-        const { name, description, conditionid } = req.body;
+        const { name, description, conditionId, transportId } = req.body;
         const { userid } = req.headers;
-        const images = req.file.filename;
+        const image = req.file.filename;
 
         const user = await User.findById(userid);
 
@@ -20,11 +21,10 @@ module.exports = {
             name: name,
             description: description,
             user: userid,
-            images: images,
-            condition: conditionid
+            image: image,
+            condition: conditionId,
+            transport: transportId
         })
-            //images: String,
-            //transport: String
 
         return res.json(product);
     },
@@ -93,5 +93,40 @@ module.exports = {
         })
 
         return res.json(condition);
+    },
+
+    async addTransport(req, res){
+        const { name, description } = req.body;
+
+        const transport = await Transport.create({
+            name: name,
+            description: description
+        })
+
+        return res.json(transport);
+    },
+
+    async getConditions(req, res){
+        try {
+            const conditions = await Condition.find({});
+
+            return res.json(conditions);
+        } catch (error) {
+            return res.status(400).json({
+                message: 'No conditions yet'
+            });
+        } 
+    },
+
+    async getTransports(req, res){
+        try {
+            const transports = await Transport.find({});
+
+            return res.json(transports);
+        } catch (error) {
+            return res.status(400).json({
+                message: 'No transports yet'
+            });
+        } 
     }
 }

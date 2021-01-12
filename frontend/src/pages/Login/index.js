@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import api from '../../services/api'
 
 import './login.css';
@@ -6,6 +7,7 @@ import logo from '../../assets/logo.png';
 
 import { FormControl, TextField, Fab } from '@material-ui/core';
 import { Done, Add } from '@material-ui/icons';
+
 
 export default function Login({ history }){
 
@@ -43,7 +45,7 @@ export default function Login({ history }){
                 <Fab aria-label="login" id="logBtn" type="submit">
                     <Done />
                 </Fab>
-                <Fab aria-label="register" id="registerBtn" onClick={() => history.push('/register')}>
+                <Fab aria-label="register" id="registerBtn" component={Link} to="/register">
                     <Add />
                 </Fab>
             </div>

@@ -32,7 +32,7 @@ export default function Register({ history }){
         }
 
         console.log(response);
-    }
+    };
 
     return(
         <form id="form" onSubmit={handleSubmit}>
