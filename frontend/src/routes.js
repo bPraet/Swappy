@@ -7,6 +7,7 @@ import Products from './pages/Products';
 import Matchs from './pages/Matchs';
 import Profile from './pages/Profile';
 import AddProduct from './pages/Products/addProduct';
+import ModifyProduct from './pages/Products/modifyProduct';
 
 export default function Routes(){
     return(
@@ -17,6 +18,7 @@ export default function Routes(){
                 <Route path='/finder' component={Finder} />
                 <Route path='/products' component={Products} />
                 <Route path='/addProduct' component={AddProduct} />
+                <Route path='/modifyProduct/:productId' exact component={ModifyProduct} />
                 <Route path='/matches' component={Matchs} />
                 <Route path='/profile' component={Profile} />
             </Switch>

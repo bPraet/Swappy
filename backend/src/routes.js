@@ -19,7 +19,8 @@ routes.get('/products', productController.getProducts);
 routes.get('/productsUser', productController.getProductByUserId);
 routes.get('/product/:productId', productController.getProductById);
 routes.post('/product/add', upload.single("image"), productController.addProduct);
-routes.delete('/product/:productId', productController.delProduct);
+routes.delete('/product/delete/:productId', productController.delProduct);
+routes.put('/product/update/:productId', upload.single("image"), productController.updateProduct);
 
 //Condition
 routes.get('/conditions', productController.getConditions);

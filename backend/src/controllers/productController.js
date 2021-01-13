@@ -3,6 +3,8 @@ const Product = require('../models/Product');
 const Transport = require('../models/Transport');
 const User = require('../models/User');
 
+const fs = require('fs');
+
 module.exports = {
     async addProduct(req, res){
         const { name, description, conditionId, transportId } = req.body;
@@ -35,7 +37,7 @@ module.exports = {
         try {
             const product = await Product.findById(productId);
             await product.populate('user', '-password')
-                .populate('condition')
+                //.populate('condition')
                 .execPopulate();
 
             return res.json(product);
@@ -69,6 +71,37 @@ module.exports = {
             return res.status(400).json({
                 message: 'No products yet'
             });
+        }
+    },
+
+    async updateProduct(req, res){
+        const { name, description, conditionId, transportId } = req.body;
+        const { productId } = req.params;
+        let image = '';
+
+        const product = await Product.findById(productId);
+        if(req.file === undefined)
+            image = product.image;
+        else {
+            image = req.file.filename;
+            fs.unlink(`./files/${product.image}`, (result) => {
+                console.log("Image deleted");
+            });
+        }
+
+        try {
+            await Product.findByIdAndUpdate(productId, {
+                name: name,
+                description: description,
+                image: image,
+                condition: conditionId,
+                transport: transportId
+            }, {useFindAndModify: false});
+            return res.json({message: "Successfully updated"});
+        } catch (error) {
+            return res.status(400).json({
+                message: 'Product does not exist'
+            })
         }
     },
 
