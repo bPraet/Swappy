@@ -9,17 +9,20 @@ import { Favorite, LocalMall, SwapHoriz, Person, Add } from '@material-ui/icons'
 import api from '../../services/api';
 import adress from '../../services/config';
 
-export default function Products(){
+export default function Products({ history }){
 
     const [ productsUser, setProductsUser ] = useState([]);
     
 
     useEffect(() => {
-        const userid = localStorage.getItem('user');
-        api.get('/productsUser', { headers: { 'userid': userid } }).then( result => {
+        const userToken = localStorage.getItem('userToken');
+
+        api.get('/productsUser', { headers: { 'userToken': userToken } }).then(result => {
             setProductsUser(result);
-        })    
-    }, []);
+        }).catch((err) => {
+            history.push('/');
+        });
+    }, [history]);
     
     if(productsUser.data === undefined)
         return <CircularProgress size="100px"/>;

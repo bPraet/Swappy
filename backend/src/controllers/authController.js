@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 module.exports = {
     async register(req, res){
@@ -20,7 +21,11 @@ module.exports = {
                     role: roleid
                 });
 
-                return res.json(user);
+                return jwt.sign({user: user}, process.env.SECRET, (err, token) => {
+                    return res.json({
+                        userToken: token
+                    })
+                })
             }
 
             return res.status(400).json({
@@ -47,10 +52,20 @@ module.exports = {
 
             if(user && await bcrypt.compare(password, user.password)){
                 const userResponse = {
-                    _id: user._id,
-                    email: user.email
-                }
-                return res.json(userResponse);
+                    userId: user._id,
+                    email: user.email,
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    pseudo: user.pseudo,
+                    adress: user.adress,
+                    role: user.role
+                };
+
+                return jwt.sign({user: userResponse}, process.env.SECRET, (err, token) => {
+                    return res.json({
+                        userToken: token
+                    })
+                })
             }
             else{
                 return res.status(200).json({message: "Email or password doesn't match"});

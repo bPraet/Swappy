@@ -1,30 +1,45 @@
 const User = require('../models/User');
 const Role = require('../models/Role');
+const jwt = require('jsonwebtoken');
 
 module.exports = {
-    async getUserById(req, res) {
-        const { userId } = req.params;
+    getUserById(req, res) {
+        jwt.verify(req.token, process.env.SECRET, async(err, authData) => {
+            if(err){
+                res.sendStatus(403);
+            }
+            else{
+                const { userId } = req.params;
 
-        try {
-            const user = await User.findById(userId);
-            await user.populate('role').execPopulate();
-            
-            return res.json(user);
-        } catch (error) {
-            return res.status(400).json({
-                message: 'User does not exist, do you want to register instead ?'
-            });
-        }
+                try {
+                    const user = await User.findById(userId);
+                    await user.populate('role').execPopulate();
+                    
+                    return res.json(user);
+                } catch (error) {
+                    return res.status(400).json({
+                        message: 'User does not exist, do you want to register instead ?'
+                    });
+                }
+            }
+        });
     },
 
-    async addRole(req, res) {
-        const { name, description } = req.body;
+    addRole(req, res) {
+        jwt.verify(req.token, process.env.SECRET, async(err, authData) => {
+            if(err){
+                res.sendStatus(403);
+            }
+            else{
+                const { name, description } = req.body;
 
-        const role = await Role.create({
-            name: name,
-            description: description
-        })
-
-        return res.json(role);
+                const role = await Role.create({
+                    name: name,
+                    description: description
+                })
+        
+                return res.json(role);
+            }
+        });
     }
 }

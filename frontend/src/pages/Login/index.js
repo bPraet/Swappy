@@ -18,10 +18,10 @@ export default function Login({ history }){
         event.preventDefault();
 
         const response = await api.post('/login', { email, password });
-        const userId = response.data._id || false;
+        const userToken = response.data.userToken || false;
 
-        if(userId){
-            localStorage.setItem('user', userId);
+        if(userToken){
+            localStorage.setItem('userToken', userToken);
             history.push('/products');
         }
         else{
@@ -29,7 +29,7 @@ export default function Login({ history }){
             console.log(message);
         }
 
-        console.log(response);
+        //console.log(response);
     }
 
     return(

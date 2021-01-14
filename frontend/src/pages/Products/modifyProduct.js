@@ -20,22 +20,29 @@ export default function ModifyProduct( {history} ){
     let [ transportId, setTransportId ] = useState();
 
     const { productId } = useParams();
+    const userToken = localStorage.getItem('userToken');
 
     const preview = useMemo(() => {
         return image ? URL.createObjectURL(image) : null;
     }, [image])
 
     useEffect(() => {
-        api.get('/transports').then( result => {
+        api.get('/transports', { headers: {'userToken': userToken} }).then( result => {
             setTransports(result);
+        }).catch((err) => {
+            history.push('/');
         });
-        api.get('/conditions').then(result => {
+        api.get('/conditions', { headers: {'userToken': userToken} }).then(result => {
             setConditions(result);
+        }).catch((err) => {
+            history.push('/');
         });
-        api.get(`/product/${productId}`).then(result => {
+        api.get(`/product/${productId}`, { headers: {'userToken': userToken} }).then(result => {
             setProduct(result);
+        }).catch((err) => {
+            history.push('/');
         });
-    }, [productId]);
+    }, [productId, userToken, history]);
     
     if(transports.data === undefined || conditions.data === undefined || product.data === undefined)
         return <CircularProgress size="100px"/>;
@@ -60,8 +67,7 @@ export default function ModifyProduct( {history} ){
         productData.append("transportId", transportId);
         
         try {
-            await api.put(`/product/update/${productId}`, productData);
-
+            await api.put(`/product/update/${productId}`, productData, { headers: {'userToken': userToken} });
         } catch (error) {
             console.log(error);
         }

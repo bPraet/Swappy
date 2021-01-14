@@ -18,20 +18,18 @@ export default function Register({ history }){
 
     const handleSubmit = async event => {
         event.preventDefault();
-        console.log(email + " " + password + " " + firstName + " " + lastName + " " + pseudo + " " + adress + " " +  roleid);
-        const response = await api.post('/user/register', { email, password, firstName, lastName, pseudo, adress, roleid });
-        const userId = response.data._id || false;
 
-        if(userId){
-            localStorage.setItem('user', userId);
+        const response = await api.post('/user/register', { email, password, firstName, lastName, pseudo, adress, roleid });
+        const userToken = response.data.userToken || false;
+
+        if(userToken){
+            localStorage.setItem('userToken', userToken);
             history.push('/finder');
         }
         else{
             const { message } = response.data;
             console.log(message);
         }
-
-        console.log(response);
     };
 
     return(

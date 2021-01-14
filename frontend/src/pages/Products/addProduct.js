@@ -17,20 +17,24 @@ export default function AddProduct( {history} ){
     const [ conditionId, setConditionId ] = useState();
     const [ transportId, setTransportId ] = useState();
 
-    const userid = localStorage.getItem('user');
+    const userToken = localStorage.getItem('userToken');
 
     const preview = useMemo(() => {
         return image ? URL.createObjectURL(image) : null;
     }, [image])
 
     useEffect(() => {
-        api.get('/transports').then( result => {
+        api.get('/transports', { headers: {'userToken': userToken} }).then( result => {
             setTransports(result);
+        }).catch((err) => {
+            history.push('/');
         });
-        api.get('/conditions').then(result => {
+        api.get('/conditions', { headers: {'userToken': userToken} }).then(result => {
             setConditions(result);
+        }).catch((err) => {
+            history.push('/');
         });
-    }, []);
+    }, [history, userToken]);
     
     if(transports.data === undefined || conditions.data === undefined)
         return <CircularProgress size="100px"/>;
@@ -46,7 +50,7 @@ export default function AddProduct( {history} ){
         productData.append("transportId", transportId);
 
         try {
-            await api.post('/product/add', productData, { headers: { 'userid': userid} });
+            await api.post('/product/add', productData, { headers: { 'userToken': userToken} });
 
         } catch (error) {
             console.log(error);
