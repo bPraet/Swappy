@@ -1,6 +1,8 @@
 const User = require('../models/User');
 const Role = require('../models/Role');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const { json } = require('express');
 
 module.exports = {
     getUserById(req, res) {
@@ -41,5 +43,51 @@ module.exports = {
                 return res.json(role);
             }
         });
+    },
+
+    getProfile(req, res){
+        jwt.verify(req.token, process.env.SECRET, async(err, authData) => {
+            if(err){
+                res.sendStatus(403);
+            }
+            else{
+                try {
+                    const user = await User.findById(authData.user.userId);
+                    return res.json(user);
+                } catch (error) {
+                    return res.status(400).json({
+                        message: 'User does not exist'
+                    });
+                }
+            }
+        });
+    },
+    
+    updateProfile(req, res){
+        jwt.verify(req.token, process.env.SECRET, async(err, authData) => {
+            if(err){
+                res.sendStatus(403);
+            }
+            else{
+                const { email, password, lastName, firstName, pseudo, adress } = req.body;
+                const hashedPassword = await bcrypt.hash(password, 10);
+                try {
+                    await User.findByIdAndUpdate(authData.user.userId, {
+                        email: email,
+                        password: hashedPassword,
+                        lastName: lastName,
+                        firstName: firstName,
+                        pseudo: pseudo,
+                        adress: adress
+                    }, {useFindAndModify: false});
+                    return res.json({message: "Successfully updated"});
+                } catch (error) {
+                    return res.status(400).json({
+                        message: 'User does not exist'
+                    })
+                }
+            }
+        });
     }
+
 }

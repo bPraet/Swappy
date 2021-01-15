@@ -32,7 +32,9 @@ routes.get('/transports', verifyToken, productController.getTransports);
 routes.post('/transport/add', verifyToken, productController.addTransport);
 
 //User
+routes.get('/user', verifyToken, userController.getProfile);
 routes.get('/user/:userId', verifyToken, userController.getUserById);
+routes.put('/user/update', verifyToken, userController.updateProfile);
 
 //Role
 routes.post('/role/add', verifyToken, userController.addRole);
