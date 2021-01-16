@@ -33,9 +33,6 @@ export default function Profile({ history }) {
         event.preventDefault();
         if (email === undefined)
             email = user.data.email;
-        if (password === undefined)
-            password = user.data.password;
-        console.log(password);
         if (firstName === undefined)
             firstName = user.data.firstName;
         if (lastName === undefined)

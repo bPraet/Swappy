@@ -70,16 +70,28 @@ module.exports = {
             }
             else{
                 const { email, password, lastName, firstName, pseudo, adress } = req.body;
-                const hashedPassword = await bcrypt.hash(password, 10);
                 try {
-                    await User.findByIdAndUpdate(authData.user.userId, {
-                        email: email,
-                        password: hashedPassword,
-                        lastName: lastName,
-                        firstName: firstName,
-                        pseudo: pseudo,
-                        adress: adress
-                    }, {useFindAndModify: false});
+                    if(!password){
+                        await User.findByIdAndUpdate(authData.user.userId, {
+                            email: email,
+                            lastName: lastName,
+                            firstName: firstName,
+                            pseudo: pseudo,
+                            adress: adress
+                        }, {useFindAndModify: false});
+                    }
+                    else{
+                        const hashedPassword = await bcrypt.hash(password, 10);
+                        await User.findByIdAndUpdate(authData.user.userId, {
+                            email: email,
+                            password: hashedPassword,
+                            lastName: lastName,
+                            firstName: firstName,
+                            pseudo: pseudo,
+                            adress: adress
+                        }, {useFindAndModify: false});
+                    }
+
                     return res.json({message: "Successfully updated"});
                 } catch (error) {
                     return res.status(400).json({
@@ -89,5 +101,4 @@ module.exports = {
             }
         });
     }
-
 }
