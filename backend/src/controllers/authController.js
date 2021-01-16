@@ -61,7 +61,7 @@ module.exports = {
                     role: user.role
                 };
 
-                return jwt.sign({user: userResponse}, process.env.SECRET, (err, token) => {
+                return jwt.sign({user: userResponse}, process.env.SECRET, {expiresIn: '24h'},(err, token) => {
                     return res.json({
                         userToken: token
                     })
