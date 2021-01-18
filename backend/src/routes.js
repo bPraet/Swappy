@@ -9,6 +9,7 @@ const productController = require('./controllers/productController');
 const authController = require('./controllers/authController');
 
 const uploadConfig = require('./config/upload');
+const trackingController = require('./controllers/trackingController');
 const upload = multer(uploadConfig);
 
 routes.get("/", (req, res) => {
@@ -19,6 +20,7 @@ routes.get("/", (req, res) => {
 routes.get('/products', verifyToken, productController.getProducts);
 routes.get('/productsUser', verifyToken, productController.getProductsByUserId);
 routes.get('/product/:productId', verifyToken, productController.getProductById);
+routes.get('/products/notSeen', verifyToken, productController.getNotSeenProductsByUserId);
 routes.post('/product/add', verifyToken, upload.single("image"), productController.addProduct);
 routes.delete('/product/delete/:productId', verifyToken, productController.delProduct);
 routes.put('/product/update/:productId', verifyToken, upload.single("image"), productController.updateProduct);
@@ -38,6 +40,9 @@ routes.put('/user/update', verifyToken, userController.updateProfile);
 
 //Role
 routes.post('/role/add', verifyToken, userController.addRole);
+
+//Tracking
+routes.post('/track/add', verifyToken, trackingController.addAlreadySeen);
 
 //Authentication
 routes.post('/user/register', authController.register);

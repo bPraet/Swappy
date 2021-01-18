@@ -16,7 +16,7 @@ export default function Finder({ history }){
     useEffect(() => {
         const userToken = localStorage.getItem('userToken');
 
-        api.get('/products', { headers: { 'userToken': userToken } }).then(result => {
+        api.get('/products/notseen', { headers: { 'userToken': userToken } }).then(result => {
             setProducts(result);
         }).catch((err) => {
             history.push('/');
@@ -25,7 +25,11 @@ export default function Finder({ history }){
     
     if(products.data === undefined)
         return <CircularProgress size="100px"/>;
-    console.log(products);
+    
+    const onSwipe = (direction) => {
+        console.log(direction);
+    }
+
     return(
         <div id="finder">
             <AppBar id="bottomBar">
@@ -41,7 +45,7 @@ export default function Finder({ history }){
                         <h3>Vous avez regardé tous les produits !</h3>
                 </div>
                 {products.data.map(product => (
-                <TinderCard preventSwipe={['up', 'down']} key={product._id}>
+                <TinderCard preventSwipe={['up', 'down']} key={product._id} onSwipe={onSwipe}>
                     <div id="card" style={{ backgroundImage: `url(${adress + '/files/' + product.image})`}}>
                         <h3>{product.name}</h3>
                     </div>

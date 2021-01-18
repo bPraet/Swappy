@@ -2,6 +2,7 @@ const Condition = require('../models/Condition');
 const Product = require('../models/Product');
 const Transport = require('../models/Transport');
 const User = require('../models/User');
+const AlreadySeen = require('../models/AlreadySeen');
 
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
@@ -17,7 +18,7 @@ module.exports = {
                 const image = req.file.filename;
 
                 const user = await User.findById(authData.user.userId);
-                console.log(user);
+
                 if (!user) {
                     return res.status(400).json({
                         message: "User does not exists"
@@ -35,8 +36,8 @@ module.exports = {
 
                 return res.json(product);
             }
-    });
-},
+        });
+    },
     
     getProductById(req, res){
         jwt.verify(req.token, process.env.SECRET, async(err, authData) => {
@@ -80,6 +81,29 @@ module.exports = {
         });
     },
 
+    getNotSeenProductsByUserId(req, res){
+        jwt.verify(req.token, process.env.SECRET, async(err, authData) => {
+            if(err){
+                res.sendStatus(403);
+            }
+            else{
+                try {
+                    const alreadySeenProducts = await AlreadySeen.find({user: authData.user.userId});
+                    const toRemove = alreadySeenProducts.map((seenProduct) => {
+                        return {"_id" : seenProduct.product};
+                    });
+                    const products = await Product.find({_id: { $nin: toRemove } });
+                    return res.json(products);
+                } catch (error) {
+                    console.log(error);
+                    return res.status(400).json({
+                        message: 'No products yet'
+                    });
+                }
+            }
+        });
+    },
+
     getProducts(req, res){
         jwt.verify(req.token, process.env.SECRET, async(err, authData) => {
             if(err){
@@ -88,7 +112,6 @@ module.exports = {
             else{
                 try {
                     const products = await Product.find({});
-                    //await products.populate('user', '-password').populate('condition').execPopulate();
         
                     return res.json(products);
                 } catch (error) {
