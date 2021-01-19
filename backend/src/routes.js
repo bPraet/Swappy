@@ -7,9 +7,10 @@ const routes = express.Router();
 const userController = require('./controllers/userController');
 const productController = require('./controllers/productController');
 const authController = require('./controllers/authController');
+const trackingController = require('./controllers/trackingController');
+const matchController = require('./controllers/matchController');
 
 const uploadConfig = require('./config/upload');
-const trackingController = require('./controllers/trackingController');
 const upload = multer(uploadConfig);
 
 routes.get("/", (req, res) => {
@@ -43,6 +44,10 @@ routes.post('/role/add', verifyToken, userController.addRole);
 
 //Tracking
 routes.post('/track/add', verifyToken, trackingController.addAlreadySeen);
+routes.delete('/track/reset', verifyToken, trackingController.resetAlreadySeen);
+
+//Match
+routes.post('/match/add', verifyToken, matchController.addMatch);
 
 //Authentication
 routes.post('/user/register', authController.register);

@@ -25,9 +25,19 @@ export default function Finder({ history }){
     
     if(products.data === undefined)
         return <CircularProgress size="100px"/>;
-    
-    const onSwipe = (direction) => {
-        console.log(direction);
+
+    const onCardLeftScreen = async (direction, productId) => {
+        const userToken = localStorage.getItem('userToken');
+        try {
+            if(direction === "left")
+                await api.post('/track/add', {productId}, { headers: { 'userToken': userToken} });
+            else{
+                await api.post('/track/add', {productId}, { headers: { 'userToken': userToken} });
+                //redirect to proposition page
+            }
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return(
@@ -45,7 +55,7 @@ export default function Finder({ history }){
                         <h3>Vous avez regardé tous les produits !</h3>
                 </div>
                 {products.data.map(product => (
-                <TinderCard preventSwipe={['up', 'down']} key={product._id} onSwipe={onSwipe}>
+                <TinderCard preventSwipe={['up', 'down']} key={product._id} onCardLeftScreen={(direction) => onCardLeftScreen(direction, `${product._id}`)}>
                     <div id="card" style={{ backgroundImage: `url(${adress + '/files/' + product.image})`}}>
                         <h3>{product.name}</h3>
                     </div>
