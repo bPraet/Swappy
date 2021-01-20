@@ -28,10 +28,12 @@ routes.put('/product/update/:productId', verifyToken, upload.single("image"), pr
 
 //Condition
 routes.get('/conditions', verifyToken, productController.getConditions);
+routes.get('/condition/:conditionId', verifyToken, productController.getConditionById);
 routes.post('/condition/add', verifyToken, productController.addCondition);
 
 //Transport
 routes.get('/transports', verifyToken, productController.getTransports);
+routes.get('/transport/:transportId', verifyToken, productController.getTransportById);
 routes.post('/transport/add', verifyToken, productController.addTransport);
 
 //User

@@ -4,8 +4,9 @@ import api from '../../services/api';
 
 import './profile.css';
 
-import { AppBar, BottomNavigation, BottomNavigationAction, FormControl, TextField, Fab, CircularProgress } from '@material-ui/core';
-import { SwapHoriz, Favorite, LocalMall, Person, Done } from '@material-ui/icons';
+import { AppBar, BottomNavigation, BottomNavigationAction, FormControl, TextField, Fab, CircularProgress, Button,
+Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
+import { SwapHoriz, Favorite, LocalMall, Person, Done, RotateLeft } from '@material-ui/icons';
 
 export default function Profile({ history }) {
 
@@ -16,6 +17,7 @@ export default function Profile({ history }) {
     let [ pseudo, setPseudo ] = useState();
     let [ adress, setAdress ] = useState();
     let [ user, setUser ] = useState();
+    const [ open, setOpen ] = useState(false);
     const userToken = localStorage.getItem('userToken');
     
     useEffect(() => {
@@ -49,6 +51,19 @@ export default function Profile({ history }) {
         }
     };
 
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleReset = async () => {
+        await api.delete('/track/reset', { headers: {'userToken': userToken} });
+        setOpen(false);
+    }
+
     return (
         <div id="profile">
             <AppBar id="bottomBar">
@@ -79,6 +94,31 @@ export default function Profile({ history }) {
                 <Fab aria-label="update" id="updateBtn" type="submit">
                     <Done />
                 </Fab>
+
+                <Button id="resetBtn" variant="contained" color="default" startIcon={<RotateLeft />} onClick={handleClickOpen}>
+                    Reset historique
+                </Button>
+                <Dialog
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">{"Reset l'historique ?"}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Vous retomberez sur des produits déjà parcourus lors de vos futures recherches.
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleClose} color="primary">
+                            Non
+                        </Button>
+                        <Button onClick={handleReset} color="primary" autoFocus>
+                            Oui
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </form>
         </div>
     );

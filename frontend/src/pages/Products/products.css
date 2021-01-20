@@ -53,3 +53,7 @@
 .productForm{
     min-width: 320px !important;
 }
+
+#productImg{
+    object-fit: contain;
+}

@@ -85,7 +85,7 @@ export default function ModifyProduct( {history} ){
                 <div id="preview" style={{backgroundImage: `url(${preview})`}}></div>
                 
                 <TextField id="image" helperText="Insérez l'image représentant le mieux votre produit !" type="file"
-                    onChange={event => setImage(event.target.files[0])} />
+                    onChange={event => setImage(event.target.files[0])} inputProps={{ accept: '.jpg, .jpeg' }}/>
             </FormControl>
             <FormControl className="productForm">
                 <InputLabel htmlFor="conditions">Etat</InputLabel>

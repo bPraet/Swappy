@@ -20,6 +20,7 @@ module.exports = {
             }
         });
     },
+    
     resetAlreadySeen(req, res){
         jwt.verify(req.token, process.env.SECRET, async(err, authData) => {
             if(err){

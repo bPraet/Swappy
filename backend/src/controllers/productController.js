@@ -50,7 +50,8 @@ module.exports = {
                 try {
                     const product = await Product.findById(productId);
                     await product.populate('user', '-password')
-                        //.populate('condition')
+                        .populate('condition')
+                        .populate('transport')
                         .execPopulate();
         
                     return res.json(product);
@@ -234,6 +235,26 @@ module.exports = {
         });
     },
 
+    getConditionById(req, res){
+        jwt.verify(req.token, process.env.SECRET, async(err, authData) => {
+            if(err){
+                res.sendStatus(403);
+            }
+            else{
+                const { conditionId } = req.params;
+
+                try {
+                    const condition = await Condition.findById(conditionId);
+                    return res.json(condition);
+                } catch (error) {
+                    return res.status(400).json({
+                        message: 'Condition does not exist'
+                    });
+                }
+            }
+        });
+    },
+
     getTransports(req, res){
         jwt.verify(req.token, process.env.SECRET, async(err, authData) => {
             if(err){
@@ -249,6 +270,26 @@ module.exports = {
                         message: 'No transports yet'
                     });
                 } 
+            }
+        });
+    },
+
+    getTransportById(req, res){
+        jwt.verify(req.token, process.env.SECRET, async(err, authData) => {
+            if(err){
+                res.sendStatus(403);
+            }
+            else{
+                const { transportId } = req.params;
+
+                try {
+                    const transport = await Transport.findById(transportId);
+                    return res.json(transport);
+                } catch (error) {
+                    return res.status(400).json({
+                        message: 'Transport does not exist'
+                    });
+                }
             }
         });
     }
