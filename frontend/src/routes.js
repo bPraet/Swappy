@@ -9,6 +9,7 @@ import Profile from './pages/Profile';
 import AddProduct from './pages/Products/addProduct';
 import ModifyProduct from './pages/Products/modifyProduct';
 import ProductDetails from './pages/Products/productDetails';
+import Proposal from './pages/Finder/proposal';
 
 export default function Routes(){
     return(
@@ -21,6 +22,7 @@ export default function Routes(){
                 <Route path='/addProduct' component={AddProduct} />
                 <Route path='/modifyProduct/:productId' exact component={ModifyProduct} />
                 <Route path='/productDetails/:productId' exact component={ProductDetails} />
+                <Route path='/proposal' component={Proposal} />
                 <Route path='/matches' component={Matchs} />
                 <Route path='/profile' component={Profile} />
             </Switch>

@@ -1,0 +1,32 @@
+.productImg{
+    display: block;
+    max-width: 100%;
+    height:21vh;
+    margin: auto;
+    object-fit: cover;
+}
+
+.productImgContainer{
+    width: 100%;
+    margin: 0 !important;
+}
+
+.MuiFormControlLabel-label{
+    margin:auto !important;
+}
+
+.MuiCheckbox-root{
+    position: absolute !important;
+}
+
+.MuiGrid-item{
+    min-width: 20vw;
+    border: 1px solid gray;
+    padding: 0 !important;
+}
+
+.MuiCircularProgress-root{
+    position: fixed;
+    left: calc(50% - 50px);
+    top: calc(50% - 50px);
+}

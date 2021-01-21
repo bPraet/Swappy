@@ -94,7 +94,7 @@ export default function ModifyProduct( {history} ){
                     value={conditionId}
                     onChange={event => setConditionId(event.target.value)}
                     name="conditions"
-                    defaultValue={product.data.condition}
+                    defaultValue={product.data.condition._id}
                 >
                     <option aria-label="" />
                     {conditions.data.map(condition => <option value={condition._id} key={condition._id}>{condition.name}</option>)}
@@ -107,7 +107,7 @@ export default function ModifyProduct( {history} ){
                     value={transportId}
                     onChange={event => setTransportId(event.target.value)}
                     name="transports"
-                    defaultValue={product.data.transport}
+                    defaultValue={product.data.transport._id}
                 >
                     <option aria-label="" />
                     {transports.data.map(transport => <option value={transport._id} key={transport._id}>{transport.name}</option>)}

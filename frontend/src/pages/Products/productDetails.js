@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import api from '../../services/api';
 
 import './products.css';
@@ -27,14 +27,13 @@ export default function ProductDetails({ history }) {
         return <CircularProgress size="100px"/>;
 
     return (
-        <Card>
+        <Card id='productDetails'>
                 <CardMedia
                     component="img"
                     alt="productImg"
                     id="productImg"
-                    height="500"
                     image= {adress + '/files/' + product.data.image}
-                    title="Contemplative Reptile"
+                    title={product.data.name}
                     draggable="false"
                 />
                 <CardContent>
@@ -58,10 +57,7 @@ export default function ProductDetails({ history }) {
                     </Typography>
                 </CardContent>
             <CardActions>
-                <Button size="small" color="primary">
-                    Faire une proposition
-                </Button>
-                <Button size="small" color="primary">
+                <Button size="small" color="primary" component={ Link } to="/finder">
                     Retour
                 </Button>
             </CardActions>

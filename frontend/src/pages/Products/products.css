@@ -57,3 +57,14 @@
 #productImg{
     object-fit: contain;
 }
+
+#productDetails{
+    height: 80vh;
+    justify-self: center;
+    margin-top: 50vh; 
+    transform: translateY(-50%);
+}
+
+#productImg{
+    height: 50vh;
+}
