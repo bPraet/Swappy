@@ -55,9 +55,9 @@ export default function ModifyProduct( {history} ){
         if(description === undefined)
             description = product.data.description;
         if(conditionId === undefined)
-            conditionId = product.data.condition;
+            conditionId = product.data.condition._id;
         if(transportId === undefined)
-            transportId = product.data.transport;
+            transportId = product.data.transport._id;
         
         const productData = new FormData();
         productData.append("name", name);
@@ -65,7 +65,7 @@ export default function ModifyProduct( {history} ){
         productData.append("image", image);
         productData.append("conditionId", conditionId);
         productData.append("transportId", transportId);
-        
+        console.log(name + description + conditionId + transportId);
         try {
             await api.put(`/product/update/${productId}`, productData, { headers: {'userToken': userToken} });
         } catch (error) {

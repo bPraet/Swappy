@@ -33,8 +33,7 @@ export default function Finder({ history }) {
                 await api.post('/track/add', { productId }, { headers: { 'userToken': userToken } });
             else {
                 await api.post('/track/add', { productId }, { headers: { 'userToken': userToken } });
-                //redirect to proposition page
-                history.push('/products');
+                history.push(`/proposal/${productId}`);
             }
         } catch (error) {
             console.log(error);

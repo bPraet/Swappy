@@ -22,7 +22,7 @@ export default function Routes(){
                 <Route path='/addProduct' component={AddProduct} />
                 <Route path='/modifyProduct/:productId' exact component={ModifyProduct} />
                 <Route path='/productDetails/:productId' exact component={ProductDetails} />
-                <Route path='/proposal' component={Proposal} />
+                <Route path='/proposal/:productId' exact component={Proposal} />
                 <Route path='/matches' component={Matchs} />
                 <Route path='/profile' component={Profile} />
             </Switch>
