@@ -49,6 +49,7 @@ routes.post('/track/add', verifyToken, trackingController.addAlreadySeen);
 routes.delete('/track/reset', verifyToken, trackingController.resetAlreadySeen);
 
 //Match
+routes.get('/matchs', verifyToken, matchController.getMatchsByUser);
 routes.post('/match/add', verifyToken, matchController.addMatch);
 
 //Authentication
