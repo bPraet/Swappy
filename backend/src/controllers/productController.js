@@ -93,7 +93,7 @@ module.exports = {
                     const toRemove = alreadySeenProducts.map((seenProduct) => {
                         return {"_id" : seenProduct.product};
                     });
-                    const products = await Product.find({_id: { $nin: toRemove } });
+                    const products = await Product.find({$and: [{_id: { $nin: toRemove } }, {user: { $nin: authData.user.userId } }]});
                     return res.json(products);
                 } catch (error) {
                     console.log(error);

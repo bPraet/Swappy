@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+import { useParams } from 'react-router-dom';
 import './proposal.css';
 
 import { Grid, CircularProgress, FormControlLabel, Checkbox, Fab, FormControl } from '@material-ui/core';
@@ -10,6 +10,7 @@ import adress from '../../services/config';
 export default function Proposal({ history }) {
 
     const [productsUser, setProductsUser] = useState([]);
+    const { productId } = useParams();
 
     const [state, setState] = React.useState({
         0: false,
@@ -49,9 +50,23 @@ export default function Proposal({ history }) {
 
     const handleSubmit = async event => {
         event.preventDefault();
+        const userToken = localStorage.getItem('userToken');
+        let product;
+        try{
+            product = await api.get(`/product/${productId}`, { headers: {'userToken': userToken} });
+            history.push('/finder');
+        }catch(error){
+            console.log(error);
+        };
         for(const checked in state){
-            if(state[checked])
-                console.log(productsUser.data[checked]);
+            if(state[checked]){
+                try {
+                    await api.post(`/match/add`, {owner: product.data.user._id, productOwner: productId, productConsignee: productsUser.data[checked]}, { headers: {'userToken': userToken} });
+
+                } catch (error) {
+                    console.log(error);
+                }
+            }
         }
     };
 

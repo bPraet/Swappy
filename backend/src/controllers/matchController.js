@@ -9,12 +9,11 @@ module.exports = {
                 res.sendStatus(403);
             }
             else {
-                const { productOwner, productConsignee, consignee } = req.body;
-
+                const { productOwner, productConsignee, owner } = req.body;
                 const match = await Match.create({
-                    user: authData.user.userId,
+                    consignee: authData.user.userId,
                     productOwner: productOwner,
-                    consignee: consignee,
+                    owner: owner,
                     productConsignee: productConsignee
                 });
 
