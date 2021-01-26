@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import './matchs.css';
@@ -10,18 +10,42 @@ import api from '../../services/api';
 
 export default function Matchs({ history }) {
     const [matchs, setMatchs] = useState([]);
+    const [products, setProducts] = useState([]);
+    const [consignees, setConsignees] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+        
         const userToken = localStorage.getItem('userToken');
 
-        api.get('/matchs', { headers: { 'userToken': userToken } }).then(result => {
-            setMatchs(result);
-        }).catch((err) => {
-            history.push('/');
-        });
-    }, [history]);
+        if (matchs.data === undefined) {
+            api.get('/matchs', { headers: { 'userToken': userToken } }).then(result => {
+                setMatchs(result);
+            }).catch((err) => {
+                history.push('/');
+            });
+        }
 
-    if (matchs.data === undefined)
+        if (matchs.data !== undefined && !loading) {
+            setLoading(true);
+            matchs.data.map(async (match) => {
+
+                await api.get(`/user/${match._id.consignee}`, { headers: { 'userToken': userToken } }).then(result => {
+                    setConsignees(values => [...values, result]);
+                }).catch((err) => {
+                    history.push('/');
+                });
+
+                await api.get(`/product/${match._id.productOwner}`, { headers: { 'userToken': userToken } }).then(result => {
+                    setProducts(values => [...values, result]);
+                }).catch((err) => {
+                    history.push('/');
+                });
+            });
+        }
+    }, [matchs, consignees, products, history, loading]);
+
+    if (matchs.data === undefined || consignees.length === 0)
         return <CircularProgress size="100px" />;
 
     return (
@@ -35,10 +59,10 @@ export default function Matchs({ history }) {
                 </BottomNavigation>
             </AppBar>
             <List component="nav" aria-label="matches">
-                {matchs.data.map((match, i) => (
+                {products.map((product, i) => (
                     <span key={i}>
                         <ListItem button>
-                            <ListItemText primary={match._id.consignee}/>
+                            <ListItemText primary={product.data.name} secondary={consignees[i].data.email} />
                         </ListItem>
                         <Divider />
                     </span>
