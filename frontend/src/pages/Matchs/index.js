@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 
 import './matchs.css';
 
-import { AppBar, BottomNavigation, BottomNavigationAction, List, ListItem, ListItemText, Divider, CircularProgress } from '@material-ui/core';
-import { SwapHoriz, Favorite, LocalMall, Person } from '@material-ui/icons';
+import { AppBar, BottomNavigation, BottomNavigationAction, List, ListItem, ListItemText, Divider, CircularProgress, IconButton, ListItemSecondaryAction } from '@material-ui/core';
+import { SwapHoriz, Favorite, LocalMall, Person, Send } from '@material-ui/icons';
 
 import api from '../../services/api';
 
@@ -63,6 +63,11 @@ export default function Matchs({ history }) {
                     <span key={i}>
                         <ListItem button>
                             <ListItemText primary={product.data.name} secondary={consignees[i].data.email} />
+                            <ListItemSecondaryAction>
+                                <IconButton edge="end" aria-label="delete" onClick={ () => { history.push(`/chat/${consignees[i].data._id}`) }}>
+                                    <Send />
+                                </IconButton>
+                            </ListItemSecondaryAction>
                         </ListItem>
                         <Divider />
                     </span>

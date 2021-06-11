@@ -4,6 +4,8 @@ const cors = require('cors');
 const routes = require('./routes');
 const path = require('path');
 const app = express();
+const server = require('http').Server(app);
+const { chatInit } = require('./chat');
 
 const PORT = process.env.PORT || 8000;
 
@@ -29,6 +31,8 @@ try {
 app.use("/files", express.static(path.resolve(__dirname, "..", "files")));
 app.use(routes);
 
-app.listen(PORT, () => {
+chatInit(server);
+
+server.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
 });

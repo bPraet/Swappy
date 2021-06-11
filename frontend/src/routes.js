@@ -10,6 +10,8 @@ import AddProduct from './pages/Products/addProduct';
 import ModifyProduct from './pages/Products/modifyProduct';
 import ProductDetails from './pages/Products/productDetails';
 import Proposal from './pages/Finder/proposal';
+import Chat from './pages/Chat';
+import ErrorPage from './pages/ErrorPage';
 
 export default function Routes(){
     return(
@@ -24,7 +26,9 @@ export default function Routes(){
                 <Route path='/productDetails/:productId' exact component={ProductDetails} />
                 <Route path='/proposal/:productId' exact component={Proposal} />
                 <Route path='/matches' component={Matchs} />
+                <Route path='/chat/:userId' exact component={Chat} />
                 <Route path='/profile' component={Profile} />
+                <Route component={ErrorPage} />
             </Switch>
         </HashRouter>
     )
