@@ -45,7 +45,7 @@ export default function Matchs({ history }) {
         }
     }, [matchs, consignees, products, history, loading]);
 
-    if (matchs.data === undefined || consignees.length === 0)
+    if (matchs.data === undefined)
         return <CircularProgress size="100px" />;
 
     return (

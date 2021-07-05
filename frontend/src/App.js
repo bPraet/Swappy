@@ -9,7 +9,7 @@ import { Container } from '@material-ui/core';
 function App() {
   return (
     <div className="App">
-      <Container maxWidth="false">
+      <Container maxWidth={false}>
           <Routes />
       </Container>
     </div>

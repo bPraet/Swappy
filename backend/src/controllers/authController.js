@@ -1,19 +1,15 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const userService = require('../services/userService');
 
 module.exports = {
     async register(req, res){
         try {
             const { firstName, lastName, password, email, pseudo, adress, roleid } = req.body;
+            const control = await userService.registerControl(firstName, lastName, password, email, pseudo, adress, roleid);
 
-            const existentUser = await User.findOne({email});
-
-            if(!email || !password || !firstName || !lastName || !password || !pseudo || !adress){
-                return res.status(200).json({message: "Champ requis manquant !"});
-            }
-
-            if(!existentUser){
+            if(control === true){
                 const hashedPassword = await bcrypt.hash(password, 10);
                 const user = await User.create({
                     firstName: firstName,
@@ -25,15 +21,18 @@ module.exports = {
                     role: roleid
                 });
 
-                return jwt.sign({user: user}, process.env.SECRET, (err, token) => {
+                let newUser = user.toObject();
+                newUser.userId = newUser._id;
+
+                return jwt.sign({user: newUser}, process.env.SECRET, (err, token) => {
                     return res.json({
                         userToken: token
                     })
                 })
             }
 
-            return res.status(200).json({
-                message: 'L’utilisateur existe déjà !'
+            return res.json({
+                message: control
             });
             
         } catch (error) {
@@ -46,12 +45,12 @@ module.exports = {
             const { email, password } = req.body;
             
             if(!email || !password){
-                return res.status(200).json({message: "Champ requis manquant"});
+                return res.json({message: "Champ requis manquant"});
             }
 
             const user = await User.findOne({email});
             if(!user){
-                return res.status(200).json({message: "L'utilisateur n'existe pas ! Voulez-vous vous inscrire plutôt ?"});
+                return res.json({message: "L'utilisateur n'existe pas ! Voulez-vous vous inscrire plutôt ?"});
             }
 
             if(user && await bcrypt.compare(password, user.password)){
@@ -72,7 +71,7 @@ module.exports = {
                 })
             }
             else{
-                return res.status(200).json({message: "L'email et le mot de passe ne correspondent pas"});
+                return res.json({message: "L'email et le mot de passe ne correspondent pas"});
             }
         } catch (error) {
             throw Error(`Error while Authenticating a user ${error}`);

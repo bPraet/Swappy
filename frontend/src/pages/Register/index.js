@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import api from '../../services/api'
+import api from '../../services/api';
 
 import './register.css';
 
@@ -25,7 +25,7 @@ export default function Register({ history }){
 
         if(userToken){
             localStorage.setItem('userToken', userToken);
-            history.push('/finder');
+            history.push('/products');
         }
         else{
             setMessage(response.data.message);
