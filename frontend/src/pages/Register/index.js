@@ -14,6 +14,7 @@ export default function Register({ history }){
     const [ lastName, setLastName ] = useState("");
     const [ pseudo, setPseudo ] = useState("");
     const [ adress, setAdress ] = useState("");
+    const [ message, setMessage ] = useState("");
     const roleid = '5ff8319169435b577c273f61'; //User
 
     const handleSubmit = async event => {
@@ -27,13 +28,15 @@ export default function Register({ history }){
             history.push('/finder');
         }
         else{
-            const { message } = response.data;
-            console.log(message);
+            setMessage(response.data.message);
         }
     };
 
     return(
-        <form id="registerForm" onSubmit={handleSubmit}>
+
+        <div id="registerContainer">
+            <div id="registerMessage">{message}</div>
+            <form id="registerForm" onSubmit={handleSubmit}>
                 <FormControl className="registerForm"> 
                     <TextField id="email" label="Email" type="email"
                     onChange={event => setEmail(event.target.value)}/>
@@ -48,9 +51,11 @@ export default function Register({ history }){
                     <TextField id="adress" label="Adresse"
                     onChange={event => setAdress(event.target.value)}/>
                 </FormControl>
-            <Fab aria-label="register" id="registerBtn" type="submit">
-                <Done />
-            </Fab>
-        </form>
+                <Fab aria-label="register" id="registerBtn" type="submit">
+                    <Done />
+                </Fab>
+            </form>
+        </div>
+        
     );
 }

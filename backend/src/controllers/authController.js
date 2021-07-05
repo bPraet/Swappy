@@ -9,6 +9,10 @@ module.exports = {
 
             const existentUser = await User.findOne({email});
 
+            if(!email || !password || !firstName || !lastName || !password || !pseudo || !adress){
+                return res.status(200).json({message: "Champ requis manquant !"});
+            }
+
             if(!existentUser){
                 const hashedPassword = await bcrypt.hash(password, 10);
                 const user = await User.create({
@@ -28,8 +32,8 @@ module.exports = {
                 })
             }
 
-            return res.status(400).json({
-                message: 'email/user already exists ! Do you want to login instead ?'
+            return res.status(200).json({
+                message: 'L’utilisateur existe déjà !'
             });
             
         } catch (error) {
@@ -42,12 +46,12 @@ module.exports = {
             const { email, password } = req.body;
             
             if(!email || !password){
-                return res.status(200).json({message: "Required field missing"});
+                return res.status(200).json({message: "Champ requis manquant"});
             }
 
             const user = await User.findOne({email});
             if(!user){
-                return res.status(200).json({message: 'User not found ! Do you want to register instead ?'});
+                return res.status(200).json({message: "L'utilisateur n'existe pas ! Voulez-vous vous inscrire plutôt ?"});
             }
 
             if(user && await bcrypt.compare(password, user.password)){
@@ -68,7 +72,7 @@ module.exports = {
                 })
             }
             else{
-                return res.status(200).json({message: "Email or password doesn't match"});
+                return res.status(200).json({message: "L'email et le mot de passe ne correspondent pas"});
             }
         } catch (error) {
             throw Error(`Error while Authenticating a user ${error}`);

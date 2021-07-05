@@ -75,7 +75,7 @@ export default function Chat({ history }) {
     }
 
     return (
-        <div>
+        <div className="chat">
             <div id="chatName">Conversation avec {consignee.data.pseudo}</div>
             <ul id="messages"></ul>
             <div id="isWriting"></div>
