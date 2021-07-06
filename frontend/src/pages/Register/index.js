@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import api from '../../services/api';
+import { userTypes } from '../../services/userTypes';
 
 import './register.css';
 
@@ -15,7 +16,7 @@ export default function Register({ history }){
     const [ pseudo, setPseudo ] = useState("");
     const [ adress, setAdress ] = useState("");
     const [ message, setMessage ] = useState("");
-    const roleid = '5ff8319169435b577c273f61'; //User
+    const roleid = userTypes.USER;
 
     const handleSubmit = async event => {
         event.preventDefault();
