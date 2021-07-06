@@ -2,7 +2,7 @@ const Condition = require('../models/Condition');
 const Product = require('../models/Product');
 const Transport = require('../models/Transport');
 const User = require('../models/User');
-const AlreadySeen = require('../models/AlreadySeen');
+const productService = require('../services/productService');
 
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
@@ -88,19 +88,9 @@ module.exports = {
                 res.sendStatus(403);
             }
             else{
-                try {
-                    const alreadySeenProducts = await AlreadySeen.find({user: authData.user.userId});
-                    const toRemove = alreadySeenProducts.map((seenProduct) => {
-                        return {"_id" : seenProduct.product};
-                    });
-                    const products = await Product.find({$and: [{_id: { $nin: toRemove } }, {user: { $nin: authData.user.userId } }]});
-                    return res.json(products);
-                } catch (error) {
-                    console.log(error);
-                    return res.status(400).json({
-                        message: 'No products yet'
-                    });
-                }
+                const products = await productService.getNotSeenProducts(authData.user.userId);
+
+                return res.json(products);
             }
         });
     },
