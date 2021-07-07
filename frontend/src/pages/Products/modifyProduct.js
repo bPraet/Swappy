@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import api from '../../services/api';
 
 import { FormControl, TextField, Fab, CircularProgress, InputLabel, NativeSelect } from '@material-ui/core';
-import { Done } from '@material-ui/icons';
+import { Done, ArrowBack } from '@material-ui/icons';
 
 import './products.css';
 
@@ -12,6 +12,7 @@ export default function ModifyProduct( {history} ){
     const [ transports, setTransports ] = useState([]);
     const [ conditions, setConditions ] = useState([]);
     const [ product, setProduct ] = useState([]);
+    const [ message, setMessage ] = useState("");
 
     let [ name, setName ] = useState();
     let [ description, setDescription ] = useState();
@@ -65,18 +66,24 @@ export default function ModifyProduct( {history} ){
         productData.append("image", image);
         productData.append("conditionId", conditionId);
         productData.append("transportId", transportId);
-        console.log(name + description + conditionId + transportId);
+        
         try {
             await api.put(`/product/update/${productId}`, productData, { headers: {'userToken': userToken} });
         } catch (error) {
-            console.log(error);
+            setMessage("Veuillez uploader une image de 2Mo ou moins s'il vous plait ! (.jpg, .jpeg, .png)");
+
+            return;
         }
-        
+
         history.push('/products');
     };
     
     return(
-        <form id="addProductForm" onSubmit={handleSubmit}>
+        <div id="modifyContainer">
+            <div id="modifyMessage">
+                {message}
+            </div>
+            <form id="addProductForm" onSubmit={handleSubmit}>
             <FormControl className="productForm">
                 <TextField id="name" label="Nom" defaultValue={product.data.name}
                     onChange={event => setName(event.target.value)} />
@@ -113,9 +120,15 @@ export default function ModifyProduct( {history} ){
                     {transports.data.map(transport => <option value={transport._id} key={transport._id}>{transport.name}</option>)}
                 </NativeSelect>
             </FormControl>
-            <Fab aria-label="add" id="addProductBtn" type="submit">
-                <Done />
-            </Fab>
+            <div id="btn">
+                <Fab aria-label="previous" id="backBtn" component={Link} to={'/products'}>
+                    <ArrowBack />
+                </Fab>
+                <Fab aria-label="add" id="addProductBtn" type="submit">
+                    <Done />
+                </Fab>
+            </div>
         </form>
+        </div>
     );
 }

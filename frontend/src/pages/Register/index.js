@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import api from '../../services/api';
 import { userTypes } from '../../services/userTypes';
 
 import './register.css';
 
 import { FormControl, TextField, Fab } from '@material-ui/core';
-import { Done } from '@material-ui/icons';
+import { Done, ArrowBack } from '@material-ui/icons';
 
 export default function Register({ history }){
 
@@ -52,9 +53,14 @@ export default function Register({ history }){
                     <TextField id="adress" label="Adresse"
                     onChange={event => setAdress(event.target.value)}/>
                 </FormControl>
-                <Fab aria-label="register" id="registerBtn" type="submit">
-                    <Done />
-                </Fab>
+                <div id="btn">
+                    <Fab aria-label="previous" id="backBtn" component={Link} to={'/'}>
+                        <ArrowBack />
+                    </Fab>
+                    <Fab aria-label="register" id="registerBtn" type="submit">
+                        <Done />
+                    </Fab>
+                </div>
             </form>
         </div>
         

@@ -48,11 +48,7 @@ module.exports = {
                 const { productId } = req.params;
 
                 try {
-                    const product = await Product.findById(productId);
-                    await product.populate('user', '-password')
-                        .populate('condition')
-                        .populate('transport')
-                        .execPopulate();
+                    const product = await productService.getDetails(productId);
         
                     return res.json(product);
                 } catch (error) {
@@ -88,9 +84,15 @@ module.exports = {
                 res.sendStatus(403);
             }
             else{
-                const products = await productService.getNotSeenProducts(authData.user.userId);
+                try {
+                    const products = await productService.getNotSeenProducts(authData.user.userId);
 
-                return res.json(products);
+                    return res.json(products);
+                } catch (error) {
+                    return res.status(400).json({
+                        message: 'No products yet'
+                    });
+                }
             }
         });
     },

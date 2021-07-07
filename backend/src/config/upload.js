@@ -9,6 +9,16 @@ module.exports = {
             const name = path.basename(file.originalname, ext);
 
             cb(null, `${name.replace(/\s/g, "")}-${Date.now()}${ext}`);
+        },
+    }),
+    limits: {fileSize: 2000000}, //2MB en Bytes
+    fileFilter: (req, file, cb) => {
+        const ext = path.extname(file.originalname);
+
+        if(ext !== '.png' && ext !== '.jpg' && ext !== '.jpeg'){
+            return cb('Only images are allowed');
         }
-    })
+
+        cb(null, true);
+    },
 }

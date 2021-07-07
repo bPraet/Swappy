@@ -35,6 +35,10 @@
     height: 5vh;
 }
 
+#addProductBtn{
+    margin: 30px;
+}
+
 #preview{
     margin-top: 20px;
     height: 50px;

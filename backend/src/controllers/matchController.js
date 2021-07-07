@@ -6,11 +6,16 @@ const mongoose = require('mongoose');
 module.exports = {
     addMatch(req, res){
         jwt.verify(req.token, process.env.SECRET, async (err, authData) => {
-            if (err) {
+            if(err) {
                 res.sendStatus(403);
             }
             else {
                 const { productOwner, productConsignee, owner } = req.body;
+                
+                if(!productOwner || !productConsignee || !owner){
+                    return res.json('Field missing');
+                }
+
                 const match = await Match.create({
                     consignee: authData.user.userId,
                     productOwner: productOwner,

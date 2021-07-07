@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import './proposal.css';
 
 import { Grid, CircularProgress, FormControlLabel, Checkbox, Fab, FormControl } from '@material-ui/core';
-import { Done } from '@material-ui/icons';
+import { ArrowBack, Done } from '@material-ui/icons';
 import api from '../../services/api';
 import adress from '../../services/config';
 
@@ -61,21 +61,26 @@ export default function Proposal({ history }) {
     const getProducts = () => {
         const products = [];
 
-        for (let i = 0; i < 16; i++) {
-            products.push(
-                productsUser.data[i] ?
-                    <Grid item xs={3}>
-                        <FormControlLabel
-                            control={
-                                <Checkbox checked={state[i]} onChange={handleChange} name="0" />
-                            }
-                            label={
-                                <img src={adress + '/files/' + productsUser.data[i].image} className="productImg" alt={`product${i}`} draggable="false"></img>
-                            } className="productImgContainer">
-                        </FormControlLabel>
-                    </Grid>
-                : ''
-            );
+        if(productsUser.data.length){
+            for (let i = 0; i < 16; i++) {
+                products.push(
+                    productsUser.data[i] ?
+                        <Grid item xs={3}>
+                            <FormControlLabel
+                                control={
+                                    <Checkbox checked={state[i]} onChange={handleChange} name="0" />
+                                }
+                                label={
+                                    <img src={adress + '/files/' + productsUser.data[i].image} className="productImg" alt={`product${i}`} draggable="false"></img>
+                                } className="productImgContainer">
+                            </FormControlLabel>
+                        </Grid>
+                    : ""
+                );
+            }
+        }
+        else{
+            products.push("Vous n'avez pas encore de produit à échanger, veuillez en ajouter !")
         }
 
         return products;
@@ -89,11 +94,13 @@ export default function Proposal({ history }) {
                         { getProducts() }
                     </Grid>
                 </FormControl>
-                <FormControl>
-                    <Fab aria-label="add" id="addProductBtn" type="submit">
-                        <Done />
-                    </Fab>
-                </FormControl>
+
+                <Fab aria-label="previous" id="backBtn" component={Link} to={'/finder'}>
+                    <ArrowBack />
+                </Fab>
+                <Fab aria-label="add" id="addProductBtn" type="submit">
+                    <Done />
+                </Fab>
 
             </form>
 

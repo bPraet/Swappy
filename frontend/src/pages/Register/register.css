@@ -14,3 +14,7 @@
 .registerForm{
     min-width: 320px !important;
 }
+
+#backBtn{
+    margin: 30px;
+}
