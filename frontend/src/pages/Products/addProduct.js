@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import api from '../../services/api';
 
 import { FormControl, TextField, Fab, CircularProgress, InputLabel, NativeSelect } from '@material-ui/core';
-import { Done } from '@material-ui/icons';
+import { Done, ArrowBack } from '@material-ui/icons';
 
 import './products.css';
 
@@ -16,6 +17,7 @@ export default function AddProduct( {history} ){
     const [ image, setImage ] = useState();
     const [ conditionId, setConditionId ] = useState();
     const [ transportId, setTransportId ] = useState();
+    const [ message, setMessage ] = useState("");
 
     const userToken = localStorage.getItem('userToken');
 
@@ -26,11 +28,13 @@ export default function AddProduct( {history} ){
     useEffect(() => {
         api.get('/transports', { headers: {'userToken': userToken} }).then( result => {
             setTransports(result);
+            setTransportId(result.data[0]._id);
         }).catch((err) => {
             history.push('/');
         });
         api.get('/conditions', { headers: {'userToken': userToken} }).then(result => {
             setConditions(result);
+            setConditionId(result.data[0]._id);
         }).catch((err) => {
             history.push('/');
         });
@@ -49,55 +53,70 @@ export default function AddProduct( {history} ){
         productData.append("conditionId", conditionId);
         productData.append("transportId", transportId);
 
+
         try {
             await api.post('/product/add', productData, { headers: { 'userToken': userToken} });
-
-        } catch (error) {
-            console.log(error);
+        } catch(error){
+            let message = '';
+            if(error.response.status === 400)
+                message = 'Champ requis manquant !';
+            else
+                message = "Veuillez uploader une image de 2Mo ou moins s'il vous plait ! (.jpg, .jpeg)";
+            setMessage(message);
+            console.log(message);
+            return;
         }
         
         history.push('/products');
     };
     
     return(
-        <form id="addProductForm" onSubmit={handleSubmit}>
-            <FormControl className="productForm">
-                <TextField id="name" label="Nom"
-                    onChange={event => setName(event.target.value)} />
-                <TextField id="description" label="Description"
-                    onChange={event => setDescription(event.target.value)} />
-                <div id="preview" style={{backgroundImage: `url(${preview})`}}></div>
-                
-                <TextField id="image" helperText="Insérez l'image représentant le mieux votre produit !" type="file"
-                    onChange={event => setImage(event.target.files[0])} inputProps={{ accept: '.jpg, .jpeg' }}/>
-            </FormControl>
-            <FormControl className="productForm">
-                <InputLabel htmlFor="conditions">Etat</InputLabel>
-                <NativeSelect
-                    required
-                    value={conditionId}
-                    onChange={event => setConditionId(event.target.value)}
-                    name="conditions"
-                >
-                    <option aria-label="" />
-                    {conditions.data.map(condition => <option value={condition._id} key={condition._id}>{condition.name}</option>)}
-                </NativeSelect>
-            </FormControl>
-            <FormControl className="productForm">
-            <InputLabel htmlFor="transports">Transport</InputLabel>
-                <NativeSelect
-                    required
-                    value={transportId}
-                    onChange={event => setTransportId(event.target.value)}
-                    name="transports"
-                >
-                    <option aria-label="" />
-                    {transports.data.map(transport => <option value={transport._id} key={transport._id}>{transport.name}</option>)}
-                </NativeSelect>
-            </FormControl>
-            <Fab aria-label="add" id="addProductBtn" type="submit">
-                <Done />
-            </Fab>
-        </form>
+        <div id="modifyContainer">
+            <div id="modifyMessage">
+                {message}
+            </div>
+            <form id="addProductForm" onSubmit={handleSubmit}>
+                <FormControl className="productForm">
+                    <TextField id="name" label="Nom"
+                        onChange={event => setName(event.target.value)} />
+                    <TextField id="description" label="Description" multiline
+                        rows={4} onChange={event => setDescription(event.target.value)} />
+                    <div id="preview" style={{backgroundImage: `url(${preview})`}}></div>
+                    
+                    <TextField id="image" helperText="Insérez l'image représentant le mieux votre produit !" type="file"
+                        onChange={event => setImage(event.target.files[0])} inputProps={{ accept: '.jpg, .jpeg' }}/>
+                </FormControl>
+                <FormControl className="productForm">
+                    <InputLabel htmlFor="conditions">Etat</InputLabel>
+                    <NativeSelect
+                        required
+                        value={conditionId}
+                        onChange={event => setConditionId(event.target.value)}
+                        name="conditions"
+                    >
+                        {conditions.data.map(condition => <option value={condition._id} key={condition._id}>{condition.name}</option>)}
+                    </NativeSelect>
+                </FormControl>
+                <FormControl className="productForm">
+                <InputLabel htmlFor="transports">Transport</InputLabel>
+                    <NativeSelect
+                        required
+                        value={transportId}
+                        onChange={event => setTransportId(event.target.value)}
+                        name="transports"
+                    >
+                        {transports.data.map(transport => <option value={transport._id} key={transport._id}>{transport.name}</option>)}
+                    </NativeSelect>
+                </FormControl>
+                <div id="btn">
+                    <Fab aria-label="previous" id="backBtn" component={Link} to={'/products'}>
+                        <ArrowBack />
+                    </Fab>
+                    <Fab aria-label="add" id="addProductBtn" type="submit">
+                        <Done />
+                    </Fab>
+                </div>
+            </form>
+        </div>
     );
 }

@@ -73,8 +73,15 @@ export default function ModifyProduct( {history} ){
         try {
             await api.put(`/product/update/${productId}`, productData, { headers: {'userToken': userToken} });
         } catch (error) {
-            setMessage("Veuillez uploader une image de 2Mo ou moins s'il vous plait ! (.jpg, .jpeg, .png)");
+            let message = '';
 
+            if(error.response.status === 400)
+                message = 'Champ requis manquant !';
+            else
+                message = "Veuillez uploader une image de 2Mo ou moins s'il vous plait ! (.jpg, .jpeg)";
+                
+            setMessage(message);
+            console.log(message);
             return;
         }
 
@@ -114,8 +121,8 @@ export default function ModifyProduct( {history} ){
                 <FormControl className="productForm">
                     <TextField id="name" label="Nom" defaultValue={product.data.name}
                         onChange={event => setName(event.target.value)} />
-                    <TextField id="description" label="Description" defaultValue={product.data.description}
-                        onChange={event => setDescription(event.target.value)} />
+                    <TextField id="description" label="Description" defaultValue={product.data.description} multiline
+                    rows={4} onChange={event => setDescription(event.target.value)} />
                     <div id="preview" style={{backgroundImage: `url(${preview})`}}></div>
                     
                     <TextField id="image" helperText="Insérez l'image représentant le mieux votre produit !" type="file"
@@ -130,7 +137,6 @@ export default function ModifyProduct( {history} ){
                         name="conditions"
                         defaultValue={product.data.condition._id}
                     >
-                        <option aria-label="" />
                         {conditions.data.map(condition => <option value={condition._id} key={condition._id}>{condition.name}</option>)}
                     </NativeSelect>
                 </FormControl>
@@ -143,7 +149,6 @@ export default function ModifyProduct( {history} ){
                         name="transports"
                         defaultValue={product.data.transport._id}
                     >
-                        <option aria-label="" />
                         {transports.data.map(transport => <option value={transport._id} key={transport._id}>{transport.name}</option>)}
                     </NativeSelect>
                 </FormControl>
