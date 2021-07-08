@@ -126,6 +126,11 @@ module.exports = {
                 const { productId } = req.params;
                 let image = '';
                 const product = await Product.findById(productId);
+
+                if(!productService.updateControl(name, description, conditionId, transportId)){
+                    return res.json("Missing field");
+                }
+                
                 if(req.file === undefined)
                     image = product.image;
                 else {

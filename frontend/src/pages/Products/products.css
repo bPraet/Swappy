@@ -62,6 +62,12 @@
     object-fit: contain;
 }
 
+#productFormImg{
+    height: 200px;
+    width: 400px;
+    object-fit: contain;
+}
+
 #productDetails{
     height: 80vh;
     justify-self: center;

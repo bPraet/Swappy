@@ -1,8 +1,13 @@
 import api from '../../services/api';
 
+let token;
+
+beforeAll((done) => {
+    api.post('/login', { 'email':'benoit.praet@hotmail.be', 'password':'test' }).then((res) => {token = res.data.userToken; done()});
+})
+
 it('returns details of product', async () => {
-    const token = await api.post('/login', { 'email':'benoit.praet@hotmail.be', 'password':'test' });
-    const response = await api.post('/match/add', { }, { headers: { 'userToken': token.data.userToken }});
+    const response = await api.post('/match/add', { }, { headers: { 'userToken': token }});
 
     expect(response.data).toEqual('Field missing');
 });

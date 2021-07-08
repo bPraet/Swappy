@@ -21,5 +21,13 @@ module.exports = {
             .execPopulate();
 
         return product;
+    },
+
+    updateControl(name, description, conditionId, transportId){
+        if(!name || !description || !conditionId || !transportId){
+            return false;
+        }
+
+        return true;
     }
 }
