@@ -15,7 +15,7 @@ module.exports = {
     fileFilter: (req, file, cb) => {
         const ext = path.extname(file.originalname);
 
-        if(ext !== '.png' && ext !== '.jpg' && ext !== '.jpeg'){
+        if(ext !== '.jpg' && ext !== '.jpeg'){
             return cb('Only images are allowed');
         }
 

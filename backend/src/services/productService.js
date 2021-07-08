@@ -29,5 +29,13 @@ module.exports = {
         }
 
         return true;
+    },
+
+    addControl(name, description, conditionId, transportId, image){
+        if(!name || !description || !conditionId || !transportId || !image){
+            return false;
+        }
+
+        return true;
     }
 }

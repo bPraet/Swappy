@@ -15,16 +15,12 @@ module.exports = {
             }
             else {
                 const { name, description, conditionId, transportId } = req.body;
-                const image = req.file.filename;
-
-                const user = await User.findById(authData.user.userId);
-
-                if (!user) {
-                    return res.status(400).json({
-                        message: "User does not exists"
-                    });
+ 
+                if(!productService.addControl(name, description, conditionId, transportId, req.file)){
+                    res.status(400).json('Missing field');
                 }
 
+                const image = req.file.filename;
                 const product = await Product.create({
                     name: name,
                     description: description,
@@ -128,7 +124,7 @@ module.exports = {
                 const product = await Product.findById(productId);
 
                 if(!productService.updateControl(name, description, conditionId, transportId)){
-                    return res.json("Missing field");
+                    return res.status(400).json("Missing field");
                 }
                 
                 if(req.file === undefined)
@@ -165,8 +161,13 @@ module.exports = {
             }
             else{
                 const { productId } = req.params;
+                const product = await Product.findById(productId);
+
                 try {
                     await Product.findByIdAndDelete(productId);
+                    fs.unlink(`./files/${product.image}`, (result) => {
+                        console.log("Image deleted");
+                    });
                     return res.json({message: "Successfully deleted"});
                 } catch (error) {
                     return res.status(400).json({
