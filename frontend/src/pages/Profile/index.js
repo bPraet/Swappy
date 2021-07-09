@@ -6,7 +6,7 @@ import './profile.css';
 
 import { AppBar, BottomNavigation, BottomNavigationAction, FormControl, TextField, Fab, CircularProgress, Button,
 Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
-import { SwapHoriz, Favorite, LocalMall, Person, Done, RotateLeft } from '@material-ui/icons';
+import { SwapHoriz, Favorite, LocalMall, Person, Done, RotateLeft, ArrowBack } from '@material-ui/icons';
 
 export default function Profile({ history }) {
 
@@ -91,10 +91,16 @@ export default function Profile({ history }) {
                     <TextField id="adress" label="Adresse" defaultValue={user.data.adress}
                         onChange={event => setAdress(event.target.value)} />
                 </FormControl>
-                <Fab aria-label="update" id="updateBtn" type="submit">
-                    <Done />
-                </Fab>
 
+                <div id="btn">
+                    <Fab aria-label="previous" id="backBtn" onClick={history.goBack}>
+                        <ArrowBack />
+                    </Fab>
+                    <Fab aria-label="update" id="updateBtn" type="submit">
+                        <Done />
+                    </Fab>
+                </div>
+                
                 <Button id="resetBtn" variant="contained" color="default" startIcon={<RotateLeft />} onClick={handleClickOpen}>
                     Reset historique
                 </Button>

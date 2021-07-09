@@ -18,8 +18,24 @@ it('returns products of user', async () => {
     expect(products.data[0].name).toEqual('Produit test');
 });
 
-it('returns "Missing field" message', async () => {
-    const response = await api.put(`/product/update/5ffd94423f95276b283d63d3`, {"name":"test"}, { headers: { 'userToken': token } });
+it('returns 400 due to missing field', async () => {
+    try{
+        await api.put(`/product/update/5ffd94423f95276b283d63d3`, {"name":"test"}, { headers: { 'userToken': token } });
+    } catch(error){
+        expect(error.response.status).toEqual(400);
+    }
+});
 
-    expect(response.data).toEqual('Missing field');
+it('returns "Nothing to delete" message', async () => {
+    const response = await api.delete(`/product/delete/1234`, { headers: { 'userToken': token } });
+
+    expect(response.data).toEqual('Nothing to delete');
+});
+
+it('returns 400 due to missing field', async () => {
+    try{
+        await api.post(`/product/add/`, {"name":"test"}, { headers: { 'userToken': token } });
+    } catch(error){
+        expect(error.response.status).toEqual(400);
+    }
 });

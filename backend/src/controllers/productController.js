@@ -17,7 +17,7 @@ module.exports = {
                 const { name, description, conditionId, transportId } = req.body;
  
                 if(!productService.addControl(name, description, conditionId, transportId, req.file)){
-                    res.status(400).json('Missing field');
+                    return res.status(400).json('Missing field');
                 }
 
                 const image = req.file.filename;
@@ -161,19 +161,30 @@ module.exports = {
             }
             else{
                 const { productId } = req.params;
-                const product = await Product.findById(productId);
 
-                try {
+                let product;
+                try{
+                    product = await Product.findById(productId);
+                } catch(err){
+                    return res.json('Nothing to delete');
+                }
+                
+                try{
                     await Product.findByIdAndDelete(productId);
+                } catch(err){
+                    return res.status(400).json("Product not found");
+                }
+
+                try{
                     fs.unlink(`./files/${product.image}`, (result) => {
                         console.log("Image deleted");
                     });
-                    return res.json({message: "Successfully deleted"});
-                } catch (error) {
-                    return res.status(400).json({
-                        message: 'Product does not exist'
-                    });
+                } catch(err){
+                    return res.status(400).json("No image to delete");
                 }
+                
+
+                return res.json({message: "Successfully deleted"});
             }
         });
     },
