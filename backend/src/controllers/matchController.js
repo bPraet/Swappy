@@ -48,6 +48,44 @@ module.exports = {
         });
     },
 
+    getPropositionsByUser(req, res){
+        jwt.verify(req.token, process.env.SECRET, async(err, authData) => {
+            if(err){
+                res.sendStatus(403);
+            }
+            else{
+                try {
+                    const propositions = await Match.aggregate([
+                        {$match : {"consignee" : mongoose.Types.ObjectId(authData.user.userId)}},
+                        {$group : { _id: { owner: "$owner", productOwner: "$productOwner" }}}
+                    ]);
+
+                    return res.json(propositions);
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+        });
+    },
+
+    getMatchDetails(req, res){
+        jwt.verify(req.token, process.env.SECRET, async(err, authData) => {
+            if(err){
+                res.sendStatus(403);
+            }
+            else{
+                const { owner, consignee, productId } = req.params;
+                try {
+                    const matchs = await Match.find().and([{owner: owner, consignee: consignee, productOwner: productId}]);
+
+                    return res.json(matchs);
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+        });
+    },
+
     delMatchesByProductId(req, res){
         jwt.verify(req.token, process.env.SECRET, async(err, authData) => {
             if(err){

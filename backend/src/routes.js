@@ -50,7 +50,9 @@ routes.delete('/track/reset', verifyToken, trackingController.resetAlreadySeen);
 
 //Match
 routes.get('/matchs', verifyToken, matchController.getMatchsByUser);
+routes.get('/propositions', verifyToken, matchController.getPropositionsByUser);
 routes.post('/match/add', verifyToken, matchController.addMatch);
+routes.get('/match/:owner/:consignee/:productId', verifyToken, matchController.getMatchDetails);
 routes.delete('/matchs/delete/:productId', verifyToken, matchController.delMatchesByProductId);
 
 //Authentication

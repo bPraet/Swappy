@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Products from './pages/Products';
 import Matchs from './pages/Matchs';
+import MatchDetails from './pages/Matchs/matchDetails';
 import Profile from './pages/Profile';
 import AddProduct from './pages/Products/addProduct';
 import ModifyProduct from './pages/Products/modifyProduct';
@@ -26,6 +27,7 @@ export default function Routes(){
                 <Route path='/productDetails/:productId' exact component={ProductDetails} />
                 <Route path='/proposal/:productId' exact component={Proposal} />
                 <Route path='/matches' component={Matchs} />
+                <Route path='/match/:consignee/:productId/:isProposition' exact component={MatchDetails} />
                 <Route path='/chat/:userId' exact component={Chat} />
                 <Route path='/profile' component={Profile} />
                 <Route component={ErrorPage} />

@@ -68,7 +68,7 @@ export default function Proposal({ history }) {
                         <Grid item xs={3}>
                             <FormControlLabel
                                 control={
-                                    <Checkbox checked={state[i]} onChange={handleChange} name="0" />
+                                    <Checkbox checked={state[i]} onChange={handleChange} name={i} />
                                 }
                                 label={
                                     <img src={adress + '/files/' + productsUser.data[i].image} className="productImg" alt={`product${i}`} draggable="false"></img>

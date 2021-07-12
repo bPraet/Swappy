@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import api from '../../services/api';
 
 import './products.css';
@@ -57,7 +57,7 @@ export default function ProductDetails({ history }) {
                     </Typography>
                 </CardContent>
             <CardActions>
-                <Button size="small" color="primary" component={ Link } to="/finder">
+                <Button size="small" color="primary" onClick={history.goBack}>
                     Retour
                 </Button>
             </CardActions>
