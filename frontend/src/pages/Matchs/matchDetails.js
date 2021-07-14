@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import './matchs.css';
 
 import { Grid, CircularProgress, Fab } from '@material-ui/core';
-import { ArrowBack, Done } from '@material-ui/icons';
+import { ArrowBack } from '@material-ui/icons';
 import api from '../../services/api';
 import adress from '../../services/config';
 
@@ -82,9 +82,6 @@ export default function matchDetails({ history }) {
             </Grid>
             <Fab aria-label="previous" id="backBtn" onClick={history.goBack}>
                 <ArrowBack />
-            </Fab>
-            <Fab aria-label="add" id="addProductBtn" type="submit">
-                <Done />
             </Fab>
         </div>
     );

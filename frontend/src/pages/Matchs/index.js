@@ -4,32 +4,21 @@ import { Link } from 'react-router-dom';
 import './matchs.css';
 
 import { AppBar, BottomNavigation, BottomNavigationAction, List, ListItem, ListItemText, Divider, CircularProgress, IconButton, ListItemSecondaryAction } from '@material-ui/core';
-import { SwapHoriz, Favorite, LocalMall, Person, Send } from '@material-ui/icons';
+import { SwapHoriz, Favorite, LocalMall, Person, Send, Done, Close } from '@material-ui/icons';
 
 import api from '../../services/api';
 
 export default function Matchs({ history }) {
-    const [user, setUser] = useState();
     const [matchs, setMatchs] = useState([]);
     const [propositions, setPropositions] = useState([]);
-    const [matchProducts, setMatchProducts] = useState([]);
-    const [matchConsignees, setMatchConsignees] = useState([]);
-    const [propositionProducts, setPropositionProducts] = useState([]);
-    const [propositionOwners, setPropositionOwners] = useState([]);
-    const [loadingMatchs, setLoadingMatchs] = useState(false);
-    const [loadingPropositions, setLoadingPropositions] = useState(false);
+    const [isPropositionsSet, setIsPropositionsSet] = useState(false);
+    const [isMatchsSet, setIsMatchsSet] = useState(false);
+    const userToken = localStorage.getItem('userToken');
+
+    let [propositionsGrid, setPropositionsGrid] = useState([]);
+    let [matchsGrid, setMatchsGrid] = useState([]);
 
     useEffect(() => {
-        const userToken = localStorage.getItem('userToken');
-
-        if(user === undefined){
-            api.get('/user', { headers: {'userToken': userToken} }).then( result => {
-                setUser(result);
-            }).catch((err) => {
-                history.push('/');
-            });
-        }
-
         if (matchs.data === undefined) {
             api.get('/matchs', { headers: { 'userToken': userToken } }).then(result => {
                 setMatchs(result);
@@ -46,88 +35,85 @@ export default function Matchs({ history }) {
             });
         }
 
-        if (matchs.data !== undefined && !loadingMatchs) {
-            setLoadingMatchs(true);
-            matchs.data.map(async (match) => {
-                await api.get(`/user/${match._id.consignee}`, { headers: { 'userToken': userToken } }).then(result => {
-                    setMatchConsignees(values => [...values, result]);
-                }).catch((err) => {
-                    history.push('/');
-                });
 
-                await api.get(`/product/${match._id.productOwner}`, { headers: { 'userToken': userToken } }).then(result => {
-                    setMatchProducts(values => [...values, result]);
-                }).catch((err) => {
-                    history.push('/');
-                });
-            });
-        }
-
-        if (propositions.data !== undefined && !loadingPropositions) {
-            setLoadingPropositions(true);
-            propositions.data.map(async (proposition) => {
-                await api.get(`/user/${proposition._id.owner}`, { headers: { 'userToken': userToken } }).then(result => {
-                    setPropositionOwners(values => [...values, result]);
-                }).catch((err) => {
-                    history.push('/');
-                });
-
-                await api.get(`/product/${proposition._id.productOwner}`, { headers: { 'userToken': userToken } }).then(result => {
-                    setPropositionProducts(values => [...values, result]);
-                }).catch((err) => {
-                    history.push('/');
-                });
-            });
-        }
-    }, [matchs, matchConsignees, matchProducts, propositionProducts, propositionOwners, history, loadingMatchs, loadingPropositions, user]);
+    }, [matchs, propositions]);
 
     if (matchs.data === undefined || propositions.data === undefined)
         return <CircularProgress size="100px" />;
 
-    const getMatchProducts = () => {
-        const matchProductsGrid = [];
-        const sortedMatchProducts = matchProducts.sort((a, b) => a.data._id > b.data._id ? 1 : -1);
+    const validateMatch = async (productId, elIndex) => {
+        const newList = matchsGrid.filter((item) => item.key !== elIndex.toString());
 
-        for(const [i, product] of sortedMatchProducts.entries()){
-            matchProductsGrid.push(
-                <span key={i}>
-                    <ListItem button onClick={ () => history.push(`/match/${matchConsignees[i].data._id}/${product.data._id}/0`)}>
-                        <ListItemText primary={product.data.name} secondary={matchConsignees[i].data.email} />
-                        <ListItemSecondaryAction>
-                            <IconButton edge="end" aria-label="delete" onClick={ () => { history.push(`/chat/${matchConsignees[i].data._id}`) }}>
-                                <Send />
-                            </IconButton>
-                        </ListItemSecondaryAction>
-                    </ListItem>
-                    <Divider />
-                </span>
-            );
-        }
-
-        return matchProductsGrid;
+        //await api.delete(`/matchs/delete/${productId}`, { headers: {'userToken': userToken} });
+        matchsGrid = newList;
+        setMatchsGrid(newList);
     }
 
-    const getPropositionProducts = () => {
-        const propositionProductsGrid = [];
-        const sortedPropositionProducts = propositionProducts.sort((a, b) => a.data._id > b.data._id ? 1 : -1);
+    const validateProposition = async (productId, elIndex) => {
+        const newList = propositionsGrid.filter((item) => item.key !== elIndex.toString());
 
-        for(const [i, product] of sortedPropositionProducts.entries()){
-            propositionProductsGrid.push(
-                <span key={i}>
-                    <ListItem button onClick={ () => history.push(`/match/${propositionOwners[i].data._id}/${product.data._id}/1`)}>
-                        <ListItemText primary={product.data.name} secondary={propositionOwners[i].data.email} />
-                        <ListItemSecondaryAction>
-                            <IconButton edge="end" aria-label="delete" onClick={ () => { history.push(`/chat/${propositionOwners[i].data._id}`) }}>
-                                <Send />
-                            </IconButton>
-                        </ListItemSecondaryAction>
-                    </ListItem>
-                    <Divider />
-                </span>
-            );
+        //await api.delete(`/matchs/delete/${productId}`, { headers: {'userToken': userToken} });
+        propositionsGrid = newList;
+        setPropositionsGrid(newList);
+    }
+    
+    const getMatchs = () => {
+        if(!isMatchsSet){
+            setIsMatchsSet(true);
+            for(const [i, match] of matchs.data.entries()){
+                matchsGrid.push(
+                    <span key={i}>
+                        <ListItem button onClick={ () => history.push(`/match/${match.consignee._id}/${match.productOwner._id}/0`)}>
+                            <ListItemText primary={match.productOwner.name} secondary={match.consignee.email} />
+                            <ListItemSecondaryAction>
+                                <IconButton edge="end" aria-label="send" onClick={ () => { history.push(`/chat/${match.consignee._id}`) }}>
+                                    <Send />
+                                </IconButton>
+                                <IconButton edge="end" aria-label="remove" onClick={ () => {  }}>
+                                    <Close />
+                                </IconButton>
+                                <IconButton edge="end" aria-label="done" onClick={ () => { validateMatch(match.productOwner._id, i) }}>
+                                    <Done />
+                                </IconButton>
+                            </ListItemSecondaryAction>
+                        </ListItem>
+                        <Divider />
+                    </span>
+                );
+            }
         }
 
-        return propositionProductsGrid;
+        return matchsGrid;
+    }
+
+    const getPropositions = () => {
+        if(!isPropositionsSet){
+            setIsPropositionsSet(true);
+
+            for(const [i, proposition] of propositions.data.entries()){
+                propositionsGrid.push(
+                    <span key={i}>
+                        <ListItem button onClick={ () => history.push(`/match/${proposition.owner._id}/${proposition.productOwner._id}/1`)}>
+                            <ListItemText primary={proposition.productOwner.name} secondary={proposition.owner.email} />
+                            <ListItemSecondaryAction>
+                                <IconButton edge="end" aria-label="send" onClick={ () => { history.push(`/chat/${proposition.owner._id}`) }}>
+                                    <Send />
+                                </IconButton>
+                                <IconButton edge="end" aria-label="remove" onClick={ () => {  }}>
+                                    <Close />
+                                </IconButton>
+                                <IconButton edge="end" aria-label="validate" onClick={ () => { validateProposition(proposition.productOwner._id, i) }}>
+                                    <Done />
+                                </IconButton>
+                            </ListItemSecondaryAction>
+                        </ListItem>
+                        <Divider />
+                    </span>
+                );
+            }
+        }
+
+        return propositionsGrid;
     }
 
     return (
@@ -142,11 +128,11 @@ export default function Matchs({ history }) {
             </AppBar>
             <h1>Matchs:</h1>
             <List component="nav" aria-label="matches">
-                {getMatchProducts()}
+                {getMatchs()}
             </List>
             <h1>Vos Propositions:</h1>
-            <List component="nav" aria-label="matches">
-                {getPropositionProducts()}
+            <List component="nav" aria-label="propositions">
+                {getPropositions()}
             </List>
         </div>
     );
