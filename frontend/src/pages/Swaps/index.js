@@ -13,7 +13,7 @@ export default function Matchs({ history }) {
 
     const [swaps, setSwaps] = useState([]);
     const [user, setUser] = useState();
-    const [swapsGrid, setSwapsGrid] = useState([]);
+    const [swapsGrid] = useState([]);
 
     useEffect(() => {
         const userToken = localStorage.getItem('userToken');
@@ -35,13 +35,12 @@ export default function Matchs({ history }) {
         return <CircularProgress size="100px" />;
     
     const getSwaps = () => {
-        console.log(swaps);
         for(const [i, swap] of swaps.data.entries()){
             const swapDetails = swap.products.slice(0, -1).join(' - ')+' VS '+swap.products.slice(-1);
 
             swapsGrid.push(
                 <span key={i}>
-                    <ListItem button onClick={console.log(user)}>
+                    <ListItem>
                         <ListItemText primary={swapDetails} secondary={user.data._id === swap.consignee._id ? swap.owner.pseudo : swap.consignee.pseudo} />
                         <ListItemSecondaryAction>
                             <IconButton edge="end" aria-label="send" onClick={ () => { history.push(`/chat/${user.data._id === swap.consignee._id ? swap.owner._id : swap.consignee._id}`) }}>
@@ -53,7 +52,6 @@ export default function Matchs({ history }) {
                 </span>
             );
         }
-        console.log(swapsGrid);
         return swapsGrid;
     }
 

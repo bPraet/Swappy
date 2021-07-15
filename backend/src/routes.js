@@ -12,6 +12,7 @@ const matchController = require('./controllers/matchController');
 
 const uploadConfig = require('./config/upload');
 const swapController = require('./controllers/swapController');
+const messageController = require('./controllers/messageController');
 const upload = multer(uploadConfig);
 
 routes.get("/", (req, res) => {
@@ -60,6 +61,10 @@ routes.delete('/matchs/deleteProposition/:productId/:consigneeId', verifyToken, 
 //Swap
 routes.post('/swap/add', verifyToken, swapController.addSwap);
 routes.get('/swaps', verifyToken, swapController.getSwapsByUser);
+
+//Message
+routes.post('/message/add', verifyToken, messageController.addMessage);
+routes.get('/messages/:user', verifyToken, messageController.getMessagesByUser);
 
 //Authentication
 routes.post('/user/register', authController.register);

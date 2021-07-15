@@ -15,8 +15,8 @@ export default function Matchs({ history }) {
     const [isMatchsSet, setIsMatchsSet] = useState(false);
     const userToken = localStorage.getItem('userToken');
 
-    let [propositionsGrid, setPropositionsGrid] = useState([]);
-    let [matchsGrid, setMatchsGrid] = useState([]);
+    let [propositionsGrid] = useState([]);
+    let [matchsGrid] = useState([]);
 
     useEffect(() => {
         if (matchs.data === undefined) {

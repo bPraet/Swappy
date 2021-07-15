@@ -10,9 +10,10 @@ import { CircularProgress } from '@material-ui/core';
 export default function Chat({ history }) {
     const [user, setUser] = useState();
     const [consignee, setConsignee] = useState();
+    const [messages, setMessages] = useState();
     const { userId } = useParams();
     const userToken = localStorage.getItem('userToken');
-    
+
     useEffect(() => {
         let reloadCount = sessionStorage.getItem('reloadCount');
         if(reloadCount < 2) {
@@ -33,9 +34,15 @@ export default function Chat({ history }) {
         }).catch((err) => {
             history.push('/');
         });
+
+        api.get(`/messages/${userId}`, { headers: {'userToken': userToken} }).then( result => {
+            setMessages(result);
+        }).catch((err) => {
+            history.push('/');
+        });
     }, [history, userToken, userId]);
 
-    if(user === undefined || consignee === undefined)
+    if(user === undefined || consignee === undefined || messages === undefined)
         return <CircularProgress size="100px"/>;
 
     const socket = io("http://localhost:8000");
@@ -63,7 +70,7 @@ export default function Chat({ history }) {
         id = setTimeout(() => isWriting.innerText = '', 3000);
     });
 
-    const sendMessage = (event, message) => {
+    const sendMessage = async (event, message) => {
         event.preventDefault();
         let li = document.createElement('li');
         
@@ -72,12 +79,34 @@ export default function Chat({ history }) {
         document.getElementById('messages').appendChild(li);
         socket.emit('emitMessage', message);
         li.scrollIntoView();
+
+        await api.post(`/message/add`, {user: consignee.data._id, message: message}, { headers: {'userToken': userToken} });
     }
 
+    const loadMessages = () => {
+        const alreadySentMessages = [];
+
+        for(const [i, message] of messages.data.entries()){
+            if(message.user1 === user.data._id){
+                alreadySentMessages.push(
+                    <li className="to" key={i}>{message.message}</li>
+                );
+            } else {
+                alreadySentMessages.push(
+                    <li className="from" key={i}>{message.message}</li>
+                );
+            }
+        }
+        
+        setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 1);
+        
+        return alreadySentMessages;
+    }
+    
     return (
         <div className="chat">
             <div id="chatName">Conversation avec {consignee.data.pseudo}</div>
-            <ul id="messages"></ul>
+            <ul id="messages">{loadMessages()}</ul>
             <div id="isWriting"></div>
             <form id="form" action="">
                 <input id="message" autoComplete="off" onChange={ () => socket.emit('isWriting', user.data.pseudo) }/>
