@@ -144,4 +144,24 @@ module.exports = {
             }
         });
     },
+
+    delMatchesByProductIdAndConsignee(req, res){
+        jwt.verify(req.token, process.env.SECRET, async(err, authData) => {
+            if(err){
+                res.sendStatus(403);
+            }
+            else{
+                const { productId, consigneeId } = req.params;
+                try {
+                    await Match.deleteMany({ "productOwner" : productId, "consignee" : consigneeId});
+
+                    return res.json({message: "Successfully deleted"});
+                } catch (error) {
+                    return res.status(400).json({
+                        message: 'No match found'
+                    });
+                }
+            }
+        });
+    }
 }

@@ -12,6 +12,7 @@ import ModifyProduct from './pages/Products/modifyProduct';
 import ProductDetails from './pages/Products/productDetails';
 import Proposal from './pages/Finder/proposal';
 import Chat from './pages/Chat';
+import Swaps from './pages/Swaps';
 import ErrorPage from './pages/ErrorPage';
 
 export default function Routes(){
@@ -30,6 +31,7 @@ export default function Routes(){
                 <Route path='/match/:consignee/:productId/:isProposition' exact component={MatchDetails} />
                 <Route path='/chat/:userId' exact component={Chat} />
                 <Route path='/profile' component={Profile} />
+                <Route path='/swaps' component={Swaps} />
                 <Route component={ErrorPage} />
             </Switch>
         </HashRouter>

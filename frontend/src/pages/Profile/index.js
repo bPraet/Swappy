@@ -72,6 +72,7 @@ export default function Profile({ history }) {
                     <BottomNavigationAction label="Matchs" icon={<Favorite />} component={Link} to="/matches" />
                     <BottomNavigationAction label="Produits" icon={<LocalMall />} component={Link} to="/products" />
                     <BottomNavigationAction disabled label="Profil" icon={<Person />} component={Link} to="/profile" />
+                    <BottomNavigationAction label="Swaps" icon={<SwapHoriz />} component={Link} to="/swaps" />
                 </BottomNavigation>
             </AppBar>
 

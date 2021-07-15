@@ -11,6 +11,7 @@ const trackingController = require('./controllers/trackingController');
 const matchController = require('./controllers/matchController');
 
 const uploadConfig = require('./config/upload');
+const swapController = require('./controllers/swapController');
 const upload = multer(uploadConfig);
 
 routes.get("/", (req, res) => {
@@ -54,6 +55,11 @@ routes.get('/propositions', verifyToken, matchController.getPropositionsByUser);
 routes.post('/match/add', verifyToken, matchController.addMatch);
 routes.get('/match/:owner/:consignee/:productId', verifyToken, matchController.getMatchDetails);
 routes.delete('/matchs/delete/:productId', verifyToken, matchController.delMatchesByProductId);
+routes.delete('/matchs/deleteProposition/:productId/:consigneeId', verifyToken, matchController.delMatchesByProductIdAndConsignee);
+
+//Swap
+routes.post('/swap/add', verifyToken, swapController.addSwap);
+routes.get('/swaps', verifyToken, swapController.getSwapsByUser);
 
 //Authentication
 routes.post('/user/register', authController.register);

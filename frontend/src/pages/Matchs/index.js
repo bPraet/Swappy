@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import './matchs.css';
 
 import { AppBar, BottomNavigation, BottomNavigationAction, List, ListItem, ListItemText, Divider, CircularProgress, IconButton, ListItemSecondaryAction } from '@material-ui/core';
-import { SwapHoriz, Favorite, LocalMall, Person, Send, Done, Close } from '@material-ui/icons';
+import { SwapHoriz, Favorite, LocalMall, Person, Send } from '@material-ui/icons';
 
 import api from '../../services/api';
 
@@ -40,22 +40,6 @@ export default function Matchs({ history }) {
 
     if (matchs.data === undefined || propositions.data === undefined)
         return <CircularProgress size="100px" />;
-
-    const validateMatch = async (productId, elIndex) => {
-        const newList = matchsGrid.filter((item) => item.key !== elIndex.toString());
-
-        //await api.delete(`/matchs/delete/${productId}`, { headers: {'userToken': userToken} });
-        matchsGrid = newList;
-        setMatchsGrid(newList);
-    }
-
-    const validateProposition = async (productId, elIndex) => {
-        const newList = propositionsGrid.filter((item) => item.key !== elIndex.toString());
-
-        //await api.delete(`/matchs/delete/${productId}`, { headers: {'userToken': userToken} });
-        propositionsGrid = newList;
-        setPropositionsGrid(newList);
-    }
     
     const getMatchs = () => {
         if(!isMatchsSet){
@@ -68,12 +52,6 @@ export default function Matchs({ history }) {
                             <ListItemSecondaryAction>
                                 <IconButton edge="end" aria-label="send" onClick={ () => { history.push(`/chat/${match.consignee._id}`) }}>
                                     <Send />
-                                </IconButton>
-                                <IconButton edge="end" aria-label="remove" onClick={ () => {  }}>
-                                    <Close />
-                                </IconButton>
-                                <IconButton edge="end" aria-label="done" onClick={ () => { validateMatch(match.productOwner._id, i) }}>
-                                    <Done />
                                 </IconButton>
                             </ListItemSecondaryAction>
                         </ListItem>
@@ -99,12 +77,6 @@ export default function Matchs({ history }) {
                                 <IconButton edge="end" aria-label="send" onClick={ () => { history.push(`/chat/${proposition.owner._id}`) }}>
                                     <Send />
                                 </IconButton>
-                                <IconButton edge="end" aria-label="remove" onClick={ () => {  }}>
-                                    <Close />
-                                </IconButton>
-                                <IconButton edge="end" aria-label="validate" onClick={ () => { validateProposition(proposition.productOwner._id, i) }}>
-                                    <Done />
-                                </IconButton>
                             </ListItemSecondaryAction>
                         </ListItem>
                         <Divider />
@@ -124,6 +96,7 @@ export default function Matchs({ history }) {
                     <BottomNavigationAction disabled label="Matchs" icon={<Favorite />} component={Link} to="/matches" />
                     <BottomNavigationAction label="Produits" icon={<LocalMall />} component={Link} to="/products" />
                     <BottomNavigationAction label="Profil" icon={<Person />} component={Link} to="/profile" />
+                    <BottomNavigationAction label="Swaps" icon={<SwapHoriz />} component={Link} to="/swaps" />
                 </BottomNavigation>
             </AppBar>
             <h1>Matchs:</h1>

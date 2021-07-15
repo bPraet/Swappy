@@ -5,7 +5,7 @@ import TinderCard from 'react-tinder-card';
 import './finder.css';
 
 import { AppBar, BottomNavigation, BottomNavigationAction, CircularProgress, IconButton} from '@material-ui/core';
-import { SwapHoriz, Favorite, LocalMall, Person, Info } from '@material-ui/icons';
+import { SwapHoriz, Favorite, LocalMall, Person, Info, Search } from '@material-ui/icons';
 import api from '../../services/api';
 import adress from '../../services/config';
 
@@ -44,10 +44,11 @@ export default function Finder({ history }) {
         <div id="finder">
             <AppBar id="bottomBar">
                 <BottomNavigation showLabels>
-                    <BottomNavigationAction disabled label="Finder" icon={<SwapHoriz />} component={Link} to="/finder" />
+                    <BottomNavigationAction disabled label="Finder" icon={<Search />} component={Link} to="/finder" />
                     <BottomNavigationAction label="Matchs" icon={<Favorite />} component={Link} to="/matches" />
                     <BottomNavigationAction label="Produits" icon={<LocalMall />} component={Link} to="/products" />
                     <BottomNavigationAction label="Profil" icon={<Person />} component={Link} to="/profile" />
+                    <BottomNavigationAction label="Swaps" icon={<SwapHoriz />} component={Link} to="/swaps" />
                 </BottomNavigation>
             </AppBar>
             <div id="swipeContainer">
