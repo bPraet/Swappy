@@ -44,11 +44,11 @@ export default function Finder({ history }) {
         <div id="finder">
             <AppBar id="bottomBar">
                 <BottomNavigation showLabels>
-                    <BottomNavigationAction disabled label="Finder" icon={<Search />} component={Link} to="/finder" />
-                    <BottomNavigationAction label="Matchs" icon={<Favorite />} component={Link} to="/matches" />
-                    <BottomNavigationAction label="Produits" icon={<LocalMall />} component={Link} to="/products" />
-                    <BottomNavigationAction label="Profil" icon={<Person />} component={Link} to="/profile" />
-                    <BottomNavigationAction label="Swaps" icon={<SwapHoriz />} component={Link} to="/swaps" />
+                    <BottomNavigationAction className="bottomBtn" disabled label="Finder" icon={<Search />} component={Link} to="/finder" />
+                    <BottomNavigationAction className="bottomBtn" label="Matchs" icon={<Favorite />} component={Link} to="/matches" />
+                    <BottomNavigationAction className="bottomBtn" label="Produits" icon={<LocalMall />} component={Link} to="/products" />
+                    <BottomNavigationAction className="bottomBtn" label="Profil" icon={<Person />} component={Link} to="/profile" />
+                    <BottomNavigationAction className="bottomBtn" label="Swaps" icon={<SwapHoriz />} component={Link} to="/swaps" />
                 </BottomNavigation>
             </AppBar>
             <div id="swipeContainer">
@@ -58,7 +58,7 @@ export default function Finder({ history }) {
                 {products.data.map(product => (
                     <TinderCard preventSwipe={['up', 'down']} key={product._id} onCardLeftScreen={(direction) => onCardLeftScreen(direction, `${product._id}`)}>
                         <div id="card" style={{ backgroundImage: `url(${adress + '/files/' + product.image})` }}>
-                            <IconButton aria-label="productDetails" id="infoContainer" component={Link} to={'/productDetails/' + product._id}>
+                            <IconButton aria-label="productDetails" id="infoContainer" component={Link} to={'/productDetails/' + product._id} onTouchStart={() => history.push(`/productDetails/` + product._id)}>
                                 <Info id="infoBtn"/>
                             </IconButton>
                         </div>

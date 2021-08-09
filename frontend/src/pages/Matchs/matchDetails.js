@@ -8,7 +8,7 @@ import { ArrowBack, Done, Close } from '@material-ui/icons';
 import api from '../../services/api';
 import adress from '../../services/config';
 
-export default function matchDetails({ history }) {
+export default function MatchDetails({ history }) {
 
     const [ matchs, setMatchs ] = useState([]);
     const [ products, setProducts ] = useState([]);
@@ -55,7 +55,7 @@ export default function matchDetails({ history }) {
             });
         }
         
-    }, [history, matchs, products, loading, user]);
+    }, [history, matchs, products, loading, user, consignee, isProposition, productId, userToken]);
 
     if (matchs.data === undefined)
         return <CircularProgress size="100px" />;
@@ -78,6 +78,14 @@ export default function matchDetails({ history }) {
 
     const validateMatch = async (matches) => {
         const swapProducts = products.map(product => product.data.name);
+
+        if(isProposition === '0'){
+            if(!await api.get(`/match/${user.data._id}/${consignee}/${productId}`, { headers: { 'userToken': userToken } }).then(result => {
+                return(!!result.data.length);
+            })){
+                return false;
+            }
+        }
 
         await api.get(`/product/${matches[0].productOwner}`, { headers: {'userToken': userToken} }).then(result => swapProducts.push(result.data.name));
         await api.post(`/swap/add`, {owner: matches[0].owner, products: swapProducts, consignee: matches[0].consignee}, { headers: {'userToken': userToken} });

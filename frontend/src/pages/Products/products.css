@@ -22,11 +22,20 @@
     top: calc(50% - 50px);
 }
 
+.MuiGrid-spacing-xs-1 {
+    width: 100% !important;
+    margin: 0 !important;
+}
+
 #bottomBar{
     position: fixed;
     top: auto;
     bottom: 0;
 }
+
+.bottomBtn{
+    padding: 0 !important;
+} 
 
 #addBtn{
     display: flex;
@@ -69,9 +78,9 @@
 }
 
 #productDetails{
-    height: 80vh;
-    justify-self: center;
-    margin-top: 50vh; 
+    width: 100vw;
+    margin-top: 50vh;
+    position: absolute;
     transform: translateY(-50%);
 }
 

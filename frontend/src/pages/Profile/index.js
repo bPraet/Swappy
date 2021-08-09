@@ -6,7 +6,7 @@ import './profile.css';
 
 import { AppBar, BottomNavigation, BottomNavigationAction, FormControl, TextField, Fab, CircularProgress, Button,
 Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
-import { SwapHoriz, Favorite, LocalMall, Person, Done, RotateLeft, ArrowBack } from '@material-ui/icons';
+import { SwapHoriz, Favorite, LocalMall, Person, Done, RotateLeft, ArrowBack, Search } from '@material-ui/icons';
 
 export default function Profile({ history }) {
 
@@ -68,11 +68,11 @@ export default function Profile({ history }) {
         <div id="profile">
             <AppBar id="bottomBar">
                 <BottomNavigation showLabels>
-                    <BottomNavigationAction label="Finder" icon={<SwapHoriz />} component={Link} to="/finder" />
-                    <BottomNavigationAction label="Matchs" icon={<Favorite />} component={Link} to="/matches" />
-                    <BottomNavigationAction label="Produits" icon={<LocalMall />} component={Link} to="/products" />
-                    <BottomNavigationAction disabled label="Profil" icon={<Person />} component={Link} to="/profile" />
-                    <BottomNavigationAction label="Swaps" icon={<SwapHoriz />} component={Link} to="/swaps" />
+                    <BottomNavigationAction className="bottomBtn" label="Finder" icon={<Search />} component={Link} to="/finder" />
+                    <BottomNavigationAction className="bottomBtn" label="Matchs" icon={<Favorite />} component={Link} to="/matches" />
+                    <BottomNavigationAction className="bottomBtn" label="Produits" icon={<LocalMall />} component={Link} to="/products" />
+                    <BottomNavigationAction className="bottomBtn" disabled label="Profil" icon={<Person />} component={Link} to="/profile" />
+                    <BottomNavigationAction className="bottomBtn" label="Swaps" icon={<SwapHoriz />} component={Link} to="/swaps" />
                 </BottomNavigation>
             </AppBar>
 

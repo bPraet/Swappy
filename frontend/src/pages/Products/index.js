@@ -5,7 +5,7 @@ import './products.css';
 import addProduct from '../../assets/addProduct.png';
 
 import { AppBar, BottomNavigation, BottomNavigationAction, Grid, CircularProgress, Button } from '@material-ui/core';
-import { Favorite, LocalMall, SwapHoriz, Person, Add } from '@material-ui/icons';
+import { Favorite, LocalMall, SwapHoriz, Person, Add, Search } from '@material-ui/icons';
 import api from '../../services/api';
 import adress from '../../services/config';
 
@@ -46,11 +46,11 @@ export default function Products({ history }){
         <div id="products">
             <AppBar id="bottomBar">
                 <BottomNavigation showLabels>
-                    <BottomNavigationAction label="Finder" icon={<SwapHoriz />} component={Link} to="/finder"/>
-                    <BottomNavigationAction label="Matchs" icon={<Favorite />} component={Link} to="/matches"/>
-                    <BottomNavigationAction disabled label="Produits" icon={<LocalMall />} component={Link} to="/products"/>
-                    <BottomNavigationAction label="Profil" icon={<Person />} component={Link} to="/profile"/>
-                    <BottomNavigationAction label="Swaps" icon={<SwapHoriz />} component={Link} to="/swaps" />
+                    <BottomNavigationAction className="bottomBtn" label="Finder" icon={<Search />} component={Link} to="/finder"/>
+                    <BottomNavigationAction className="bottomBtn" label="Matchs" icon={<Favorite />} component={Link} to="/matches"/>
+                    <BottomNavigationAction className="bottomBtn" disabled label="Produits" icon={<LocalMall />} component={Link} to="/products"/>
+                    <BottomNavigationAction className="bottomBtn" label="Profil" icon={<Person />} component={Link} to="/profile"/>
+                    <BottomNavigationAction className="bottomBtn" label="Swaps" icon={<SwapHoriz />} component={Link} to="/swaps" />
                 </BottomNavigation>
             </AppBar>
             <Grid container spacing={1}>

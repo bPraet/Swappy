@@ -5,7 +5,7 @@ import './swaps.css';
 
 import { AppBar, BottomNavigation, BottomNavigationAction, List, CircularProgress, ListItem, ListItemText,
 ListItemSecondaryAction, IconButton, Divider } from '@material-ui/core';
-import { SwapHoriz, Favorite, LocalMall, Person, Send } from '@material-ui/icons';
+import { SwapHoriz, Favorite, LocalMall, Person, Send, Search } from '@material-ui/icons';
 
 import api from '../../services/api';
 
@@ -18,7 +18,7 @@ export default function Matchs({ history }) {
     useEffect(() => {
         const userToken = localStorage.getItem('userToken');
 
-        api.get('/user', { headers: {'userToken': userToken} }).then( result => {
+        api.get('/user', { headers: {'userToken': userToken} }).then(result => {
             setUser(result);
         }).catch((err) => {
             history.push('/');
@@ -59,15 +59,15 @@ export default function Matchs({ history }) {
         <div id="swaps">
             <AppBar id="bottomBar">
                 <BottomNavigation showLabels>
-                    <BottomNavigationAction label="Finder" icon={<SwapHoriz />} component={Link} to="/finder" />
-                    <BottomNavigationAction label="Matchs" icon={<Favorite />} component={Link} to="/matches" />
-                    <BottomNavigationAction label="Produits" icon={<LocalMall />} component={Link} to="/products" />
-                    <BottomNavigationAction label="Profil" icon={<Person />} component={Link} to="/profile" />
-                    <BottomNavigationAction disabled label="Swaps" icon={<SwapHoriz />} component={Link} to="/swaps" />
+                    <BottomNavigationAction className="bottomBtn" label="Finder" icon={<Search />} component={Link} to="/finder" />
+                    <BottomNavigationAction className="bottomBtn" label="Matchs" icon={<Favorite />} component={Link} to="/matches" />
+                    <BottomNavigationAction className="bottomBtn" label="Produits" icon={<LocalMall />} component={Link} to="/products" />
+                    <BottomNavigationAction className="bottomBtn" label="Profil" icon={<Person />} component={Link} to="/profile" />
+                    <BottomNavigationAction className="bottomBtn" disabled label="Swaps" icon={<SwapHoriz />} component={Link} to="/swaps" />
                 </BottomNavigation>
             </AppBar>
             <h1>Swaps:</h1>
-            <List component="nav" aria-label="swaps">
+            <List component="nav" aria-label="swaps" id="swapsContainer">
                 {getSwaps()}
             </List>
         </div>

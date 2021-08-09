@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import './matchs.css';
 
 import { AppBar, BottomNavigation, BottomNavigationAction, List, ListItem, ListItemText, Divider, CircularProgress, IconButton, ListItemSecondaryAction } from '@material-ui/core';
-import { SwapHoriz, Favorite, LocalMall, Person, Send } from '@material-ui/icons';
+import { SwapHoriz, Favorite, LocalMall, Person, Send, Search } from '@material-ui/icons';
 
 import api from '../../services/api';
 
@@ -36,7 +36,7 @@ export default function Matchs({ history }) {
         }
 
 
-    }, [matchs, propositions]);
+    }, [matchs, propositions, history, userToken]);
 
     if (matchs.data === undefined || propositions.data === undefined)
         return <CircularProgress size="100px" />;
@@ -92,11 +92,11 @@ export default function Matchs({ history }) {
         <div id="matchs">
             <AppBar id="bottomBar">
                 <BottomNavigation showLabels>
-                    <BottomNavigationAction label="Finder" icon={<SwapHoriz />} component={Link} to="/finder" />
-                    <BottomNavigationAction disabled label="Matchs" icon={<Favorite />} component={Link} to="/matches" />
-                    <BottomNavigationAction label="Produits" icon={<LocalMall />} component={Link} to="/products" />
-                    <BottomNavigationAction label="Profil" icon={<Person />} component={Link} to="/profile" />
-                    <BottomNavigationAction label="Swaps" icon={<SwapHoriz />} component={Link} to="/swaps" />
+                    <BottomNavigationAction className="bottomBtn" label="Finder" icon={<Search />} component={Link} to="/finder" />
+                    <BottomNavigationAction className="bottomBtn" disabled label="Matchs" icon={<Favorite />} component={Link} to="/matches" />
+                    <BottomNavigationAction className="bottomBtn" label="Produits" icon={<LocalMall />} component={Link} to="/products" />
+                    <BottomNavigationAction className="bottomBtn" label="Profil" icon={<Person />} component={Link} to="/profile" />
+                    <BottomNavigationAction className="bottomBtn" label="Swaps" icon={<SwapHoriz />} component={Link} to="/swaps" />
                 </BottomNavigation>
             </AppBar>
             <h1>Matchs:</h1>

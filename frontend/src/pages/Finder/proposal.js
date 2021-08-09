@@ -65,10 +65,10 @@ export default function Proposal({ history }) {
             for (let i = 0; i < 16; i++) {
                 products.push(
                     productsUser.data[i] ?
-                        <Grid item xs={3}>
+                        <Grid item xs={3} key={i}>
                             <FormControlLabel
                                 control={
-                                    <Checkbox checked={state[i]} onChange={handleChange} name={i} />
+                                    <Checkbox checked={state[i]} onChange={handleChange} name={i.toString()} />
                                 }
                                 label={
                                     <img src={adress + '/files/' + productsUser.data[i].image} className="productImg" alt={`product${i}`} draggable="false"></img>

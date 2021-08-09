@@ -2,3 +2,7 @@ html{
     background-color: rgb(204, 204, 204);
     overflow: hidden;
 }
+
+.MuiBottomNavigationAction-root{
+    min-width: 60px !important;
+}
