@@ -56,9 +56,13 @@ export default function Products({ history }){
             <Grid container spacing={1}>
                 { getProducts() }
             </Grid>
-            <Button id="addBtn" variant="contained" color="default" startIcon={<Add />} component={Link} to="/addProduct">
-                Ajouter un produit
-            </Button>
+            { productsUser.data.length === 15 ? 
+                <Button id="addBtn" variant="contained" color="default" startIcon={<Add />} component={Link} to="/addProduct">
+                    Ajouter un produit
+                </Button> : 
+                'Vous avez atteint le maximum de 16 produits !'
+            }
+            
         </div> 
     );
 }
