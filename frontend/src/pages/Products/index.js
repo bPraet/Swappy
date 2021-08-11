@@ -56,7 +56,7 @@ export default function Products({ history }){
             <Grid container spacing={1}>
                 { getProducts() }
             </Grid>
-            { productsUser.data.length === 15 ? 
+            { productsUser.data.length < 16 ? 
                 <Button id="addBtn" variant="contained" color="default" startIcon={<Add />} component={Link} to="/addProduct">
                     Ajouter un produit
                 </Button> : 
