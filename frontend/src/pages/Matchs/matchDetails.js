@@ -5,6 +5,7 @@ import './matchs.css';
 import { Grid, CircularProgress, Fab, Button, Dialog, DialogTitle, DialogContent,
 DialogContentText, DialogActions } from '@material-ui/core';
 import { ArrowBack, Done, Close } from '@material-ui/icons';
+import { motion } from 'framer-motion';
 import api from '../../services/api';
 import adress from '../../services/config';
 
@@ -129,109 +130,115 @@ export default function MatchDetails({ history }) {
         if(products[0].data.user._id === user.data._id){
             return(
                 <div id="products">
-                    <Grid container spacing={1}>
-                        { getProducts() }
-                    </Grid>
-                    <Fab aria-label="previous" id="backBtn" onClick={history.goBack}>
-                        <ArrowBack />
-                    </Fab>
+                    <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
+                        <Grid container spacing={1}>
+                            { getProducts() }
+                        </Grid>
+                        <Fab aria-label="previous" id="backBtn" onClick={history.goBack}>
+                            <ArrowBack />
+                        </Fab>
 
-                    <Button id="deleteBtn" variant="contained" color="default" startIcon={<Close />} onClick={handleClickOpenDelete}>
-                        Refuser
-                    </Button>
-                    <Dialog
-                        open={openDelete}
-                        onClose={handleCloseDelete}
-                        aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description"
-                    >
-                        <DialogTitle id="alert-dialog-title">{"Retirer le match ?"}</DialogTitle>
-                        <DialogContent>
-                            <DialogContentText id="alert-dialog-description">
-                                Vous ne pourrez pas revenir en arrière et cet échange disparaitra !
-                            </DialogContentText>
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={handleCloseDelete} color="primary">
-                                Non
-                            </Button>
-                            <Button onClick={() => removeMatch(matchs.data)} color="primary" autoFocus>
-                                Oui
-                            </Button>
-                        </DialogActions>
-                    </Dialog>
+                        <Button id="deleteBtn" variant="contained" color="default" startIcon={<Close />} onClick={handleClickOpenDelete}>
+                            Refuser
+                        </Button>
+                        <Dialog
+                            open={openDelete}
+                            onClose={handleCloseDelete}
+                            aria-labelledby="alert-dialog-title"
+                            aria-describedby="alert-dialog-description"
+                        >
+                            <DialogTitle id="alert-dialog-title">{"Retirer le match ?"}</DialogTitle>
+                            <DialogContent>
+                                <DialogContentText id="alert-dialog-description">
+                                    Vous ne pourrez pas revenir en arrière et cet échange disparaitra !
+                                </DialogContentText>
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={handleCloseDelete} color="primary">
+                                    Non
+                                </Button>
+                                <Button onClick={() => removeMatch(matchs.data)} color="primary" autoFocus>
+                                    Oui
+                                </Button>
+                            </DialogActions>
+                        </Dialog>
+                    </motion.div>
                 </div>
             )
         } else {
             return(
                 <div id="products">
-                    <Grid container spacing={1}>
-                        { getProducts() }
-                    </Grid>
-                    <Fab aria-label="previous" id="backBtn" onClick={history.goBack}>
-                        <ArrowBack />
-                    </Fab>
+                    <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
+                        <Grid container spacing={1}>
+                            { getProducts() }
+                        </Grid>
+                        <Fab aria-label="previous" id="backBtn" onClick={history.goBack}>
+                            <ArrowBack />
+                        </Fab>
 
-                    <Button id="validateBtn" variant="contained" color="default" startIcon={<Done />} onClick={handleClickOpenValidate}>
-                        Accepter
-                    </Button>
-                    <Dialog
-                        open={openValidate}
-                        onClose={handleCloseValidate}
-                        aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description"
-                    >
-                        <DialogTitle id="alert-dialog-title">{"Accepter l'échange ?"}</DialogTitle>
-                        <DialogContent>
-                            <DialogContentText id="alert-dialog-description">
-                                Super ! Es-tu sûr vouloir faire cet échange ?
-                            </DialogContentText>
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={handleCloseValidate} color="primary">
-                                Non
-                            </Button>
-                            <Button onClick={() => validateMatch(matchs.data)} color="primary" autoFocus>
-                                Oui
-                            </Button>
-                        </DialogActions>
-                    </Dialog>
+                        <Button id="validateBtn" variant="contained" color="default" startIcon={<Done />} onClick={handleClickOpenValidate}>
+                            Accepter
+                        </Button>
+                        <Dialog
+                            open={openValidate}
+                            onClose={handleCloseValidate}
+                            aria-labelledby="alert-dialog-title"
+                            aria-describedby="alert-dialog-description"
+                        >
+                            <DialogTitle id="alert-dialog-title">{"Accepter l'échange ?"}</DialogTitle>
+                            <DialogContent>
+                                <DialogContentText id="alert-dialog-description">
+                                    Super ! Es-tu sûr vouloir faire cet échange ?
+                                </DialogContentText>
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={handleCloseValidate} color="primary">
+                                    Non
+                                </Button>
+                                <Button onClick={() => validateMatch(matchs.data)} color="primary" autoFocus>
+                                    Oui
+                                </Button>
+                            </DialogActions>
+                        </Dialog>
 
-                    <Button id="deleteBtn" variant="contained" color="default" startIcon={<Close />} onClick={handleClickOpenDelete}>
-                        Refuser
-                    </Button>
-                    <Dialog
-                        open={openDelete}
-                        onClose={handleCloseDelete}
-                        aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description"
-                    >
-                        <DialogTitle id="alert-dialog-title">{"Retirer le match ?"}</DialogTitle>
-                        <DialogContent>
-                            <DialogContentText id="alert-dialog-description">
-                                Vous ne pourrez pas revenir en arrière et cet échange disparaitra !
-                            </DialogContentText>
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={handleCloseDelete} color="primary">
-                                Non
-                            </Button>
-                            <Button onClick={() => removeMatch(matchs.data)} color="primary" autoFocus>
-                                Oui
-                            </Button>
-                        </DialogActions>
-                    </Dialog>
+                        <Button id="deleteBtn" variant="contained" color="default" startIcon={<Close />} onClick={handleClickOpenDelete}>
+                            Refuser
+                        </Button>
+                        <Dialog
+                            open={openDelete}
+                            onClose={handleCloseDelete}
+                            aria-labelledby="alert-dialog-title"
+                            aria-describedby="alert-dialog-description"
+                        >
+                            <DialogTitle id="alert-dialog-title">{"Retirer le match ?"}</DialogTitle>
+                            <DialogContent>
+                                <DialogContentText id="alert-dialog-description">
+                                    Vous ne pourrez pas revenir en arrière et cet échange disparaitra !
+                                </DialogContentText>
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={handleCloseDelete} color="primary">
+                                    Non
+                                </Button>
+                                <Button onClick={() => removeMatch(matchs.data)} color="primary" autoFocus>
+                                    Oui
+                                </Button>
+                            </DialogActions>
+                        </Dialog>
+                    </motion.div>
                 </div>
             )
         }
     }
     else{
         return (
-            <div>Ce match n'existe plus, il a déjà été géré
+            <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
+                <div>Ce match n'existe plus, il a déjà été géré
                 <Fab aria-label="previous" id="backBtn" onClick={history.goBack}>
                     <ArrowBack />
                 </Fab>
-            </div>
+                </div>
+            </motion.div>
         );
     }
     

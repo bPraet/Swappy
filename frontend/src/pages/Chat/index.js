@@ -6,6 +6,7 @@ import api from '../../services/api';
 import './chat.css';
 
 import { CircularProgress } from '@material-ui/core';
+import { motion } from 'framer-motion';
 
 export default function Chat({ history }) {
     const [user, setUser] = useState();
@@ -105,13 +106,15 @@ export default function Chat({ history }) {
     
     return (
         <div className="chat">
-            <div id="chatName">Conversation avec {consignee.data.pseudo}</div>
-            <ul id="messages">{loadMessages()}</ul>
-            <div id="isWriting"></div>
-            <form id="form" action="">
-                <input id="message" autoComplete="off" onChange={ () => socket.emit('isWriting', user.data.pseudo) }/>
-                <button onClick={ (event) => sendMessage(event, document.getElementById('message').value) }>Envoyer</button>
-            </form>
+            <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
+                <div id="chatName">Conversation avec {consignee.data.pseudo}</div>
+                <ul id="messages">{loadMessages()}</ul>
+                <div id="isWriting"></div>
+                <form id="form" action="">
+                    <input id="message" autoComplete="off" onChange={ () => socket.emit('isWriting', user.data.pseudo) }/>
+                    <button onClick={ (event) => sendMessage(event, document.getElementById('message').value) }>Envoyer</button>
+                </form>
+            </motion.div>
         </div> 
     );
 }

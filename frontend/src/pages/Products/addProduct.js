@@ -4,6 +4,7 @@ import api from '../../services/api';
 
 import { FormControl, TextField, Fab, CircularProgress, InputLabel, NativeSelect } from '@material-ui/core';
 import { Done, ArrowBack } from '@material-ui/icons';
+import { motion } from 'framer-motion';
 
 import './products.css';
 
@@ -72,51 +73,53 @@ export default function AddProduct( {history} ){
     
     return(
         <div id="modifyContainer">
-            <div id="modifyMessage">
-                {message}
-            </div>
-            <form id="addProductForm" onSubmit={handleSubmit}>
-                <FormControl className="productForm">
-                    <TextField id="name" label="Nom"
-                        onChange={event => setName(event.target.value)} />
-                    <TextField id="description" label="Description" multiline
-                        rows={4} onChange={event => setDescription(event.target.value)} />
-                    <div id="preview" style={{backgroundImage: `url(${preview})`}}></div>
-                    
-                    <TextField id="image" helperText="Insérez l'image représentant le mieux votre produit !" type="file"
-                        onChange={event => setImage(event.target.files[0])} inputProps={{ accept: '.jpg, .jpeg' }}/>
-                </FormControl>
-                <FormControl className="productForm">
-                    <InputLabel htmlFor="conditions">Etat</InputLabel>
-                    <NativeSelect
-                        required
-                        value={conditionId}
-                        onChange={event => setConditionId(event.target.value)}
-                        name="conditions"
-                    >
-                        {conditions.data.map(condition => <option value={condition._id} key={condition._id}>{condition.name}</option>)}
-                    </NativeSelect>
-                </FormControl>
-                <FormControl className="productForm">
-                <InputLabel htmlFor="transports">Transport</InputLabel>
-                    <NativeSelect
-                        required
-                        value={transportId}
-                        onChange={event => setTransportId(event.target.value)}
-                        name="transports"
-                    >
-                        {transports.data.map(transport => <option value={transport._id} key={transport._id}>{transport.name}</option>)}
-                    </NativeSelect>
-                </FormControl>
-                <div id="btn">
-                    <Fab aria-label="previous" id="backBtn" component={Link} to={'/products'}>
-                        <ArrowBack />
-                    </Fab>
-                    <Fab aria-label="add" id="addProductBtn" type="submit">
-                        <Done />
-                    </Fab>
+            <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
+                <div id="modifyMessage">
+                    {message}
                 </div>
-            </form>
+                <form id="addProductForm" onSubmit={handleSubmit}>
+                    <FormControl className="productForm">
+                        <TextField id="name" label="Nom"
+                            onChange={event => setName(event.target.value)} />
+                        <TextField id="description" label="Description" multiline
+                            rows={4} onChange={event => setDescription(event.target.value)} />
+                        <div id="preview" style={{backgroundImage: `url(${preview})`}}></div>
+                        
+                        <TextField id="image" helperText="Insérez l'image représentant le mieux votre produit !" type="file"
+                            onChange={event => setImage(event.target.files[0])} inputProps={{ accept: '.jpg, .jpeg' }}/>
+                    </FormControl>
+                    <FormControl className="productForm">
+                        <InputLabel htmlFor="conditions">Etat</InputLabel>
+                        <NativeSelect
+                            required
+                            value={conditionId}
+                            onChange={event => setConditionId(event.target.value)}
+                            name="conditions"
+                        >
+                            {conditions.data.map(condition => <option value={condition._id} key={condition._id}>{condition.name}</option>)}
+                        </NativeSelect>
+                    </FormControl>
+                    <FormControl className="productForm">
+                    <InputLabel htmlFor="transports">Transport</InputLabel>
+                        <NativeSelect
+                            required
+                            value={transportId}
+                            onChange={event => setTransportId(event.target.value)}
+                            name="transports"
+                        >
+                            {transports.data.map(transport => <option value={transport._id} key={transport._id}>{transport.name}</option>)}
+                        </NativeSelect>
+                    </FormControl>
+                    <div id="btn">
+                        <Fab aria-label="previous" id="backBtn" component={Link} to={'/products'}>
+                            <ArrowBack />
+                        </Fab>
+                        <Fab aria-label="add" id="addProductBtn" type="submit">
+                            <Done />
+                        </Fab>
+                    </div>
+                </form>
+            </motion.div>
         </div>
     );
 }

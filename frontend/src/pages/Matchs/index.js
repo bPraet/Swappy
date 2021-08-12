@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 
 import './matchs.css';
 
-import { AppBar, BottomNavigation, BottomNavigationAction, List, ListItem, ListItemText, Divider, CircularProgress, IconButton, ListItemSecondaryAction } from '@material-ui/core';
-import { SwapHoriz, Favorite, LocalMall, Person, Send, Search } from '@material-ui/icons';
+import { List, ListItem, ListItemText, Divider, CircularProgress, IconButton, ListItemSecondaryAction } from '@material-ui/core';
+import { Send} from '@material-ui/icons';
+import { motion } from 'framer-motion';
 
 import api from '../../services/api';
 
@@ -90,23 +90,16 @@ export default function Matchs({ history }) {
 
     return (
         <div id="matchs">
-            <AppBar id="bottomBar">
-                <BottomNavigation showLabels>
-                    <BottomNavigationAction className="bottomBtn" label="Finder" icon={<Search />} component={Link} to="/finder" />
-                    <BottomNavigationAction className="bottomBtn" disabled label="Matchs" icon={<Favorite />} component={Link} to="/matches" />
-                    <BottomNavigationAction className="bottomBtn" label="Produits" icon={<LocalMall />} component={Link} to="/products" />
-                    <BottomNavigationAction className="bottomBtn" label="Profil" icon={<Person />} component={Link} to="/profile" />
-                    <BottomNavigationAction className="bottomBtn" label="Swaps" icon={<SwapHoriz />} component={Link} to="/swaps" />
-                </BottomNavigation>
-            </AppBar>
-            <h1>Matchs:</h1>
-            <List component="nav" aria-label="matches">
-                {getMatchs()}
-            </List>
-            <h1>Vos Propositions:</h1>
-            <List component="nav" aria-label="propositions">
-                {getPropositions()}
-            </List>
+            <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
+                <h1>Matchs:</h1>
+                <List component="nav" aria-label="matches">
+                    {getMatchs()}
+                </List>
+                <h1>Vos Propositions:</h1>
+                <List component="nav" aria-label="propositions">
+                    {getPropositions()}
+                </List>
+            </motion.div>
         </div>
     );
 }

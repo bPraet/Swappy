@@ -4,6 +4,7 @@ import './proposal.css';
 
 import { Grid, CircularProgress, FormControlLabel, Checkbox, Fab, FormControl } from '@material-ui/core';
 import { ArrowBack, Done } from '@material-ui/icons';
+import { motion } from 'framer-motion';
 import api from '../../services/api';
 import adress from '../../services/config';
 
@@ -88,22 +89,23 @@ export default function Proposal({ history }) {
 
     return (
         <div id="products">
-            <form id="proposalForm" onSubmit={handleSubmit}>
-                <FormControl>
-                    <Grid container spacing={1}>
-                        { getProducts() }
-                    </Grid>
-                </FormControl>
+            <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
+                <form id="proposalForm" onSubmit={handleSubmit}>
+                    <FormControl>
+                        <Grid container spacing={1}>
+                            { getProducts() }
+                        </Grid>
+                    </FormControl>
 
-                <Fab aria-label="previous" id="backBtn" component={Link} to={'/finder'}>
-                    <ArrowBack />
-                </Fab>
-                <Fab aria-label="add" id="addProductBtn" type="submit">
-                    <Done />
-                </Fab>
+                    <Fab aria-label="previous" id="backBtn" component={Link} to={'/finder'}>
+                        <ArrowBack />
+                    </Fab>
+                    <Fab aria-label="add" id="addProductBtn" type="submit">
+                        <Done />
+                    </Fab>
 
-            </form>
-
+                </form>
+            </motion.div>
         </div>
     );
 }

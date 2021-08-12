@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import api from '../../services/api';
 
 import './profile.css';
 
-import { AppBar, BottomNavigation, BottomNavigationAction, FormControl, TextField, Fab, CircularProgress, Button,
+import { FormControl, TextField, Fab, CircularProgress, Button,
 Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
-import { SwapHoriz, Favorite, LocalMall, Person, Done, RotateLeft, ArrowBack, Search } from '@material-ui/icons';
+import { Done, RotateLeft, ArrowBack } from '@material-ui/icons';
+import { motion } from 'framer-motion';
 
 export default function Profile({ history }) {
 
@@ -66,67 +66,58 @@ export default function Profile({ history }) {
 
     return (
         <div id="profile">
-            <AppBar id="bottomBar">
-                <BottomNavigation showLabels>
-                    <BottomNavigationAction className="bottomBtn" label="Finder" icon={<Search />} component={Link} to="/finder" />
-                    <BottomNavigationAction className="bottomBtn" label="Matchs" icon={<Favorite />} component={Link} to="/matches" />
-                    <BottomNavigationAction className="bottomBtn" label="Produits" icon={<LocalMall />} component={Link} to="/products" />
-                    <BottomNavigationAction className="bottomBtn" disabled label="Profil" icon={<Person />} component={Link} to="/profile" />
-                    <BottomNavigationAction className="bottomBtn" label="Swaps" icon={<SwapHoriz />} component={Link} to="/swaps" />
-                </BottomNavigation>
-            </AppBar>
+            <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
+                <form id="profileForm" onSubmit={handleSubmit}>
+                    <FormControl className="registerForm">
+                        <TextField id="email" label="Email" defaultValue={user.data.email} type="email"
+                            onChange={event => setEmail(event.target.value)} />
+                        <TextField id="password" label="Mot de passe" type="password"
+                            onChange={event => setPassword(event.target.value)} />
+                        <TextField id="firstName" label="Prénom" defaultValue={user.data.firstName}
+                            onChange={event => setFirstnName(event.target.value)} />
+                        <TextField id="lastName" label="Nom" defaultValue={user.data.lastName}
+                            onChange={event => setLastName(event.target.value)} />
+                        <TextField id="pseudo" label="Pseudo" defaultValue={user.data.pseudo}
+                            onChange={event => setPseudo(event.target.value)} />
+                        <TextField id="adress" label="Adresse" defaultValue={user.data.adress}
+                            onChange={event => setAdress(event.target.value)} />
+                    </FormControl>
 
-
-            <form id="profileForm" onSubmit={handleSubmit}>
-                <FormControl className="registerForm">
-                    <TextField id="email" label="Email" defaultValue={user.data.email} type="email"
-                        onChange={event => setEmail(event.target.value)} />
-                    <TextField id="password" label="Mot de passe" type="password"
-                        onChange={event => setPassword(event.target.value)} />
-                    <TextField id="firstName" label="Prénom" defaultValue={user.data.firstName}
-                        onChange={event => setFirstnName(event.target.value)} />
-                    <TextField id="lastName" label="Nom" defaultValue={user.data.lastName}
-                        onChange={event => setLastName(event.target.value)} />
-                    <TextField id="pseudo" label="Pseudo" defaultValue={user.data.pseudo}
-                        onChange={event => setPseudo(event.target.value)} />
-                    <TextField id="adress" label="Adresse" defaultValue={user.data.adress}
-                        onChange={event => setAdress(event.target.value)} />
-                </FormControl>
-
-                <div id="btn">
-                    <Fab aria-label="previous" id="backBtn" onClick={history.goBack}>
-                        <ArrowBack />
-                    </Fab>
-                    <Fab aria-label="update" id="updateBtn" type="submit">
-                        <Done />
-                    </Fab>
-                </div>
-                
-                <Button id="resetBtn" variant="contained" color="default" startIcon={<RotateLeft />} onClick={handleClickOpen}>
-                    Reset historique
-                </Button>
-                <Dialog
-                    open={open}
-                    onClose={handleClose}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                >
-                    <DialogTitle id="alert-dialog-title">{"Reset l'historique ?"}</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            Vous retomberez sur des produits déjà parcourus lors de vos futures recherches.
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleClose} color="primary">
-                            Non
-                        </Button>
-                        <Button onClick={handleReset} color="primary" autoFocus>
-                            Oui
-                        </Button>
-                    </DialogActions>
-                </Dialog>
-            </form>
+                    <div id="btn">
+                        <Fab aria-label="previous" id="backBtn" onClick={history.goBack}>
+                            <ArrowBack />
+                        </Fab>
+                        <Fab aria-label="update" id="updateBtn" type="submit">
+                            <Done />
+                        </Fab>
+                    </div>
+                    
+                    <Button id="resetBtn" variant="contained" color="default" startIcon={<RotateLeft />} onClick={handleClickOpen}>
+                        Reset historique
+                    </Button>
+                    <Dialog
+                        open={open}
+                        onClose={handleClose}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                    >
+                        <DialogTitle id="alert-dialog-title">{"Reset l'historique ?"}</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                Vous retomberez sur des produits déjà parcourus lors de vos futures recherches.
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleClose} color="primary">
+                                Non
+                            </Button>
+                            <Button onClick={handleReset} color="primary" autoFocus>
+                                Oui
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+                </form>
+            </motion.div>
         </div>
     );
 }

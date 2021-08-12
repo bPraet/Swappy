@@ -4,8 +4,10 @@ import TinderCard from 'react-tinder-card';
 
 import './finder.css';
 
-import { AppBar, BottomNavigation, BottomNavigationAction, CircularProgress, IconButton} from '@material-ui/core';
-import { SwapHoriz, Favorite, LocalMall, Person, Info, Search } from '@material-ui/icons';
+import { CircularProgress, IconButton} from '@material-ui/core';
+import { Info } from '@material-ui/icons';
+import { motion } from 'framer-motion';
+
 import api from '../../services/api';
 import adress from '../../services/config';
 
@@ -42,29 +44,22 @@ export default function Finder({ history }) {
 
     return (
         <div id="finder">
-            <AppBar id="bottomBar">
-                <BottomNavigation showLabels>
-                    <BottomNavigationAction className="bottomBtn" disabled label="Finder" icon={<Search />} component={Link} to="/finder" />
-                    <BottomNavigationAction className="bottomBtn" label="Matchs" icon={<Favorite />} component={Link} to="/matches" />
-                    <BottomNavigationAction className="bottomBtn" label="Produits" icon={<LocalMall />} component={Link} to="/products" />
-                    <BottomNavigationAction className="bottomBtn" label="Profil" icon={<Person />} component={Link} to="/profile" />
-                    <BottomNavigationAction className="bottomBtn" label="Swaps" icon={<SwapHoriz />} component={Link} to="/swaps" />
-                </BottomNavigation>
-            </AppBar>
-            <div id="swipeContainer">
-                <div id="emptyCard">
-                    <h3>Vous avez regardé tous les produits !</h3>
+            <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
+                <div id="swipeContainer">
+                    <div id="emptyCard">
+                        <h3>Vous avez regardé tous les produits !</h3>
+                    </div>
+                    {products.data.map(product => (
+                        <TinderCard preventSwipe={['up', 'down']} key={product._id} onCardLeftScreen={(direction) => onCardLeftScreen(direction, `${product._id}`)}>
+                            <div id="card" style={{ backgroundImage: `url(${adress + '/files/' + product.image})` }}>
+                                <IconButton aria-label="productDetails" id="infoContainer" component={Link} to={'/productDetails/' + product._id} onTouchStart={() => history.push(`/productDetails/` + product._id)}>
+                                    <Info id="infoBtn"/>
+                                </IconButton>
+                            </div>
+                        </TinderCard>
+                    ))}
                 </div>
-                {products.data.map(product => (
-                    <TinderCard preventSwipe={['up', 'down']} key={product._id} onCardLeftScreen={(direction) => onCardLeftScreen(direction, `${product._id}`)}>
-                        <div id="card" style={{ backgroundImage: `url(${adress + '/files/' + product.image})` }}>
-                            <IconButton aria-label="productDetails" id="infoContainer" component={Link} to={'/productDetails/' + product._id} onTouchStart={() => history.push(`/productDetails/` + product._id)}>
-                                <Info id="infoBtn"/>
-                            </IconButton>
-                        </div>
-                    </TinderCard>
-                ))}
-            </div>
+            </motion.div>
         </div>
     );
 }

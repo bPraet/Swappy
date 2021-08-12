@@ -1,5 +1,5 @@
 import React from 'react';
-import {HashRouter, Switch, Route} from 'react-router-dom';
+import {HashRouter, Switch, Route, Link} from 'react-router-dom';
 import Finder from './pages/Finder';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -15,23 +15,37 @@ import Chat from './pages/Chat';
 import Swaps from './pages/Swaps';
 import ErrorPage from './pages/ErrorPage';
 
+import { AppBar, BottomNavigation, BottomNavigationAction } from '@material-ui/core';
+import { Favorite, LocalMall, SwapHoriz, Person, Search } from '@material-ui/icons';
+
 export default function Routes(){
+    
     return(
         <HashRouter>
+            {window.location.hash !== '#/' ? <AppBar id="bottomBar">
+                <BottomNavigation showLabels>
+                    <BottomNavigationAction className="bottomBtn" label="Finder" icon={<Search />} component={Link} to="/finder"/>
+                    <BottomNavigationAction className="bottomBtn" label="Matchs" icon={<Favorite />} component={Link} to="/matches"/>
+                    <BottomNavigationAction className="bottomBtn" label="Produits" icon={<LocalMall />} component={Link} to="/products"/>
+                    <BottomNavigationAction className="bottomBtn" label="Profil" icon={<Person />} component={Link} to="/profile"/>
+                    <BottomNavigationAction className="bottomBtn" label="Swaps" icon={<SwapHoriz />} component={Link} to="/swaps" />
+                </BottomNavigation>
+            </AppBar>: ''}
             <Switch>
+                {console.log(window.location)}
                 <Route path='/' exact component={Login} />
                 <Route path='/register' exact component={Register} />
-                <Route path='/finder' component={Finder} />
-                <Route path='/products' component={Products} />
-                <Route path='/addProduct' component={AddProduct} />
+                <Route path='/finder' exact component={Finder} />
+                <Route path='/products' exact component={Products} />
+                <Route path='/addProduct' exact component={AddProduct} />
                 <Route path='/modifyProduct/:productId' exact component={ModifyProduct} />
                 <Route path='/productDetails/:productId' exact component={ProductDetails} />
                 <Route path='/proposal/:productId' exact component={Proposal} />
-                <Route path='/matches' component={Matchs} />
+                <Route path='/matches' exact component={Matchs} />
                 <Route path='/match/:consignee/:productId/:isProposition' exact component={MatchDetails} />
                 <Route path='/chat/:userId' exact component={Chat} />
-                <Route path='/profile' component={Profile} />
-                <Route path='/swaps' component={Swaps} />
+                <Route path='/profile' exact component={Profile} />
+                <Route path='/swaps' exact component={Swaps} />
                 <Route component={ErrorPage} />
             </Switch>
         </HashRouter>

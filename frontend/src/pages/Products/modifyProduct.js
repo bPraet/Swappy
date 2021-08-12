@@ -6,6 +6,7 @@ import adress from '../../services/config';
 import { FormControl, TextField, Fab, CircularProgress, InputLabel, NativeSelect, Dialog, DialogTitle,
      DialogContent, DialogContentText, DialogActions, Button } from '@material-ui/core';
 import { Done, ArrowBack, Delete } from '@material-ui/icons';
+import { motion } from 'framer-motion';
 
 import './products.css';
 
@@ -111,80 +112,82 @@ export default function ModifyProduct( {history} ){
     
     return(
         <div id="modifyContainer">
-            <div id="modifyMessage">
-                {message}
-            </div>
-            <form id="addProductForm" onSubmit={handleSubmit}>
-                <div id="productImageContainer">
-                    <img id="productFormImg" src={adress + '/files/' + product.data.image} draggable="false" alt="productImg"></img>
+            <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
+                <div id="modifyMessage">
+                    {message}
                 </div>
-                <FormControl className="productForm">
-                    <TextField id="name" label="Nom" defaultValue={product.data.name}
-                        onChange={event => setName(event.target.value)} />
-                    <TextField id="description" label="Description" defaultValue={product.data.description} multiline
-                    rows={4} onChange={event => setDescription(event.target.value)} />
-                    <div id="preview" style={{backgroundImage: `url(${preview})`}}></div>
-                    
-                    <TextField id="image" helperText="Insérez l'image représentant le mieux votre produit !" type="file"
-                        onChange={event => setImage(event.target.files[0])} inputProps={{ accept: '.jpg, .jpeg' }}/>
-                </FormControl>
-                <FormControl className="productForm">
-                    <InputLabel htmlFor="conditions">Etat</InputLabel>
-                    <NativeSelect
-                        required
-                        value={conditionId}
-                        onChange={event => setConditionId(event.target.value)}
-                        name="conditions"
-                        defaultValue={product.data.condition._id}
-                    >
-                        {conditions.data.map(condition => <option value={condition._id} key={condition._id}>{condition.name}</option>)}
-                    </NativeSelect>
-                </FormControl>
-                <FormControl className="productForm">
-                <InputLabel htmlFor="transports">Transport</InputLabel>
-                    <NativeSelect
-                        required
-                        value={transportId}
-                        onChange={event => setTransportId(event.target.value)}
-                        name="transports"
-                        defaultValue={product.data.transport._id}
-                    >
-                        {transports.data.map(transport => <option value={transport._id} key={transport._id}>{transport.name}</option>)}
-                    </NativeSelect>
-                </FormControl>
-                <div id="btn">
-                    <Fab aria-label="previous" id="backBtn" component={Link} to={'/products'}>
-                        <ArrowBack />
-                    </Fab>
-                    <Fab aria-label="delete" id="delBtn" onClick={ handleClickOpen }>
-                        <Delete />
-                    </Fab>
-                    <Fab aria-label="add" id="addProductBtn" type="submit">
-                        <Done />
-                    </Fab>
-                </div>
-            </form>
-            <Dialog
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">{"Supprimer le produit ?"}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        Êtes-vous sûr de vouloir supprimer ce produit ? Les potentiels 'match' en cours seront annulés par la même occasion.
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose} color="primary">
-                        Non
-                    </Button>
-                    <Button onClick={deleteProduct} color="primary" autoFocus>
-                        Oui
-                    </Button>
-                </DialogActions>
-            </Dialog>
+                <form id="addProductForm" onSubmit={handleSubmit}>
+                    <div id="productImageContainer">
+                        <img id="productFormImg" src={adress + '/files/' + product.data.image} draggable="false" alt="productImg"></img>
+                    </div>
+                    <FormControl className="productForm">
+                        <TextField id="name" label="Nom" defaultValue={product.data.name}
+                            onChange={event => setName(event.target.value)} />
+                        <TextField id="description" label="Description" defaultValue={product.data.description} multiline
+                        rows={4} onChange={event => setDescription(event.target.value)} />
+                        <div id="preview" style={{backgroundImage: `url(${preview})`}}></div>
+                        
+                        <TextField id="image" helperText="Insérez l'image représentant le mieux votre produit !" type="file"
+                            onChange={event => setImage(event.target.files[0])} inputProps={{ accept: '.jpg, .jpeg' }}/>
+                    </FormControl>
+                    <FormControl className="productForm">
+                        <InputLabel htmlFor="conditions">Etat</InputLabel>
+                        <NativeSelect
+                            required
+                            value={conditionId}
+                            onChange={event => setConditionId(event.target.value)}
+                            name="conditions"
+                            defaultValue={product.data.condition._id}
+                        >
+                            {conditions.data.map(condition => <option value={condition._id} key={condition._id}>{condition.name}</option>)}
+                        </NativeSelect>
+                    </FormControl>
+                    <FormControl className="productForm">
+                    <InputLabel htmlFor="transports">Transport</InputLabel>
+                        <NativeSelect
+                            required
+                            value={transportId}
+                            onChange={event => setTransportId(event.target.value)}
+                            name="transports"
+                            defaultValue={product.data.transport._id}
+                        >
+                            {transports.data.map(transport => <option value={transport._id} key={transport._id}>{transport.name}</option>)}
+                        </NativeSelect>
+                    </FormControl>
+                    <div id="btn">
+                        <Fab aria-label="previous" id="backBtn" component={Link} to={'/products'}>
+                            <ArrowBack />
+                        </Fab>
+                        <Fab aria-label="delete" id="delBtn" onClick={ handleClickOpen }>
+                            <Delete />
+                        </Fab>
+                        <Fab aria-label="add" id="addProductBtn" type="submit">
+                            <Done />
+                        </Fab>
+                    </div>
+                </form>
+                <Dialog
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">{"Supprimer le produit ?"}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Êtes-vous sûr de vouloir supprimer ce produit ? Les potentiels 'match' en cours seront annulés par la même occasion.
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleClose} color="primary">
+                            Non
+                        </Button>
+                        <Button onClick={deleteProduct} color="primary" autoFocus>
+                            Oui
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            </motion.div>
         </div>
     );
 }

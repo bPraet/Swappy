@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 
 import './swaps.css';
 
-import { AppBar, BottomNavigation, BottomNavigationAction, List, CircularProgress, ListItem, ListItemText,
+import { List, CircularProgress, ListItem, ListItemText,
 ListItemSecondaryAction, IconButton, Divider } from '@material-ui/core';
-import { SwapHoriz, Favorite, LocalMall, Person, Send, Search } from '@material-ui/icons';
+import { Send } from '@material-ui/icons';
+import { motion } from 'framer-motion';
 
 import api from '../../services/api';
 
@@ -57,19 +57,12 @@ export default function Matchs({ history }) {
 
     return (
         <div id="swaps">
-            <AppBar id="bottomBar">
-                <BottomNavigation showLabels>
-                    <BottomNavigationAction className="bottomBtn" label="Finder" icon={<Search />} component={Link} to="/finder" />
-                    <BottomNavigationAction className="bottomBtn" label="Matchs" icon={<Favorite />} component={Link} to="/matches" />
-                    <BottomNavigationAction className="bottomBtn" label="Produits" icon={<LocalMall />} component={Link} to="/products" />
-                    <BottomNavigationAction className="bottomBtn" label="Profil" icon={<Person />} component={Link} to="/profile" />
-                    <BottomNavigationAction className="bottomBtn" disabled label="Swaps" icon={<SwapHoriz />} component={Link} to="/swaps" />
-                </BottomNavigation>
-            </AppBar>
-            <h1>Swaps:</h1>
-            <List component="nav" aria-label="swaps" id="swapsContainer">
-                {getSwaps()}
-            </List>
+            <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
+                <h1>Swaps:</h1>
+                <List component="nav" aria-label="swaps" id="swapsContainer">
+                    {getSwaps()}
+                </List>
+            </motion.div>
         </div>
     );
 }
