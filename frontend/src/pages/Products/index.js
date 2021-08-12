@@ -23,6 +23,8 @@ export default function Products({ history }){
         }).catch((err) => {
             history.push('/');
         });
+
+        document.getElementById('bottomBar').style.display = 'block';
     }, [history]);
     
     if(productsUser.data === undefined)

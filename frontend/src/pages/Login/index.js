@@ -19,6 +19,8 @@ export default function Login({ history }){
     useEffect(() => {
         if(localStorage.getItem('userToken') !== null)
             history.push('/products');
+
+        document.getElementById('bottomBar').style.display = 'none';
     }, [history]);
 
     const handleSubmit = async event => {
@@ -57,7 +59,7 @@ export default function Login({ history }){
                         </Fab>
                     </div>
                 </form>
-            </motion.div>
+            </motion.div> 
         </div>
     );
 }

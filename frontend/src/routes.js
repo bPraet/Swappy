@@ -19,10 +19,9 @@ import { AppBar, BottomNavigation, BottomNavigationAction } from '@material-ui/c
 import { Favorite, LocalMall, SwapHoriz, Person, Search } from '@material-ui/icons';
 
 export default function Routes(){
-    
     return(
         <HashRouter>
-            {window.location.hash !== '#/' ? <AppBar id="bottomBar">
+            <AppBar id="bottomBar">
                 <BottomNavigation showLabels>
                     <BottomNavigationAction className="bottomBtn" label="Finder" icon={<Search />} component={Link} to="/finder"/>
                     <BottomNavigationAction className="bottomBtn" label="Matchs" icon={<Favorite />} component={Link} to="/matches"/>
@@ -30,9 +29,8 @@ export default function Routes(){
                     <BottomNavigationAction className="bottomBtn" label="Profil" icon={<Person />} component={Link} to="/profile"/>
                     <BottomNavigationAction className="bottomBtn" label="Swaps" icon={<SwapHoriz />} component={Link} to="/swaps" />
                 </BottomNavigation>
-            </AppBar>: ''}
+            </AppBar>
             <Switch>
-                {console.log(window.location)}
                 <Route path='/' exact component={Login} />
                 <Route path='/register' exact component={Register} />
                 <Route path='/finder' exact component={Finder} />

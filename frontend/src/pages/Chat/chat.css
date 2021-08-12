@@ -12,7 +12,7 @@ html {
     background: rgba(0, 0, 0, 0.15); 
     padding: 0.25rem; 
     position: fixed; 
-    bottom: 0; 
+    bottom: 56px; 
     left: 0; 
     right: 0; 
     display: flex; 
@@ -52,7 +52,7 @@ html {
 }
 
 #messages > li:last-child {
-    margin-bottom: 90px;
+    margin-bottom: 130px;
 }
 
 .from {
@@ -83,6 +83,6 @@ html {
 
 #isWriting {
     position: fixed;
-    bottom: 60px;
+    bottom: 100px;
     right: 10px;
 }
