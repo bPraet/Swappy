@@ -8,16 +8,17 @@ module.exports = {
                 res.sendStatus(403);
             }
             else {
-                const { user, message } = req.body;
-                
-                if(!user || !message){
+                const { user, message, image } = req.body;
+
+                if(!user || !message && !image){
                     return res.json('Field missing');
                 }
 
                 const response = await Message.create({
                     user1: authData.user.userId,
                     user2: user,
-                    message: message
+                    message: message,
+                    image: image
                 });
 
                 return res.json(response);

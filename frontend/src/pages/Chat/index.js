@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import ReactDOM from 'react-dom';
 import { io } from 'socket.io-client';
 import api from '../../services/api';
 
 import './chat.css';
+import 'react-medium-image-zoom/dist/styles.css';
 
 import { CircularProgress } from '@material-ui/core';
+import { Add } from '@material-ui/icons';
 import { motion } from 'framer-motion';
+import Zoom from 'react-medium-image-zoom';
 
 export default function Chat({ history }) {
     const [user, setUser] = useState();
@@ -52,10 +56,14 @@ export default function Chat({ history }) {
 
     socket.on('onMessage', (message) => {
         let li = document.createElement('li');
-
-        li.textContent = message;
-        li.className = 'from';
+    
+        li.classList = 'from';
+        li.textContent = message.message;
         document.getElementById('messages').appendChild(li);
+
+        if(message.image !== '')
+            ReactDOM.render(<span><div className="imageChatContainer"><Zoom><img className="imageChat" src={message.image} alt='imageChat'/></Zoom></div>{message.message}</span>, li);
+
         li.scrollIntoView();
     });
 
@@ -71,17 +79,46 @@ export default function Chat({ history }) {
         id = setTimeout(() => isWriting.innerText = '', 3000);
     });
 
-    const sendMessage = async (event, message) => {
+    const sendMessage = async (event, message, image) => {
         event.preventDefault();
-        let li = document.createElement('li');
-        
-        li.textContent = message;
-        li.className = 'to';
-        document.getElementById('messages').appendChild(li);
-        socket.emit('emitMessage', message);
-        li.scrollIntoView();
 
-        await api.post(`/message/add`, {user: consignee.data._id, message: message}, { headers: {'userToken': userToken} });
+        if(!message && !image)
+            return;
+
+        document.getElementById('imageChat').value = '';
+        document.getElementById('message').value = '';
+
+        let li = document.createElement('li');
+
+        li.className = 'to';
+        li.textContent = message;
+        document.getElementById('messages').appendChild(li);
+
+        if(image){
+            if(image.type !== 'image/jpeg' && image.type !== 'image/jpg' && image.type !== 'image/png'){
+                li.textContent = "ERREUR: Veuillez envoyer une image de type .jpg, .jpeg ou .png !";
+                li.scrollIntoView();
+                return;
+            } else if ((image.size / (1024*1024)).toFixed(2) > 2){
+                li.textContent = "ERREUR: Veuillez envoyer une image de moins de 2Mo !";
+                li.scrollIntoView();
+                return;
+            }
+
+            console.log()
+            const reader = new FileReader();
+            reader.onload = async (event) => {
+                socket.emit('emitMessage', {message: message, image: event.target.result});
+                ReactDOM.render(<span><div className="imageChatContainer"><Zoom><img className="imageChat" src={event.target.result} alt='imageChat'/></Zoom></div>{message}</span>, li);
+                await api.post(`/message/add`, {user: consignee.data._id, message: message, image: event.target.result}, { headers: {'userToken': userToken} });
+            };
+        
+            reader.readAsDataURL(image);
+        } else{
+            socket.emit('emitMessage', {message: message, image: ''});
+            await api.post(`/message/add`, {user: consignee.data._id, message: message, image: ''}, { headers: {'userToken': userToken} });
+        }
+        li.scrollIntoView();
     }
 
     const loadMessages = () => {
@@ -89,13 +126,37 @@ export default function Chat({ history }) {
 
         for(const [i, message] of messages.data.entries()){
             if(message.user1 === user.data._id){
-                alreadySentMessages.push(
-                    <li className="to" key={i}>{message.message}</li>
-                );
+                if(message.image !== '')
+                    alreadySentMessages.push(
+                        <li className="to" key={i}>
+                            <div className="imageChatContainer">
+                                <Zoom>
+                                    <img src={message.image} className="imageChat" alt={'imageMessage'+i}/>
+                                </Zoom>
+                            </div>
+                            {message.message}
+                        </li>
+                    );
+                else
+                    alreadySentMessages.push(
+                        <li className="to" key={i}>{message.message}</li>
+                    );
             } else {
-                alreadySentMessages.push(
-                    <li className="from" key={i}>{message.message}</li>
-                );
+                if(message.image !== '')
+                    alreadySentMessages.push(
+                        <li className="from" key={i}>
+                            <div className="imageChatContainer">
+                                <Zoom>
+                                    <img src={message.image} className="imageChat" alt={'imageMessage'+i}/>
+                                </Zoom>
+                            </div>
+                            {message.message}
+                        </li>
+                    );
+                else
+                    alreadySentMessages.push(
+                        <li className="from" key={i}>{message.message}</li>
+                    );
             }
         }
         
@@ -111,8 +172,10 @@ export default function Chat({ history }) {
                 <ul id="messages">{loadMessages()}</ul>
                 <div id="isWriting"></div>
                 <form id="form" action="">
+                    <label htmlFor="imageChat"><Add /></label>
+                    <input id="imageChat" type="file" accept=".jpg, .jpeg, .png"/>
                     <input id="message" autoComplete="off" onChange={ () => socket.emit('isWriting', user.data.pseudo) }/>
-                    <button onClick={ (event) => sendMessage(event, document.getElementById('message').value) }>Envoyer</button>
+                    <button onClick={ (event) => sendMessage(event, document.getElementById('message').value, document.getElementById('imageChat').files[0]) }>Envoyer</button>
                 </form>
             </motion.div>
         </div> 

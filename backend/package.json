@@ -14,7 +14,6 @@
     "nodemon": "^2.0.6",
     "socket.io": "^4.1.2"
   },
-  "devDependencies": {},
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js"

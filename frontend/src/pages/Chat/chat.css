@@ -9,7 +9,7 @@ html {
 }
 
 #form { 
-    background: rgba(0, 0, 0, 0.15); 
+    background: rgb(119, 119, 119); 
     padding: 0.25rem; 
     position: fixed; 
     bottom: 56px; 
@@ -55,14 +55,15 @@ html {
     margin-bottom: 130px;
 }
 
-.from {
+.to {
     background: #fc5d5d;
     margin: 10px 0;
     float: left;
     width: 75%;
+    text-align: end;
 }
 
-.to {
+.from {
     background: #e3e3e3;
     margin: 10px 0;
     float: right;
@@ -72,17 +73,33 @@ html {
 #chatName {
     margin: 0;
     padding: 0;
-    width: 100%;
+    width: 100vw;
     height: 35px;
     text-align: center;
     background-color:rgb(45, 87, 177);
     box-shadow: 0px 5px 30px 3px #000000;
     top: 0;
     position: fixed;
+    z-index: 1000;
 }
 
 #isWriting {
     position: fixed;
     bottom: 100px;
     right: 10px;
+}
+
+#imageChat {
+    display: none;
+}
+
+.imageChat {
+    max-height: 200px;
+    max-width: 300px;
+    object-fit: contain;
+    margin: auto;
+}
+
+.imageChatContainer {
+    width: 100%;
 }
