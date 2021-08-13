@@ -7,6 +7,7 @@ import { FormControl, TextField, Fab, CircularProgress, InputLabel, NativeSelect
      DialogContent, DialogContentText, DialogActions, Button } from '@material-ui/core';
 import { Done, ArrowBack, Delete } from '@material-ui/icons';
 import { motion } from 'framer-motion';
+import Zoom from 'react-medium-image-zoom';
 
 import './products.css';
 
@@ -118,7 +119,7 @@ export default function ModifyProduct( {history} ){
                 </div>
                 <form id="addProductForm" onSubmit={handleSubmit}>
                     <div id="productImageContainer">
-                        <img id="productFormImg" src={adress + '/files/' + product.data.image} draggable="false" alt="productImg"></img>
+                        <Zoom><img id="productFormImg" src={adress + '/files/' + product.data.image} draggable="false" alt="productImg"></img></Zoom>
                     </div>
                     <FormControl className="productForm">
                         <TextField id="name" label="Nom" defaultValue={product.data.name}

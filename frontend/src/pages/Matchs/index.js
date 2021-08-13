@@ -48,7 +48,7 @@ export default function Matchs({ history }) {
                 matchsGrid.push(
                     <span key={i}>
                         <ListItem button onClick={ () => history.push(`/match/${match.consignee._id}/${match.productOwner._id}/0`)}>
-                            <ListItemText primary={match.productOwner.name} secondary={match.consignee.email} />
+                            <ListItemText primary={match.productOwner.name} secondary={match.consignee.pseudo} />
                             <ListItemSecondaryAction>
                                 <IconButton edge="end" aria-label="send" onClick={ () => { history.push(`/chat/${match.consignee._id}`) }}>
                                     <Send />
@@ -72,7 +72,7 @@ export default function Matchs({ history }) {
                 propositionsGrid.push(
                     <span key={i}>
                         <ListItem button onClick={ () => history.push(`/match/${proposition.owner._id}/${proposition.productOwner._id}/1`)}>
-                            <ListItemText primary={proposition.productOwner.name} secondary={proposition.owner.email} />
+                            <ListItemText primary={proposition.productOwner.name} secondary={proposition.owner.pseudo} />
                             <ListItemSecondaryAction>
                                 <IconButton edge="end" aria-label="send" onClick={ () => { history.push(`/chat/${proposition.owner._id}`) }}>
                                     <Send />
