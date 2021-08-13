@@ -2,11 +2,13 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const userService = require('../services/userService');
+const { userTypes } = require('../services/userTypes');
 
 module.exports = {
     async register(req, res){
         try {
-            const { firstName, lastName, password, email, pseudo, adress, roleid } = req.body;
+            const { firstName, lastName, password, email, pseudo, adress } = req.body;
+            const roleid = userTypes.USER;
             const control = await userService.registerControl(firstName, lastName, password, email, pseudo, adress, roleid);
 
             if(control === true){

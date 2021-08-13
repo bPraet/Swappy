@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../../services/api';
-import { userTypes } from '../../services/userTypes';
 
 import './register.css';
 
@@ -18,12 +17,11 @@ export default function Register({ history }){
     const [ pseudo, setPseudo ] = useState("");
     const [ adress, setAdress ] = useState("");
     const [ message, setMessage ] = useState("");
-    const roleid = userTypes.USER;
 
     const handleSubmit = async event => {
         event.preventDefault();
 
-        const response = await api.post('/user/register', { email, password, firstName, lastName, pseudo, adress, roleid });
+        const response = await api.post('/user/register', { email, password, firstName, lastName, pseudo, adress });
         const userToken = response.data.userToken || false;
 
         if(userToken){

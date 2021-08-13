@@ -124,7 +124,7 @@ export default function Profile({ history }) {
                             </Button>
                         </DialogActions>
                     </Dialog>
-
+                    <br></br>
                     <Button id="logoutBtn" variant="contained" color="default" startIcon={<ExitToApp />} onClick={logout}>
                         Déconnexion
                     </Button>
