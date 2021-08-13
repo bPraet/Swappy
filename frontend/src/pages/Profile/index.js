@@ -5,7 +5,7 @@ import './profile.css';
 
 import { FormControl, TextField, Fab, CircularProgress, Button,
 Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
-import { Done, RotateLeft, ArrowBack } from '@material-ui/icons';
+import { Done, RotateLeft, ArrowBack, ExitToApp } from '@material-ui/icons';
 import { motion } from 'framer-motion';
 
 export default function Profile({ history }) {
@@ -64,6 +64,11 @@ export default function Profile({ history }) {
         setOpen(false);
     }
 
+    const logout = () => {
+        localStorage.removeItem('userToken');
+        history.push('/');
+    }
+
     return (
         <div id="profile">
             <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
@@ -116,6 +121,10 @@ export default function Profile({ history }) {
                             </Button>
                         </DialogActions>
                     </Dialog>
+
+                    <Button id="logoutBtn" variant="contained" color="default" startIcon={<ExitToApp />} onClick={logout}>
+                        Déconnexion
+                    </Button>
                 </form>
             </motion.div>
         </div>

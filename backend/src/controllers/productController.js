@@ -123,6 +123,12 @@ module.exports = {
                 let image = '';
                 const product = await Product.findById(productId);
 
+                if(!product)
+                    return res.status(400).json("Product does not exist");
+
+                if(authData.user.userId != product.user)
+                    return res.status(400).json("You don't own this product !");
+
                 if(!productService.updateControl(name, description, conditionId, transportId)){
                     return res.status(400).json("Missing field");
                 }
