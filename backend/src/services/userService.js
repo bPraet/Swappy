@@ -6,7 +6,7 @@ module.exports = {
     async registerControl(firstName, lastName, password, email, pseudo, adress, roleid){
         const existentEmail = await User.findOne({email});
         const existentPseudo = await User.findOne({pseudo});
-
+        console.log(email, firstName, lastName, password, pseudo, adress, roleid);
         if(!email || !password || !firstName || !lastName || !password || !pseudo || !adress || !roleid){
             return "Champ requis manquant !";
         }
@@ -67,5 +67,20 @@ module.exports = {
         };
 
         return userResponse;
+    },
+
+    async updateControl(password, email, pseudo, user){
+        const existentEmail = await User.findOne({email});
+        const existentPseudo = await User.findOne({pseudo});
+
+        if(password && !password.match(regex)){
+            return "Mot de passe invalide (Minimum 8 caractères dont 1 majuscule, 1 nombre et 1 caractère spécial(@$!%*?&+))";
+        }
+
+        if(existentEmail && user.email !== existentEmail.email || existentPseudo && user.pseudo !== existentPseudo.pseudo){
+            return "L’utilisateur existe déjà !";
+        }
+
+        return true;
     },
 }

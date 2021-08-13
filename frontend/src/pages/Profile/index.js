@@ -17,6 +17,7 @@ export default function Profile({ history }) {
     let [ pseudo, setPseudo ] = useState();
     let [ adress, setAdress ] = useState();
     let [ user, setUser ] = useState();
+    const [ message, setMessage ] = useState();
     const [ open, setOpen ] = useState(false);
     const userToken = localStorage.getItem('userToken');
     
@@ -45,7 +46,8 @@ export default function Profile({ history }) {
             adress = user.data.adress;
 
         try {
-            await api.put('/user/update', { email, password, firstName, lastName, pseudo, adress }, { headers: {'userToken': userToken} });
+            const response = await api.put('/user/update', { email, password, firstName, lastName, pseudo, adress }, { headers: {'userToken': userToken} });
+            setMessage(response.data.message);
         } catch (error) {
             console.log(error);
         }
@@ -72,6 +74,7 @@ export default function Profile({ history }) {
     return (
         <div id="profile">
             <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
+                <div id="profileMessage">{message}</div>
                 <form id="profileForm" onSubmit={handleSubmit}>
                     <FormControl className="registerForm">
                         <TextField id="email" label="Email" defaultValue={user.data.email} type="email"
