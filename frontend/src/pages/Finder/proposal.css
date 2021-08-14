@@ -21,8 +21,11 @@
 
 .MuiGrid-item{
     min-width: 20vw;
-    border: 1px solid gray;
-    padding: 0 !important;
+    border: 1px solid black;
+}
+
+.MuiGrid-item:hover{
+    box-shadow: 10px 5px 5px black;
 }
 
 .MuiCircularProgress-root{

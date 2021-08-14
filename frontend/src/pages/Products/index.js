@@ -4,8 +4,7 @@ import { Link } from 'react-router-dom';
 import './products.css';
 import addProduct from '../../assets/addProduct.png';
 
-import { Grid, CircularProgress, Button } from '@material-ui/core';
-import { Add } from '@material-ui/icons';
+import { Grid, CircularProgress } from '@material-ui/core';
 import { motion } from 'framer-motion';
 import api from '../../services/api';
 import adress from '../../services/config';
@@ -33,13 +32,29 @@ export default function Products({ history }){
     const getProducts = () => {
         const products = [];
 
-        for (let i = 0; i < 16; i++) {
-            products.push(
-            <Grid item xs={3} key={i}>
-                {productsUser.data[i] ? 
-                <Link to={"/modifyProduct/" + productsUser.data[i]._id}><img src={adress + '/files/' + productsUser.data[i].image} className="productImg" alt={`product${i+1}`} draggable="false"></img></Link> : 
-                <img src={addProduct} className="productImg" alt={`product${i+1}`} draggable="false"></img>}
-            </Grid>);
+        for (let i = 0; i < 12; i++){
+            if(productsUser.data[i])
+                products.push(
+                <Grid item xs={3} key={i}>
+                    <Link to={"/modifyProduct/" + productsUser.data[i]._id}><img src={adress + '/files/' + productsUser.data[i].image} className="productImg" alt={`product${i+1}`} draggable="false"></img></Link>
+                </Grid>);
+        }
+
+        const emptyProducts = 12 - products.length;
+        const currentProducts = products.length;
+        for(let i = 0; i < emptyProducts; i++){
+            if(i === 0)
+                products.push(
+                    <Grid item xs={3} key={currentProducts+i}>
+                        <Link to="/addProduct"><img src={addProduct} className="productImg" alt={`product${currentProducts+i+1}`} draggable="false"></img></Link>
+                    </Grid>
+                );
+            else
+                products.push(
+                    <Grid item xs={3} key={currentProducts+i}>
+                        <div className="productImg" alt={`product${currentProducts+i+1}`}></div>
+                    </Grid>
+                );
         }
 
         return products;
@@ -51,12 +66,6 @@ export default function Products({ history }){
                 <Grid container spacing={1}>
                     { getProducts() }
                 </Grid>
-                { productsUser.data.length < 16 ? 
-                    <Button id="addBtn" variant="contained" color="default" startIcon={<Add />} component={Link} to="/addProduct">
-                        Ajouter un produit
-                    </Button> : 
-                    'Vous avez atteint le maximum de 16 produits !'
-                }
             </motion.div>
         </div> 
     );

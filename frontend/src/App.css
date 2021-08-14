@@ -1,8 +1,14 @@
 html{
-    background-color: rgb(204, 204, 204);
+    background-color: rgb(43, 45, 66);
     overflow: hidden;
 }
 
 .MuiBottomNavigationAction-root{
     min-width: 60px !important;
+    color: rgba(248, 243, 43, 1) !important;
+}
+
+.MuiBottomNavigation-root{
+    height: 40px !important;
+    background-color: black !important;
 }

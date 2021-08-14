@@ -127,7 +127,6 @@ export default function ModifyProduct( {history} ){
                         <TextField id="description" label="Description" defaultValue={product.data.description} multiline
                         rows={4} onChange={event => setDescription(event.target.value)} />
                         <div id="preview" style={{backgroundImage: `url(${preview})`}}></div>
-                        
                         <TextField id="image" helperText="Insérez l'image représentant le mieux votre produit !" type="file"
                             onChange={event => setImage(event.target.files[0])} inputProps={{ accept: '.jpg, .jpeg' }}/>
                     </FormControl>

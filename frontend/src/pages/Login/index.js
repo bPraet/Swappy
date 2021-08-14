@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import api from '../../services/api'
 
 import './login.css';
-import logo from '../../assets/logo.png';
+import logo from '../../assets/animatedLogo.svg';
 
 import { FormControl, TextField, Fab } from '@material-ui/core';
 import { Done, Add } from '@material-ui/icons';
