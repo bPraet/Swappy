@@ -51,7 +51,7 @@ export default function Matchs({ history }) {
                             <ListItemText primary={match.productOwner.name} secondary={match.consignee.pseudo} />
                             <ListItemSecondaryAction>
                                 <IconButton edge="end" aria-label="send" onClick={ () => { history.push(`/chat/${match.consignee._id}`) }}>
-                                    <Send />
+                                    <Send htmlColor="white"/>
                                 </IconButton>
                             </ListItemSecondaryAction>
                         </ListItem>
@@ -75,7 +75,7 @@ export default function Matchs({ history }) {
                             <ListItemText primary={proposition.productOwner.name} secondary={proposition.owner.pseudo} />
                             <ListItemSecondaryAction>
                                 <IconButton edge="end" aria-label="send" onClick={ () => { history.push(`/chat/${proposition.owner._id}`) }}>
-                                    <Send />
+                                    <Send htmlColor="white" />
                                 </IconButton>
                             </ListItemSecondaryAction>
                         </ListItem>
@@ -91,11 +91,11 @@ export default function Matchs({ history }) {
     return (
         <div id="matchs">
             <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
-                <h1>Matchs:</h1>
+                <h1>Matchs</h1>
                 <List component="nav" aria-label="matches">
                     {getMatchs()}
                 </List>
-                <h1>Vos Propositions:</h1>
+                <h1>Propositions</h1>
                 <List component="nav" aria-label="propositions">
                     {getPropositions()}
                 </List>

@@ -3,12 +3,73 @@ html{
     overflow: hidden;
 }
 
+h1 {
+    text-align: center;
+    color: white;
+}
+
 .MuiBottomNavigationAction-root{
     min-width: 60px !important;
-    color: rgba(248, 243, 43, 1) !important;
+    color: rgb(141, 153, 174) !important;
 }
 
 .MuiBottomNavigation-root{
     height: 40px !important;
     background-color: black !important;
+}
+
+.MuiInputBase-root {
+    color: #fff !important;
+}
+
+.MuiFormLabel-root {
+    color: #fff !important;
+}
+
+.MuiTextField-root {
+    margin: 5px 0 !important;
+}
+
+.MuiInput-underline:after {
+    border-bottom: 2px solid rgb(153,8,37) !important;
+}
+
+/* Change color autofill input */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active
+{
+ -webkit-box-shadow: 0 0 0 30px rgb(43, 45, 66) inset !important;
+ -webkit-text-fill-color: #fff !important;
+}
+
+.MuiFab-root {
+    border-radius: 10px !important;
+}
+
+.MuiAlert-root {
+    border-radius: 10px !important;
+}
+
+.MuiButton-root {
+    border-radius: 10px !important;
+    width: 200px !important;
+    margin: 10px 40px !important;
+}
+
+.MuiNativeSelect-select:not([multiple]) option, .MuiNativeSelect-select:not([multiple]) optgroup {
+    background-color: black !important;
+}
+
+.MuiTypography-colorTextSecondary {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.MuiListItem-root {
+    color: white !important;
+}
+
+.MuiDivider-root {
+    background-color: rgba(255, 0, 0, 0.5) !important;
 }

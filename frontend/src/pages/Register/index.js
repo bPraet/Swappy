@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../../services/api';
 
 import './register.css';
 
-import { FormControl, TextField, Fab } from '@material-ui/core';
+import { FormControl, TextField, Fab, Snackbar } from '@material-ui/core';
+import MuiAlert from '@material-ui/lab/Alert';
 import { Done, ArrowBack } from '@material-ui/icons';
 import { motion } from 'framer-motion';
 
@@ -17,6 +18,11 @@ export default function Register({ history }){
     const [ pseudo, setPseudo ] = useState("");
     const [ adress, setAdress ] = useState("");
     const [ message, setMessage ] = useState("");
+    const [open, setOpen] = useState(false);
+
+    useEffect(() => {
+        document.getElementById('bottomBar').style.display = 'none';
+    }, []);
 
     const handleSubmit = async event => {
         event.preventDefault();
@@ -30,13 +36,30 @@ export default function Register({ history }){
         }
         else{
             setMessage(response.data.message);
+            setOpen(true);
         }
     };
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        setOpen(false);
+      };
+
+    const Alert = (props) => {
+        return <MuiAlert elevation={6} variant="filled" {...props} />;
+    }
 
     return(
         <div id="registerContainer">
             <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
-                <div id="registerMessage">{message}</div>
+                <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                    <Alert onClose={handleClose} severity="error">
+                        {message}
+                    </Alert>
+                </Snackbar>
                 <form id="registerForm" onSubmit={handleSubmit}>
                     <FormControl className="registerForm"> 
                         <TextField id="email" label="Email" type="email"

@@ -1,4 +1,5 @@
-const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&+])[A-Za-z\d@$!%*?&+]{8,}$/gm;
+const regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&+])[A-Za-z\d@$!%*?&+]{8,}$/gm;
+const regexEmail = /^\S+@\S+\.\S+$/;
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 
@@ -6,12 +7,17 @@ module.exports = {
     async registerControl(firstName, lastName, password, email, pseudo, adress, roleid){
         const existentEmail = await User.findOne({email});
         const existentPseudo = await User.findOne({pseudo});
-        console.log(email, firstName, lastName, password, pseudo, adress, roleid);
+        
+
         if(!email || !password || !firstName || !lastName || !password || !pseudo || !adress || !roleid){
             return "Champ requis manquant !";
         }
 
-        if(!password.match(regex)){
+        if(!email.match(regexEmail)){
+            return "Veuillez entrer un email valide !";
+        }
+
+        if(!password.match(regexPassword)){
             return "Mot de passe invalide (Minimum 8 caractères dont 1 majuscule, 1 nombre et 1 caractère spécial(@$!%*?&+))";
         }
 
@@ -73,7 +79,7 @@ module.exports = {
         const existentEmail = await User.findOne({email});
         const existentPseudo = await User.findOne({pseudo});
 
-        if(password && !password.match(regex)){
+        if(password && !password.match(regexPassword)){
             return "Mot de passe invalide (Minimum 8 caractères dont 1 majuscule, 1 nombre et 1 caractère spécial(@$!%*?&+))";
         }
 

@@ -44,7 +44,7 @@ export default function Matchs({ history }) {
                         <ListItemText primary={swapDetails} secondary={user.data._id === swap.consignee._id ? swap.owner.pseudo : swap.consignee.pseudo} />
                         <ListItemSecondaryAction>
                             <IconButton edge="end" aria-label="send" onClick={ () => { history.push(`/chat/${user.data._id === swap.consignee._id ? swap.owner._id : swap.consignee._id}`) }}>
-                                <Send />
+                                <Send htmlColor="white"/>
                             </IconButton>
                         </ListItemSecondaryAction>
                     </ListItem>
@@ -58,7 +58,7 @@ export default function Matchs({ history }) {
     return (
         <div id="swaps">
             <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
-                <h1>Swaps:</h1>
+                <h1>Swaps</h1>
                 <List component="nav" aria-label="swaps" id="swapsContainer">
                     {getSwaps()}
                 </List>

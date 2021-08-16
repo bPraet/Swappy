@@ -81,12 +81,6 @@ export default function AddProduct( {history} ){
                     <FormControl className="productForm">
                         <TextField id="name" label="Nom"
                             onChange={event => setName(event.target.value)} />
-                        <TextField id="description" label="Description" multiline
-                            rows={4} onChange={event => setDescription(event.target.value)} />
-                        <div id="preview" style={{backgroundImage: `url(${preview})`}}></div>
-                        
-                        <TextField id="image" helperText="Insérez l'image représentant le mieux votre produit !" type="file"
-                            onChange={event => setImage(event.target.files[0])} inputProps={{ accept: '.jpg, .jpeg' }}/>
                     </FormControl>
                     <FormControl className="productForm">
                         <InputLabel htmlFor="conditions">Etat</InputLabel>
@@ -110,6 +104,15 @@ export default function AddProduct( {history} ){
                             {transports.data.map(transport => <option value={transport._id} key={transport._id}>{transport.name}</option>)}
                         </NativeSelect>
                     </FormControl>
+                    <FormControl className="productForm">
+                        <TextField id="description" label="Description" multiline
+                                rows={4} onChange={event => setDescription(event.target.value)} />
+                        <div id="preview" style={{backgroundImage: `url(${preview})`}}></div>
+                            
+                        <TextField id="image" type="file"
+                                onChange={event => setImage(event.target.files[0])} inputProps={{ accept: '.jpg, .jpeg' }}/>
+                    </FormControl>
+                    
                     <div id="btn">
                         <Fab aria-label="previous" id="backBtn" component={Link} to={'/products'}>
                             <ArrowBack />

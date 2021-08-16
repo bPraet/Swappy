@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import './products.css';
-import addProduct from '../../assets/addProduct.png';
 
 import { Grid, CircularProgress } from '@material-ui/core';
+import { Add } from '@material-ui/icons';
 import { motion } from 'framer-motion';
 import api from '../../services/api';
 import adress from '../../services/config';
@@ -45,8 +45,8 @@ export default function Products({ history }){
         for(let i = 0; i < emptyProducts; i++){
             if(i === 0)
                 products.push(
-                    <Grid item xs={3} key={currentProducts+i}>
-                        <Link to="/addProduct"><img src={addProduct} className="productImg" alt={`product${currentProducts+i+1}`} draggable="false"></img></Link>
+                    <Grid item xs={3} key={currentProducts+i} id="addProductContainer" component={Link} to={'/addProduct'}>
+                        <Add className="productImg" id="addProductGrid"/>
                     </Grid>
                 );
             else

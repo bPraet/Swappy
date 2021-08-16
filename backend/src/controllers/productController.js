@@ -82,7 +82,6 @@ module.exports = {
             else{
                 try {
                     const products = await productService.getNotSeenProducts(authData.user.userId);
-
                     return res.json(products);
                 } catch (error) {
                     return res.status(400).json({
