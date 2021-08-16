@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import { io } from 'socket.io-client';
 import api from '../../services/api';
+import adress from '../../services/config'
 
 import './chat.css';
 import 'react-medium-image-zoom/dist/styles.css';
@@ -50,7 +51,7 @@ export default function Chat({ history }) {
     if(user === undefined || consignee === undefined || messages === undefined)
         return <CircularProgress size="100px"/>;
 
-    const socket = io("http://localhost:8000");
+    const socket = io(adress);
 
     socket.emit('join', `${user.data._id},${userId}`);
 
