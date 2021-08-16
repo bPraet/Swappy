@@ -13,6 +13,7 @@ export default function MatchDetails({ history }) {
 
     const [ matchs, setMatchs ] = useState([]);
     const [ products, setProducts ] = useState([]);
+    const [ ownerProducts, setOwnerProducts ] = useState([]);
     const [ user, setUser ] = useState();
     const [ loading, setLoading ] = useState(false);
     const [ openDelete, setOpenDelete ] = useState(false);
@@ -53,10 +54,16 @@ export default function MatchDetails({ history }) {
                 }).catch((err) => {
                     history.push('/');
                 });
+
+                api.get(`/product/${match.productOwner}`, { headers: { 'userToken': userToken } }).then(result => {
+                    setOwnerProducts(values => [...values, result]);
+                }).catch((err) => {
+                    history.push('/');
+                });
             });
         }
         
-    }, [history, matchs, products, loading, user, consignee, isProposition, productId, userToken]);
+    }, [history, matchs, loading, user, consignee, isProposition, productId, userToken]);
 
     if (matchs.data === undefined)
         return <CircularProgress size="100px" />;
@@ -126,59 +133,37 @@ export default function MatchDetails({ history }) {
         return productsGrid;
     }
 
+    const getOwnerProduct = () => {
+        if(ownerProducts[0] !== undefined){
+            return(
+                <Grid item xs={3} key={'productOwner'} component={Link} to={'/productDetails/' + ownerProducts[0].data._id}>
+                    <img src={adress + '/files/' + ownerProducts[0].data.image} className="productImg" alt={ownerProducts[0].data.name} draggable="false"></img>
+                </Grid>
+            );
+        }
+    }
+
     if(products.length > 0){
-        if(products[0].data.user._id === user.data._id){
-            return(
-                <div id="products">
-                    <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
-                        <Grid container spacing={1}>
-                            { getProducts() }
-                        </Grid>
+        return(
+            <div id="products">
+                <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
+                    <Grid container spacing={1} id="matchProductsContainer">
+                        { getProducts() } 
+                    </Grid>
+                    <h1>VS</h1>
+                    <Grid container spacing={1} id="matchProductsContainer">
+                        { getOwnerProduct() } 
+                    </Grid>
+                    
+                    <div id="matchBtnContainer">
                         <Fab aria-label="previous" id="backBtn" onClick={history.goBack}>
                             <ArrowBack />
                         </Fab>
-
-                        <Button id="deleteBtn" variant="contained" color="default" startIcon={<Close />} onClick={handleClickOpenDelete}>
-                            Refuser
-                        </Button>
-                        <Dialog
-                            open={openDelete}
-                            onClose={handleCloseDelete}
-                            aria-labelledby="alert-dialog-title"
-                            aria-describedby="alert-dialog-description"
-                        >
-                            <DialogTitle id="alert-dialog-title">{"Retirer le match ?"}</DialogTitle>
-                            <DialogContent>
-                                <DialogContentText id="alert-dialog-description">
-                                    Vous ne pourrez pas revenir en arrière et cet échange disparaitra !
-                                </DialogContentText>
-                            </DialogContent>
-                            <DialogActions>
-                                <Button onClick={handleCloseDelete} color="primary">
-                                    Non
-                                </Button>
-                                <Button onClick={() => removeMatch(matchs.data)} color="primary" autoFocus>
-                                    Oui
-                                </Button>
-                            </DialogActions>
-                        </Dialog>
-                    </motion.div>
-                </div>
-            )
-        } else {
-            return(
-                <div id="products">
-                    <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
-                        <Grid container spacing={1}>
-                            { getProducts() }
-                        </Grid>
-                        <Fab aria-label="previous" id="backBtn" onClick={history.goBack}>
-                            <ArrowBack />
-                        </Fab>
-
-                        <Button id="validateBtn" variant="contained" color="default" startIcon={<Done />} onClick={handleClickOpenValidate}>
-                            Accepter
-                        </Button>
+                        {products[0].data.user._id !== user.data._id ? 
+                            <Button id="validateBtn" variant="contained" color="default" startIcon={<Done />} onClick={handleClickOpenValidate}>
+                                Accepter
+                            </Button>: ''
+                        }
                         <Dialog
                             open={openValidate}
                             onClose={handleCloseValidate}
@@ -200,7 +185,6 @@ export default function MatchDetails({ history }) {
                                 </Button>
                             </DialogActions>
                         </Dialog>
-
                         <Button id="deleteBtn" variant="contained" color="default" startIcon={<Close />} onClick={handleClickOpenDelete}>
                             Refuser
                         </Button>
@@ -225,10 +209,11 @@ export default function MatchDetails({ history }) {
                                 </Button>
                             </DialogActions>
                         </Dialog>
-                    </motion.div>
-                </div>
-            )
-        }
+                    </div>
+                    
+                </motion.div>
+            </div>
+        )
     }
     else{
         return (

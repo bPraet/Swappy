@@ -63,7 +63,7 @@ export default function Products({ history }){
     return(
         <div id="products">
             <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
-                <Grid container spacing={1}>
+                <Grid container spacing={1} className="productContainer">
                     { getProducts() }
                 </Grid>
             </motion.div>

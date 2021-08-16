@@ -1,0 +1,8 @@
+#matchProductsContainer {
+    justify-content: center;
+}
+
+#matchBtnContainer {
+    display: flex;
+    justify-content: center;
+}
