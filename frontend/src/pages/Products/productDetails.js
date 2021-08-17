@@ -31,7 +31,7 @@ export default function ProductDetails({ history }) {
     return (
         <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
             <div id='productDetails'>
-                <div id="productName" className="productDetail">{product.data.name}</div>
+                <div id="productName" className="productDetail"><h1>{product.data.name}</h1></div>
                 <Zoom>
                     <img alt="productImg" id="productImg" src= {adress + '/files/' + product.data.image} draggable="false"/>
                 </Zoom>

@@ -124,7 +124,7 @@ export default function MatchDetails({ history }) {
             for(const [i, product] of sortedProducts.entries()){
                 productsGrid.push(
                     <Grid item xs={3} key={i} component={Link} to={'/productDetails/' + product.data._id}>
-                        <img src={adress + '/files/' + product.data.image} className="productImg" alt={product.data.name} draggable="false"></img>
+                        <img src={adress + '/files/' + product.data.image} className="matchProductImg" alt={product.data.name} draggable="false"></img>
                     </Grid>
                 );
             }
@@ -137,7 +137,7 @@ export default function MatchDetails({ history }) {
         if(ownerProducts[0] !== undefined){
             return(
                 <Grid item xs={3} key={'productOwner'} component={Link} to={'/productDetails/' + ownerProducts[0].data._id}>
-                    <img src={adress + '/files/' + ownerProducts[0].data.image} className="productImg" alt={ownerProducts[0].data.name} draggable="false"></img>
+                    <img src={adress + '/files/' + ownerProducts[0].data.image} className="matchProductImg" alt={ownerProducts[0].data.name} draggable="false"></img>
                 </Grid>
             );
         }
@@ -151,66 +151,62 @@ export default function MatchDetails({ history }) {
                         { getProducts() } 
                     </Grid>
                     <h1>VS</h1>
-                    <Grid container spacing={1} id="matchProductsContainer">
+                    <Grid container spacing={1} id="propositionProductContainer">
+                        <Grid item xs={3} key={'back'} onClick={history.goBack}>
+                            <ArrowBack className="backIcon" />
+                        </Grid>
+
                         { getOwnerProduct() } 
-                    </Grid>
-                    
-                    <div id="matchBtnContainer">
-                        <Fab aria-label="previous" id="backBtn" onClick={history.goBack}>
-                            <ArrowBack />
-                        </Fab>
-                        {products[0].data.user._id !== user.data._id ? 
-                            <Button id="validateBtn" variant="contained" color="default" startIcon={<Done />} onClick={handleClickOpenValidate}>
-                                Accepter
-                            </Button>: ''
-                        }
-                        <Dialog
-                            open={openValidate}
-                            onClose={handleCloseValidate}
-                            aria-labelledby="alert-dialog-title"
-                            aria-describedby="alert-dialog-description"
-                        >
-                            <DialogTitle id="alert-dialog-title">{"Accepter l'échange ?"}</DialogTitle>
-                            <DialogContent>
-                                <DialogContentText id="alert-dialog-description">
-                                    Super ! Es-tu sûr vouloir faire cet échange ?
-                                </DialogContentText>
-                            </DialogContent>
-                            <DialogActions>
-                                <Button onClick={handleCloseValidate} color="primary">
-                                    Non
-                                </Button>
-                                <Button onClick={() => validateMatch(matchs.data)} color="primary" autoFocus>
-                                    Oui
-                                </Button>
-                            </DialogActions>
-                        </Dialog>
-                        <Button id="deleteBtn" variant="contained" color="default" startIcon={<Close />} onClick={handleClickOpenDelete}>
-                            Refuser
-                        </Button>
-                        <Dialog
-                            open={openDelete}
-                            onClose={handleCloseDelete}
-                            aria-labelledby="alert-dialog-title"
-                            aria-describedby="alert-dialog-description"
-                        >
-                            <DialogTitle id="alert-dialog-title">{"Retirer le match ?"}</DialogTitle>
-                            <DialogContent>
-                                <DialogContentText id="alert-dialog-description">
-                                    Vous ne pourrez pas revenir en arrière et cet échange disparaitra !
-                                </DialogContentText>
-                            </DialogContent>
-                            <DialogActions>
-                                <Button onClick={handleCloseDelete} color="primary">
-                                    Non
-                                </Button>
-                                <Button onClick={() => removeMatch(matchs.data)} color="primary" autoFocus>
-                                    Oui
-                                </Button>
-                            </DialogActions>
-                        </Dialog>
-                    </div>
-                    
+
+                        <Grid item xs={3} key={'validate'}>
+                            {products[0].data.user._id !== user.data._id ? <Done onClick={handleClickOpenValidate} className="matchIcon"/> : ''}
+                            {products[0].data.user._id !== user.data._id ? <Close onClick={handleClickOpenDelete} className="matchIcon" id="delete" /> : <Close onClick={handleClickOpenDelete} className="matchIcon bigBtn" id="delete" /> }
+                            
+                            <Dialog
+                                open={openValidate}
+                                onClose={handleCloseValidate}
+                                aria-labelledby="alert-dialog-title"
+                                aria-describedby="alert-dialog-description"
+                            >
+                                <DialogTitle id="alert-dialog-title">{"Accepter l'échange ?"}</DialogTitle>
+                                <DialogContent>
+                                    <DialogContentText id="alert-dialog-description">
+                                        Super ! Es-tu sûr vouloir faire cet échange ?
+                                    </DialogContentText>
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button onClick={handleCloseValidate} color="primary">
+                                        Non
+                                    </Button>
+                                    <Button onClick={() => validateMatch(matchs.data)} color="primary" autoFocus>
+                                        Oui
+                                    </Button>
+                                </DialogActions>
+                            </Dialog>
+
+                            <Dialog
+                                open={openDelete}
+                                onClose={handleCloseDelete}
+                                aria-labelledby="alert-dialog-title"
+                                aria-describedby="alert-dialog-description"
+                            >
+                                <DialogTitle id="alert-dialog-title">{"Retirer le match ?"}</DialogTitle>
+                                <DialogContent>
+                                    <DialogContentText id="alert-dialog-description">
+                                        Vous ne pourrez pas revenir en arrière et cet échange disparaitra !
+                                    </DialogContentText>
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button onClick={handleCloseDelete} color="primary">
+                                        Non
+                                    </Button>
+                                    <Button onClick={() => removeMatch(matchs.data)} color="primary" autoFocus>
+                                        Oui
+                                    </Button>
+                                </DialogActions>
+                            </Dialog>
+                        </Grid>
+                    </Grid>                 
                 </motion.div>
             </div>
         )
@@ -218,8 +214,8 @@ export default function MatchDetails({ history }) {
     else{
         return (
             <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
-                <div>Ce match n'existe plus, il a déjà été géré
-                <Fab aria-label="previous" id="backBtn" onClick={history.goBack}>
+                <div><h1>Ce match n'existe plus, il a déjà été géré</h1>
+                <Fab aria-label="previous" id="backBtnMatchFail" onClick={history.goBack}>
                     <ArrowBack />
                 </Fab>
                 </div>

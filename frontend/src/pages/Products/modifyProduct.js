@@ -4,7 +4,8 @@ import api from '../../services/api';
 import adress from '../../services/config';
 
 import { FormControl, TextField, Fab, CircularProgress, InputLabel, NativeSelect, Dialog, DialogTitle,
-     DialogContent, DialogContentText, DialogActions, Button } from '@material-ui/core';
+     DialogContent, DialogContentText, DialogActions, Button, Snackbar } from '@material-ui/core';
+import MuiAlert from '@material-ui/lab/Alert';
 import { Done, ArrowBack, Delete } from '@material-ui/icons';
 import { motion } from 'framer-motion';
 import Zoom from 'react-medium-image-zoom';
@@ -18,6 +19,7 @@ export default function ModifyProduct( {history} ){
     const [ product, setProduct ] = useState([]);
     const [ message, setMessage ] = useState("");
     const [ open, setOpen ] = useState(false);
+    const [ openMessage, setOpenMessage ] = useState(false);
 
     let [ name, setName ] = useState();
     let [ description, setDescription ] = useState();
@@ -75,15 +77,13 @@ export default function ModifyProduct( {history} ){
         try {
             await api.put(`/product/update/${productId}`, productData, { headers: {'userToken': userToken} });
         } catch (error) {
-            let message = '';
+            let message = 'Champs requis manquant !';
 
-            if(error.response.status === 400)
-                message = 'Champ requis manquant !';
-            else
+            if(error.response.headers["content-length"] === '1572')
                 message = "Veuillez uploader une image de 2Mo ou moins s'il vous plait ! (.jpg, .jpeg)";
-                
+
             setMessage(message);
-            console.log(message);
+            setOpenMessage(true);
             return;
         }
 
@@ -96,6 +96,7 @@ export default function ModifyProduct( {history} ){
             await api.delete(`/product/delete/${productId}`, { headers: {'userToken': userToken} });
         } catch (error) {
             setMessage("Impossible de supprimer le produit pour le moment...");
+            setOpenMessage(true);
 
             return;
         }
@@ -110,13 +111,27 @@ export default function ModifyProduct( {history} ){
     const handleClose = () => {
         setOpen(false);
     };
+
+    const handleCloseMessage = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        setOpenMessage(false);
+      };
+
+    const Alert = (props) => {
+        return <MuiAlert elevation={6} variant="filled" {...props} />;
+    }
     
     return(
         <div id="modifyContainer">
             <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
-                <div id="modifyMessage">
-                    {message}
-                </div>
+                <Snackbar open={openMessage} autoHideDuration={6000} onClose={handleCloseMessage}>
+                    <Alert onClose={handleCloseMessage} severity="error">
+                        {message}
+                    </Alert>
+                </Snackbar>
                 <form id="addProductForm" onSubmit={handleSubmit}>
                     <div id="productImageContainer">
                         <Zoom><img id="productFormImg" src={adress + '/files/' + product.data.image} draggable="false" alt="productImg"></img></Zoom>

@@ -2,7 +2,8 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../../services/api';
 
-import { FormControl, TextField, Fab, CircularProgress, InputLabel, NativeSelect } from '@material-ui/core';
+import { FormControl, TextField, Fab, CircularProgress, InputLabel, NativeSelect, Snackbar } from '@material-ui/core';
+import MuiAlert from '@material-ui/lab/Alert';
 import { Done, ArrowBack } from '@material-ui/icons';
 import { motion } from 'framer-motion';
 
@@ -12,13 +13,13 @@ export default function AddProduct( {history} ){
 
     const [ transports, setTransports ] = useState([]);
     const [ conditions, setConditions ] = useState([]);
-
     const [ name, setName ] = useState();
     const [ description, setDescription ] = useState();
     const [ image, setImage ] = useState();
     const [ conditionId, setConditionId ] = useState();
     const [ transportId, setTransportId ] = useState();
     const [ message, setMessage ] = useState("");
+    const [ openMessage, setOpenMessage ] = useState(false);
 
     const userToken = localStorage.getItem('userToken');
 
@@ -54,29 +55,42 @@ export default function AddProduct( {history} ){
         productData.append("conditionId", conditionId);
         productData.append("transportId", transportId);
 
-
         try {
             await api.post('/product/add', productData, { headers: { 'userToken': userToken} });
         } catch(error){
-            let message = '';
-            if(error.response.status === 400)
-                message = 'Champ requis manquant !';
-            else
+            let message = 'Champs requis manquant !';
+
+            if(error.response.headers["content-length"] === '1572')
                 message = "Veuillez uploader une image de 2Mo ou moins s'il vous plait ! (.jpg, .jpeg)";
+
             setMessage(message);
-            console.log(message);
+            setOpenMessage(true);
             return;
         }
         
         history.push('/products');
     };
+
+    const handleCloseMessage = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        setOpenMessage(false);
+      };
+
+    const Alert = (props) => {
+        return <MuiAlert elevation={6} variant="filled" {...props} />;
+    }
     
     return(
         <div id="modifyContainer">
             <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
-                <div id="modifyMessage">
-                    {message}
-                </div>
+                <Snackbar open={openMessage} autoHideDuration={6000} onClose={handleCloseMessage}>
+                    <Alert onClose={handleCloseMessage} severity="error">
+                        {message}
+                    </Alert>
+                </Snackbar>
                 <form id="addProductForm" onSubmit={handleSubmit}>
                     <FormControl className="productForm">
                         <TextField id="name" label="Nom"

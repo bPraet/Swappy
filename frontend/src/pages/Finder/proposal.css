@@ -1,14 +1,24 @@
-.productImg{
-    display: block;
-    max-width: 100%;
-    height:21vh;
-    margin: auto;
-    object-fit: cover;
-}
-
 .productImgContainer{
     width: 100%;
     margin: 0 !important;
+}
+
+.proposalProduct {
+    height: 18vh !important;
+}
+
+#proposalContainer {
+    justify-content: center;
+    width: 100vw !important;
+}
+
+#proposalBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    bottom: 40px;
+    width: 100vw;
+    position: absolute;
 }
 
 .MuiFormControlLabel-label{

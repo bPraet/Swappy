@@ -50,9 +50,7 @@ export default function Finder({ history }) {
         <div id="finder">
             <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
                 <div id="swipeContainer">
-                    <div id="emptyCard">
-                        <h3>Vous avez regardé tous les produits !</h3>
-                    </div>
+                    <div id="emptyCard"></div>
                     {products.data.map(product => (
                         <TinderCard preventSwipe={['up', 'down']} key={product._id} onCardLeftScreen={(direction) => onCardLeftScreen(direction, `${product._id}`)}>
                             <div className="card" style={{ backgroundImage: `url(${adress + '/files/' + product.image})` }}>

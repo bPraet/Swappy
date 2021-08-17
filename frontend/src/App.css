@@ -79,3 +79,7 @@ input:-webkit-autofill:active
     background-color: black !important;
     color: white !important;
 }
+
+.MuiSnackbar-root {
+    margin-bottom: 30px;
+}

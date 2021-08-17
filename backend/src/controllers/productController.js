@@ -15,7 +15,7 @@ module.exports = {
             }
             else {
                 const { name, description, conditionId, transportId } = req.body;
- 
+
                 if(!productService.addControl(name, description, conditionId, transportId, req.file)){
                     return res.status(400).json('Missing field');
                 }

@@ -4,7 +4,8 @@ import api from '../../services/api';
 import './profile.css';
 
 import { FormControl, TextField, Fab, CircularProgress, Button,
-Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
+Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Snackbar } from '@material-ui/core';
+import MuiAlert from '@material-ui/lab/Alert';
 import { Done, RotateLeft, ArrowBack, ExitToApp } from '@material-ui/icons';
 import { motion } from 'framer-motion';
 
@@ -19,6 +20,7 @@ export default function Profile({ history }) {
     let [ user, setUser ] = useState();
     const [ message, setMessage ] = useState();
     const [ open, setOpen ] = useState(false);
+    const [ openMessage, setOpenMessage ] = useState(false);
     const userToken = localStorage.getItem('userToken');
     
     useEffect(() => {
@@ -48,6 +50,7 @@ export default function Profile({ history }) {
         try {
             const response = await api.put('/user/update', { email, password, firstName, lastName, pseudo, adress }, { headers: {'userToken': userToken} });
             setMessage(response.data.message);
+            setOpenMessage(true);
         } catch (error) {
             console.log(error);
         }
@@ -60,6 +63,18 @@ export default function Profile({ history }) {
     const handleClose = () => {
         setOpen(false);
     };
+
+    const handleCloseMessage = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        setOpenMessage(false);
+      };
+
+    const Alert = (props) => {
+        return <MuiAlert elevation={6} variant="filled" {...props} />;
+    }
 
     const handleReset = async () => {
         await api.delete('/track/reset', { headers: {'userToken': userToken} });
@@ -74,7 +89,11 @@ export default function Profile({ history }) {
     return (
         <div id="profile">
             <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
-                <div id="profileMessage">{message}</div>
+                <Snackbar open={openMessage} autoHideDuration={6000} onClose={handleCloseMessage}>
+                    <Alert onClose={handleCloseMessage} severity="error">
+                        {message}
+                    </Alert>
+                </Snackbar>
                 <form id="profileForm" onSubmit={handleSubmit}>
                     <FormControl className="registerForm">
                         <TextField id="email" label="Email" defaultValue={user.data.email} type="email"

@@ -15,7 +15,7 @@ export default function Proposal({ history }) {
 
     let states = {};
     for (let i = 0; i < 16; i++) {
-        states.i = false;
+        states[i] = false;
     }
 
     const [state, setState] = useState(states);
@@ -72,7 +72,7 @@ export default function Proposal({ history }) {
                                     <Checkbox checked={state[i]} onChange={handleChange} name={i.toString()} />
                                 }
                                 label={
-                                    <img src={adress + '/files/' + productsUser.data[i].image} className="productImg" alt={`product${i}`} draggable="false"></img>
+                                    <img src={adress + '/files/' + productsUser.data[i].image} className="productImg proposalProduct" alt={`product${i}`} draggable="false"></img>
                                 } className="productImgContainer">
                             </FormControlLabel>
                         </Grid>
@@ -92,17 +92,19 @@ export default function Proposal({ history }) {
             <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
                 <form id="proposalForm" onSubmit={handleSubmit}>
                     <FormControl>
-                        <Grid container spacing={1}>
+                        <Grid container spacing={1} id="proposalContainer">
                             { getProducts() }
                         </Grid>
                     </FormControl>
 
-                    <Fab aria-label="previous" id="backBtn" component={Link} to={'/finder'}>
-                        <ArrowBack />
-                    </Fab>
-                    <Fab aria-label="add" id="addProductBtn" type="submit">
-                        <Done />
-                    </Fab>
+                    <div id="proposalBtn">
+                        <Fab aria-label="previous" id="backBtn" component={Link} to={'/finder'}>
+                            <ArrowBack />
+                        </Fab>
+                        <Fab aria-label="add" id="addProductBtn" type="submit">
+                            <Done />
+                        </Fab>
+                    </div>
 
                 </form>
             </motion.div>
