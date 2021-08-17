@@ -37,7 +37,7 @@ module.exports = {
             return 'Description de maximum 1500 caractères !';
 
         if(!image)
-            return "Veuillez uploader une image de 2Mo ou moins s'il vous plait ! (.jpg, .jpeg)";
+            return "Veuillez uploader une image de 5Mo ou moins s'il vous plait ! (.jpg, .jpeg)";
 
         return false;
     },

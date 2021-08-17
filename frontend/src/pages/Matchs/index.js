@@ -93,11 +93,14 @@ export default function Matchs({ history }) {
             <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
                 <h1>Matchs</h1>
                 <List component="nav" aria-label="matches">
-                    {getMatchs()}
+                    {getMatchs()}{matchs.data.length === 0 ?
+                    <div style={{textAlign: "center", color: "white"}}>Vous n'avez pas de match</div> : ""}
                 </List>
                 <h1>Propositions</h1>
                 <List component="nav" aria-label="propositions">
                     {getPropositions()}
+                    {propositions.data.length === 0 ? 
+                    <div style={{textAlign: "center", color: "white"}}>Vous n'avez pas de proposition</div> : ""}
                 </List>
             </motion.div>
         </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import { io } from 'socket.io-client';
@@ -17,8 +17,13 @@ export default function Chat({ history }) {
     const [user, setUser] = useState();
     const [consignee, setConsignee] = useState();
     const [messages, setMessages] = useState();
+    let [ image, setImage ] = useState();
     const { userId } = useParams();
     const userToken = localStorage.getItem('userToken');
+
+    const preview = useMemo(() => {
+        return image ? URL.createObjectURL(image) : null;
+    }, [image]);
 
     useEffect(() => {
         let reloadCount = sessionStorage.getItem('reloadCount');
@@ -171,10 +176,10 @@ export default function Chat({ history }) {
             <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
                 <div id="chatName">Conversation avec {consignee.data.pseudo}</div>
                 <ul id="messages">{loadMessages()}</ul>
-                <div id="isWriting"></div>
+                <div id="previewChat" style={{backgroundImage: `url(${preview})`}}></div><div id="isWriting"></div>
                 <form id="form" action="">
                     <label htmlFor="imageChat"><Add /></label>
-                    <input id="imageChat" type="file" accept=".jpg, .jpeg, .png"/>
+                    <input id="imageChat" onChange={event => setImage(event.target.files[0])} type="file" accept=".jpg, .jpeg, .png"/>
                     <input id="message" autoComplete="off" onChange={ () => socket.emit('isWriting', user.data.pseudo) }/>
                     <button onClick={ (event) => sendMessage(event, document.getElementById('message').value, document.getElementById('imageChat').files[0]) }>Envoyer</button>
                 </form>

@@ -11,7 +11,7 @@ module.exports = {
             cb(null, `${name.replace(/\s/g, "")}-${Date.now()}${ext}`);
         },
     }),
-    limits: {fileSize: 2000000}, //2MB en Bytes
+    limits: {fileSize: 5000000}, //5MB en Bytes
     fileFilter: (req, file, cb) => {
         const ext = path.extname(file.originalname);
         const {name, description} = req.body;

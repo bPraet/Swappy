@@ -61,6 +61,8 @@ export default function Matchs({ history }) {
                 <h1>Swaps</h1>
                 <List component="nav" aria-label="swaps" id="swapsContainer">
                     {getSwaps()}
+                    {swaps.data.length === 0 ? 
+                    <div style={{textAlign: "center", color: "white"}}>Vous n'avez pas de swaps</div> : ""}
                 </List>
             </motion.div>
         </div>

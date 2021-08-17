@@ -96,7 +96,7 @@ module.exports = {
                             }, {useFindAndModify: false});
                         }
 
-                        return res.json({message: "Successfully updated"});
+                        return res.json({message: "Votre profil a bien été mis à jour !"});
                     } catch (error) {
                         return res.status(400).json({
                             message: 'User does not exist'

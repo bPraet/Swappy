@@ -4,15 +4,15 @@ import api from '../../services/api';
 import './profile.css';
 
 import { FormControl, TextField, Fab, CircularProgress, Button,
-Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Snackbar } from '@material-ui/core';
+Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Snackbar, Input, InputLabel, InputAdornment, IconButton } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
-import { Done, RotateLeft, ArrowBack, ExitToApp } from '@material-ui/icons';
+import { Done, RotateLeft, ArrowBack, ExitToApp, Visibility, VisibilityOff } from '@material-ui/icons';
 import { motion } from 'framer-motion';
 
 export default function Profile({ history }) {
 
     let [ email, setEmail ] = useState();
-    let [ password, setPassword ] = useState();
+    let [ password, setPassword ] = useState('');
     let [ firstName, setFirstnName] = useState();
     let [ lastName, setLastName ] = useState();
     let [ pseudo, setPseudo ] = useState();
@@ -21,6 +21,7 @@ export default function Profile({ history }) {
     const [ message, setMessage ] = useState();
     const [ open, setOpen ] = useState(false);
     const [ openMessage, setOpenMessage ] = useState(false);
+    const [ showPassword, setShowPassword ] = useState(false);
     const userToken = localStorage.getItem('userToken');
     
     useEffect(() => {
@@ -80,6 +81,14 @@ export default function Profile({ history }) {
         await api.delete('/track/reset', { headers: {'userToken': userToken} });
         setOpen(false);
     }
+    
+    const handleClickShowPassword = () => {
+        setShowPassword(!showPassword);
+    };
+
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };
 
     const logout = () => {
         localStorage.removeItem('userToken');
@@ -98,8 +107,28 @@ export default function Profile({ history }) {
                     <FormControl className="registerForm">
                         <TextField id="email" label="Email" defaultValue={user.data.email} type="email"
                             onChange={event => setEmail(event.target.value)} />
-                        <TextField id="password" label="Mot de passe" type="password"
-                            onChange={event => setPassword(event.target.value)} />
+                    </FormControl>
+                    <FormControl className="registerForm">
+                    <InputLabel htmlFor="password">Mot de passe</InputLabel>
+                        <Input
+                            id="password"
+                            type={showPassword ? 'text' : 'password'}
+                            value={password}
+                            onChange={event => setPassword(event.target.value)}
+                            endAdornment={
+                            <InputAdornment position="end">
+                                <IconButton
+                                aria-label="toggle password visibility"
+                                onClick={handleClickShowPassword}
+                                onMouseDown={handleMouseDownPassword}
+                                >
+                                {showPassword ? <Visibility /> : <VisibilityOff />}
+                                </IconButton>
+                            </InputAdornment>
+                            }
+                        />
+                    </FormControl>
+                    <FormControl className="registerForm">
                         <TextField id="firstName" label="Prénom" defaultValue={user.data.firstName}
                             onChange={event => setFirstnName(event.target.value)} />
                         <TextField id="lastName" label="Nom" defaultValue={user.data.lastName}
