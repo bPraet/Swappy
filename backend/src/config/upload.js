@@ -17,11 +17,14 @@ module.exports = {
         const {name, description} = req.body;
 
         if(name == 'undefined' || name == '' || description == 'undefined' || description == ''){
-            return cb(new Error('Champs requis manquant !'));
+            return cb(null, false);
         }
 
+        if(name.length > 50 || description.length > 1500)
+            return cb(null, false);
+
         if(ext !== '.jpg' && ext !== '.jpeg'){
-            return cb('Only images are allowed');
+            return cb(null, false);
         }
 
         cb(null, true);

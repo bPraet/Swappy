@@ -16,8 +16,8 @@ module.exports = {
             else {
                 const { name, description, conditionId, transportId } = req.body;
 
-                if(!productService.addControl(name, description, conditionId, transportId, req.file)){
-                    return res.status(400).json('Missing field');
+                if(message = productService.addControl(name, description, conditionId, transportId, req.file)){
+                    return res.status(400).json(message);
                 }
 
                 const image = req.file.filename;
@@ -128,8 +128,8 @@ module.exports = {
                 if(authData.user.userId != product.user)
                     return res.status(400).json("You don't own this product !");
 
-                if(!productService.updateControl(name, description, conditionId, transportId)){
-                    return res.status(400).json("Missing field");
+                if(message = productService.updateControl(name, description, conditionId, transportId)){
+                    return res.status(400).json(message);
                 }
                 
                 if(req.file === undefined)

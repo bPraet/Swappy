@@ -1,6 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const verifyToken = require('./config/verifyToken');
+const verifyImageSize = require('./config/verifyImageSize');
 
 const routes = express.Router();
 
@@ -24,9 +25,9 @@ routes.get('/products', verifyToken, productController.getProducts);
 routes.get('/productsUser', verifyToken, productController.getProductsByUserId);
 routes.get('/product/:productId', verifyToken, productController.getProductById);
 routes.get('/products/notSeen', verifyToken, productController.getNotSeenProductsByUserId);
-routes.post('/product/add', verifyToken, upload.single("image"), productController.addProduct);
+routes.post('/product/add', verifyToken, verifyImageSize,upload.single("image"), productController.addProduct);
 routes.delete('/product/delete/:productId', verifyToken, productController.delProduct);
-routes.put('/product/update/:productId', verifyToken, upload.single("image"), productController.updateProduct);
+routes.put('/product/update/:productId', verifyImageSize, verifyToken, upload.single("image"), productController.updateProduct);
 
 //Condition
 routes.get('/conditions', verifyToken, productController.getConditions);

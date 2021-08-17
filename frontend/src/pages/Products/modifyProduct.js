@@ -77,11 +77,8 @@ export default function ModifyProduct( {history} ){
         try {
             await api.put(`/product/update/${productId}`, productData, { headers: {'userToken': userToken} });
         } catch (error) {
-            let message = 'Champs requis manquant !';
-
-            if(error.response.headers["content-length"] === '1572')
-                message = "Veuillez uploader une image de 2Mo ou moins s'il vous plait ! (.jpg, .jpeg)";
-
+            const message = error.response.data;
+            
             setMessage(message);
             setOpenMessage(true);
             return;

@@ -23,19 +23,38 @@ module.exports = {
         return product;
     },
 
-    updateControl(name, description, conditionId, transportId){
-        if(!name || !description || !conditionId || !transportId){
-            return false;
-        }
+    addControl(name, description, conditionId, transportId, image){
+        if(!name || !description || !conditionId || !transportId)
+            return 'Champs requis manquant !';
 
-        return true;
+        if(name === 'undefined' || description === 'undefined')
+            return 'Champs requis manquant !';
+
+        if(name.length > 50)
+            return 'Nom de maximum 50 caractères !';
+                
+        if(description.length > 1500)
+            return 'Description de maximum 1500 caractères !';
+
+        if(!image)
+            return "Veuillez uploader une image de 2Mo ou moins s'il vous plait ! (.jpg, .jpeg)";
+
+        return false;
     },
 
-    addControl(name, description, conditionId, transportId, image){
-        if(!name || !description || !conditionId || !transportId || !image){
-            return false;
-        }
+    updateControl(name, description, conditionId, transportId){
+        if(!name || !description || !conditionId || !transportId)
+            return 'Champs requis manquant !';
 
-        return true;
+        if(name === 'undefined' || description === 'undefined')
+            return 'Champs requis manquant !';
+
+        if(name.length > 50)
+            return 'Nom de maximum 50 caractères !';
+                
+        if(description.length > 1500)
+            return 'Description de maximum 1500 caractères !';
+
+        return false;
     }
 }
