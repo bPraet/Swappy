@@ -51,6 +51,10 @@
     color: white !important;
 }
 
+.MuiToolbar-root.MuiToolbar-regular.MuiTablePagination-toolbar.MuiToolbar-gutters {
+    color: white;
+}
+
 .tox .tox-edit-area__iframe {
     background-color: rgb(141, 153, 174)  !important;
 }

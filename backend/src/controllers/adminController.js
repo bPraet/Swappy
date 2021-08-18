@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken');
 const nodemailer = require("nodemailer");
 const handlebars = require('handlebars');
 const fs = require('fs');
+const Role = require('../models/Role');
+const { userTypes } = require('../services/userTypes');
 
 const readHTMLFile = (path, callback) => {
     fs.readFile(path, {encoding: 'utf-8'}, (err, html) => {
@@ -83,5 +85,19 @@ module.exports = {
                 });
             }
         });
-    }
+    },
+
+    isAdmin(req, res) {
+        jwt.verify(req.token, process.env.SECRET, async(err, authData) => {
+            if(err){
+                res.sendStatus(403);
+            }
+            else{
+                if(authData.user.role === userTypes.ADMIN)
+                    res.send(true)
+                else
+                    res.send(false)
+            }
+        });
+    },
 }

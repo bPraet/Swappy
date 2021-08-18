@@ -19,3 +19,7 @@
 #backBtn{
     margin: 10px 40px;
 }
+
+#registerBtn{
+    color: rgba(0, 0, 0, 0.87);
+}

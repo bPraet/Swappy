@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import api from '../../services/api';
 
 import './profile.css';
@@ -6,7 +7,7 @@ import './profile.css';
 import { FormControl, TextField, Fab, CircularProgress, Button,
 Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Snackbar, Input, InputLabel, InputAdornment, IconButton } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
-import { Done, RotateLeft, ArrowBack, ExitToApp, Visibility, VisibilityOff } from '@material-ui/icons';
+import { Done, RotateLeft, ArrowBack, ExitToApp, Visibility, VisibilityOff, Star } from '@material-ui/icons';
 import { motion } from 'framer-motion';
 
 export default function Profile({ history }) {
@@ -18,6 +19,7 @@ export default function Profile({ history }) {
     let [ pseudo, setPseudo ] = useState();
     let [ adress, setAdress ] = useState();
     let [ user, setUser ] = useState();
+    const [ isAdmin, setIsAdmin ] = useState(false);
     const [ message, setMessage ] = useState();
     const [ open, setOpen ] = useState(false);
     const [ openMessage, setOpenMessage ] = useState(false);
@@ -27,6 +29,12 @@ export default function Profile({ history }) {
     useEffect(() => {
         api.get('/user', { headers: {'userToken': userToken} }).then( result => {
             setUser(result);
+        }).catch((err) => {
+            history.push('/');
+        });
+
+        api.get('/isAdmin', { headers: {'userToken': userToken} }).then(result => {
+            setIsAdmin(result.data);
         }).catch((err) => {
             history.push('/');
         });
@@ -143,6 +151,10 @@ export default function Profile({ history }) {
                         <Fab aria-label="previous" id="backBtn" onClick={history.goBack}>
                             <ArrowBack />
                         </Fab>
+                        {isAdmin ? 
+                        <Fab arial-label="admin" id="adminBtn" component={Link} to="/admin">
+                            <Star />
+                        </Fab> : ''}
                         <Fab aria-label="update" id="updateBtn" type="submit">
                             <Done />
                         </Fab>

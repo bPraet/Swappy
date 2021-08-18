@@ -9,3 +9,8 @@
 #updateBtn{
     margin: 10px 40px;
 }
+
+#adminBtn {
+    margin: -10px;
+    color: red;
+}

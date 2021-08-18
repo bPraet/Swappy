@@ -75,5 +75,6 @@ routes.post('/login', authController.login);
 //Admin
 routes.get('/admin/users', verifyToken, adminController.getUsers);
 routes.post('/admin/mail', verifyToken, adminController.sendEmail);
+routes.get('/isAdmin', verifyToken, adminController.isAdmin);
 
 module.exports = routes;
