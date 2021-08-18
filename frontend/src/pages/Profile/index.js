@@ -109,7 +109,7 @@ export default function Profile({ history }) {
                             onChange={event => setEmail(event.target.value)} />
                     </FormControl>
                     <FormControl className="registerForm">
-                    <InputLabel htmlFor="password">Mot de passe</InputLabel>
+                        <InputLabel htmlFor="password">Mot de passe</InputLabel>
                         <Input
                             id="password"
                             type={showPassword ? 'text' : 'password'}

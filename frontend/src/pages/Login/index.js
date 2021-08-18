@@ -5,9 +5,9 @@ import api from '../../services/api'
 import './login.css';
 import logo from '../../assets/animatedLogo.svg';
 
-import { FormControl, TextField, Fab, Snackbar } from '@material-ui/core';
+import { FormControl, TextField, Fab, Snackbar, IconButton, Input, InputAdornment, InputLabel } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
-import { Done, Add } from '@material-ui/icons';
+import { Done, Add, Visibility, VisibilityOff } from '@material-ui/icons';
 import { motion } from 'framer-motion';
 
 export default function Login({ history }){
@@ -16,6 +16,7 @@ export default function Login({ history }){
     const [ password, setPassword ] = useState("");
     const [ message, setMessage ] = useState("");
     const [open, setOpen] = useState(false);
+    const [ showPassword, setShowPassword ] = useState(false);
 
     useEffect(() => {
         if(localStorage.getItem('userToken') !== null)
@@ -52,6 +53,14 @@ export default function Login({ history }){
         return <MuiAlert elevation={6} variant="filled" {...props} />;
     }
 
+    const handleClickShowPassword = () => {
+        setShowPassword(!showPassword);
+    };
+
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };
+
     return(
         <div id="loginContainer">
             <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
@@ -65,8 +74,26 @@ export default function Login({ history }){
                         <FormControl className="loginForm"> 
                             <TextField id="email" label="Email" type="email"
                             onChange={event => setEmail(event.target.value)}/>
-                            <TextField id="password" label="Mot de passe" type="password" 
-                            onChange={event => setPassword(event.target.value)}/>
+                        </FormControl>
+                        <FormControl className="loginForm"> 
+                            <InputLabel htmlFor="password">Mot de passe</InputLabel>
+                            <Input
+                                id="password"
+                                type={showPassword ? 'text' : 'password'}
+                                value={password}
+                                onChange={event => setPassword(event.target.value)}
+                                endAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={handleClickShowPassword}
+                                    onMouseDown={handleMouseDownPassword}
+                                    >
+                                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                                    </IconButton>
+                                </InputAdornment>
+                                }
+                            />
                         </FormControl>
                     <div id="btn">
                         <Fab aria-label="login" id="logBtn" type="submit">

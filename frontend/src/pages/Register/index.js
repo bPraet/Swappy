@@ -4,9 +4,9 @@ import api from '../../services/api';
 
 import './register.css';
 
-import { FormControl, TextField, Fab, Snackbar } from '@material-ui/core';
+import { FormControl, TextField, Fab, Snackbar, InputLabel, InputAdornment, Input, IconButton } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
-import { Done, ArrowBack } from '@material-ui/icons';
+import { Done, ArrowBack, Visibility, VisibilityOff } from '@material-ui/icons';
 import { motion } from 'framer-motion';
 
 export default function Register({ history }){
@@ -19,6 +19,7 @@ export default function Register({ history }){
     const [ adress, setAdress ] = useState("");
     const [ message, setMessage ] = useState("");
     const [open, setOpen] = useState(false);
+    const [ showPassword, setShowPassword ] = useState(false);
 
     useEffect(() => {
         document.getElementById('bottomBar').style.display = 'none';
@@ -52,6 +53,14 @@ export default function Register({ history }){
         return <MuiAlert elevation={6} variant="filled" {...props} />;
     }
 
+    const handleClickShowPassword = () => {
+        setShowPassword(!showPassword);
+    };
+
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };
+
     return(
         <div id="registerContainer">
             <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
@@ -64,8 +73,28 @@ export default function Register({ history }){
                     <FormControl className="registerForm"> 
                         <TextField id="email" label="Email" type="email"
                         onChange={event => setEmail(event.target.value)}/>
-                        <TextField id="password" label="Mot de passe" type="password" 
-                        onChange={event => setPassword(event.target.value)}/>
+                    </FormControl>
+                    <FormControl className="registerForm"> 
+                        <InputLabel htmlFor="password">Mot de passe</InputLabel>
+                        <Input
+                            id="password"
+                            type={showPassword ? 'text' : 'password'}
+                            value={password}
+                            onChange={event => setPassword(event.target.value)}
+                            endAdornment={
+                            <InputAdornment position="end">
+                                <IconButton
+                                aria-label="toggle password visibility"
+                                onClick={handleClickShowPassword}
+                                onMouseDown={handleMouseDownPassword}
+                                >
+                                {showPassword ? <Visibility /> : <VisibilityOff />}
+                                </IconButton>
+                            </InputAdornment>
+                            }
+                        />
+                    </FormControl>
+                    <FormControl className="registerForm"> 
                         <TextField id="firstName" label="Prénom"
                         onChange={event => setFirstnName(event.target.value)}/>
                         <TextField id="lastName" label="Nom"
