@@ -17,13 +17,8 @@ export default function Chat({ history }) {
     const [user, setUser] = useState();
     const [consignee, setConsignee] = useState();
     const [messages, setMessages] = useState();
-    let [ image, setImage ] = useState();
     const { userId } = useParams();
     const userToken = localStorage.getItem('userToken');
-
-    const preview = useMemo(() => {
-        return image ? URL.createObjectURL(image) : null;
-    }, [image]);
 
     useEffect(() => {
         let reloadCount = sessionStorage.getItem('reloadCount');
@@ -61,28 +56,35 @@ export default function Chat({ history }) {
     socket.emit('join', `${user.data._id},${userId}`);
 
     socket.on('onMessage', (message) => {
-        let li = document.createElement('li');
+        const messages = document.getElementById('messages');
+
+        if(messages){
+            let li = document.createElement('li');
     
-        li.classList = 'from';
-        li.textContent = message.message;
-        document.getElementById('messages').appendChild(li);
-
-        if(message.image !== '')
-            ReactDOM.render(<span><div className="imageChatContainer"><Zoom><img className="imageChat" src={message.image} alt='imageChat'/></Zoom></div>{message.message}</span>, li);
-
-        li.scrollIntoView();
+            li.classList = 'from';
+            li.textContent = message.message;
+            messages.appendChild(li);
+    
+            if(message.image !== '')
+                ReactDOM.render(<span><div className="imageChatContainer"><Zoom><img className="imageChat" src={message.image} alt='imageChat'/></Zoom></div>{message.message}</span>, li);
+    
+            li.scrollIntoView();
+        }
     });
 
     socket.on('isWriting', (message) => {
         const isWriting = document.getElementById('isWriting');
-        let id = window.setTimeout(function() {}, 0);
 
-        while (id--) {
-            window.clearTimeout(id);
+        if(isWriting){
+            let id = window.setTimeout(function() {}, 0);
+
+            while (id--) {
+                window.clearTimeout(id);
+            }
+    
+            isWriting.innerText = message;
+            id = setTimeout(() => isWriting.innerText = '', 3000);
         }
-
-        isWriting.innerText = message;
-        id = setTimeout(() => isWriting.innerText = '', 3000);
     });
 
     const sendMessage = async (event, message, image) => {
@@ -111,14 +113,14 @@ export default function Chat({ history }) {
                 return;
             }
 
-            console.log()
             const reader = new FileReader();
             reader.onload = async (event) => {
                 socket.emit('emitMessage', {message: message, image: event.target.result});
                 ReactDOM.render(<span><div className="imageChatContainer"><Zoom><img className="imageChat" src={event.target.result} alt='imageChat'/></Zoom></div>{message}</span>, li);
                 await api.post(`/message/add`, {user: consignee.data._id, message: message, image: event.target.result}, { headers: {'userToken': userToken} });
             };
-        
+
+            document.getElementById('previewChat').style.backgroundImage = '';
             reader.readAsDataURL(image);
         } else{
             socket.emit('emitMessage', {message: message, image: ''});
@@ -176,10 +178,11 @@ export default function Chat({ history }) {
             <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
                 <div id="chatName">Conversation avec {consignee.data.pseudo}</div>
                 <ul id="messages">{loadMessages()}</ul>
-                <div id="previewChat" style={{backgroundImage: `url(${preview})`}}></div><div id="isWriting"></div>
+                <div id="previewChat"></div>
+                <div id="isWriting"></div>
                 <form id="form" action="">
                     <label htmlFor="imageChat"><Add /></label>
-                    <input id="imageChat" onChange={event => setImage(event.target.files[0])} type="file" accept=".jpg, .jpeg, .png"/>
+                    <input id="imageChat" onChange={() => document.getElementById('previewChat').style.backgroundImage = `url(${URL.createObjectURL(document.getElementById('imageChat').files[0])})`} type="file" accept=".jpg, .jpeg, .png"/>
                     <input id="message" autoComplete="off" onChange={ () => socket.emit('isWriting', user.data.pseudo) }/>
                     <button onClick={ (event) => sendMessage(event, document.getElementById('message').value, document.getElementById('imageChat').files[0]) }>Envoyer</button>
                 </form>
