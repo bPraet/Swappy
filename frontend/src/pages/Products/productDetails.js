@@ -4,7 +4,8 @@ import api from '../../services/api';
 
 import './products.css';
 
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress, Fab } from '@material-ui/core';
+import { ArrowBack } from '@material-ui/icons';
 import Zoom from 'react-medium-image-zoom';
 import { motion } from 'framer-motion';
 import adress from '../../services/config';
@@ -39,6 +40,11 @@ export default function ProductDetails({ history }) {
                     <div id="productDescription" className="productDetail">{product.data.description}</div>  
                     <div id="productCondition" className="productDetail">{product.data.condition.name}, {product.data.condition.description}</div>
                     <div id="productTransportDescription" className="productDetail">{product.data.transport.description}</div>
+                </div>
+                <div id="productDetailsBtn">
+                    <Fab aria-label="previous" id="backBtn" onClick={history.goBack}>
+                        <ArrowBack />
+                    </Fab>
                 </div>
             </div>
         </motion.div>

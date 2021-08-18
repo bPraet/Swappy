@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import { io } from 'socket.io-client';
@@ -107,8 +107,8 @@ export default function Chat({ history }) {
                 li.textContent = "ERREUR: Veuillez envoyer une image de type .jpg, .jpeg ou .png !";
                 li.scrollIntoView();
                 return;
-            } else if ((image.size / (1024*1024)).toFixed(2) > 2){
-                li.textContent = "ERREUR: Veuillez envoyer une image de moins de 2Mo !";
+            } else if ((image.size / (5242880)).toFixed(2) > 2){
+                li.textContent = "ERREUR: Veuillez envoyer une image de moins de 5Mo !";
                 li.scrollIntoView();
                 return;
             }
