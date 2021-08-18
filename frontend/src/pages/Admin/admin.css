@@ -1,0 +1,66 @@
+#usersGridContainer {
+    height: 70vh;
+    width: 100vw;
+    max-width: 1500px;
+    margin: auto;
+}
+
+#adminContainer {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 40px);
+}
+
+#adminActions {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+#mailContainer {
+    height: calc(100vh - 40px);
+}
+
+#mailForm {
+    display: flex;
+    height: calc(90vh - 40px);
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.MuiDataGrid-cell {
+    color: white;
+}
+
+.MuiDataGrid-columnHeaderTitle{
+    color: white;
+    font-weight: bold !important;
+}
+
+.MuiDataGrid-root .MuiDataGrid-columnsContainer{
+    border-bottom: 1px solid red !important;
+}
+
+.MuiGridPanelWrapper-root{
+    max-width: 100vw;
+}
+
+.MuiSelect-select:not([multiple]) option, .MuiSelect-select:not([multiple]) optgroup  {
+    background-color: black !important;
+    color: white !important;
+}
+
+.tox .tox-edit-area__iframe {
+    background-color: rgb(141, 153, 174)  !important;
+}
+
+.tox.tox-tinymce {
+    width: 80vw;
+    max-width: 1500px;
+    height: 60vh !important;
+}
+
+#sendBtn {
+    margin: 10px 40px;
+}

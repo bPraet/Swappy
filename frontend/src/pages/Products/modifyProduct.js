@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import api from '../../services/api';
 import adress from '../../services/config';
 
@@ -170,7 +170,7 @@ export default function ModifyProduct( {history} ){
                     </FormControl>
                     
                     <div id="btn">
-                        <Fab aria-label="previous" id="backBtn" component={Link} to={'/products'}>
+                        <Fab aria-label="previous" id="backBtn" onClick={history.goBack}>
                             <ArrowBack />
                         </Fab>
                         <Fab aria-label="delete" id="delBtn" onClick={ handleClickOpen }>

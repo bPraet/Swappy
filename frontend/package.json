@@ -5,11 +5,13 @@
   "homepage": "./",
   "dependencies": {
     "@material-ui/core": "^4.11.2",
+    "@material-ui/data-grid": "^4.0.0-alpha.37",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.60",
     "@testing-library/jest-dom": "^5.11.8",
     "@testing-library/react": "^11.2.3",
     "@testing-library/user-event": "^12.6.0",
+    "@tinymce/tinymce-react": "^3.12.6",
     "axios": "^0.21.1",
     "fontsource-roboto": "^4.0.0",
     "framer-motion": "^4.1.17",

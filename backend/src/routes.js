@@ -14,6 +14,7 @@ const matchController = require('./controllers/matchController');
 const uploadConfig = require('./config/upload');
 const swapController = require('./controllers/swapController');
 const messageController = require('./controllers/messageController');
+const adminController = require('./controllers/adminController');
 const upload = multer(uploadConfig);
 
 routes.get("/", (req, res) => {
@@ -70,5 +71,9 @@ routes.get('/messages/:user', verifyToken, messageController.getMessagesByUser);
 //Authentication
 routes.post('/user/register', authController.register);
 routes.post('/login', authController.login);
+
+//Admin
+routes.get('/admin/users', verifyToken, adminController.getUsers);
+routes.post('/admin/mail', verifyToken, adminController.sendEmail);
 
 module.exports = routes;

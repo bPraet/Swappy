@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Link } from 'react-router-dom';
 import api from '../../services/api';
 
 import { FormControl, TextField, Fab, CircularProgress, InputLabel, NativeSelect, Snackbar } from '@material-ui/core';
@@ -125,7 +124,7 @@ export default function AddProduct( {history} ){
                     </FormControl>
                     
                     <div id="btn">
-                        <Fab aria-label="previous" id="backBtn" component={Link} to={'/products'}>
+                        <Fab aria-label="previous" id="backBtn" onClick={history.goBack}>
                             <ArrowBack />
                         </Fab>
                         <Fab aria-label="add" id="addProductBtn" type="submit">

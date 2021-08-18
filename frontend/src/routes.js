@@ -14,6 +14,8 @@ import Proposal from './pages/Finder/proposal';
 import Chat from './pages/Chat';
 import Swaps from './pages/Swaps';
 import ErrorPage from './pages/ErrorPage';
+import Admin from './pages/Admin/';
+import Mail from './pages/Admin/mail';
 
 import { AppBar, BottomNavigation, BottomNavigationAction } from '@material-ui/core';
 import { Favorite, LocalMall, SwapHoriz, Person, Search } from '@material-ui/icons';
@@ -44,6 +46,8 @@ export default function Routes(){
                 <Route path='/chat/:userId' exact component={Chat} />
                 <Route path='/profile' exact component={Profile} />
                 <Route path='/swaps' exact component={Swaps} />
+                <Route path='/admin' exact component={Admin} />
+                <Route path='/admin/mail/:email' exact component={Mail} />
                 <Route component={ErrorPage} />
             </Switch>
         </HashRouter>

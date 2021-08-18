@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import './proposal.css';
 
 import { Grid, CircularProgress, FormControlLabel, Checkbox, Fab, FormControl } from '@material-ui/core';
@@ -98,7 +98,7 @@ export default function Proposal({ history }) {
                     </FormControl>
 
                     <div id="proposalBtn">
-                        <Fab aria-label="previous" id="backBtn" component={Link} to={'/finder'}>
+                        <Fab aria-label="previous" id="backBtn" onClick={history.goBack}>
                             <ArrowBack />
                         </Fab>
                         <Fab aria-label="add" id="addProductBtn" type="submit">

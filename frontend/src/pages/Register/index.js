@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import api from '../../services/api';
 
 import './register.css';
@@ -105,7 +104,7 @@ export default function Register({ history }){
                         onChange={event => setAdress(event.target.value)}/>
                     </FormControl>
                     <div id="btn">
-                        <Fab aria-label="previous" id="backBtn" component={Link} to={'/'}>
+                        <Fab aria-label="previous" id="backBtn" onClick={history.goBack}>
                             <ArrowBack />
                         </Fab>
                         <Fab aria-label="register" id="registerBtn" type="submit">

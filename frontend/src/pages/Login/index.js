@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import api from '../../services/api'
 
 import './login.css';
@@ -99,7 +98,7 @@ export default function Login({ history }){
                         <Fab aria-label="login" id="logBtn" type="submit">
                             <Done />
                         </Fab>
-                        <Fab aria-label="register" id="registerBtn" component={Link} to="/register">
+                        <Fab aria-label="register" id="registerBtn" onClick={() => window.location = '/#/register'}>
                             <Add />
                         </Fab>
                     </div>
