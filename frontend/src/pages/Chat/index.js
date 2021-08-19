@@ -67,7 +67,7 @@ export default function Chat({ history }) {
             messages.appendChild(li);
     
             if(message.image !== '')
-                ReactDOM.render(<span><div className="imageChatContainer"><Zoom><img className="imageChat" src={message.image} alt='imageChat'/></Zoom></div>{message.message}</span>, li);
+                ReactDOM.render(<span><div className="imageChatContainer"><Zoom overlayBgColorStart='rgba(43, 45, 66, 0)' overlayBgColorEnd='rgba(43, 45, 66, 0.95)'><img className="imageChat" src={message.image} alt='imageChat'/></Zoom></div>{message.message}</span>, li);
     
             li.scrollIntoView();
         }
@@ -117,7 +117,7 @@ export default function Chat({ history }) {
             const reader = new FileReader();
             reader.onload = async (event) => {
                 socket.emit('emitMessage', {message: message, image: event.target.result});
-                ReactDOM.render(<span><div className="imageChatContainer"><Zoom><img className="imageChat" src={event.target.result} alt='imageChat'/></Zoom></div>{message}</span>, li);
+                ReactDOM.render(<span><div className="imageChatContainer"><Zoom overlayBgColorStart='rgba(43, 45, 66, 0)' overlayBgColorEnd='rgba(43, 45, 66, 0.95)'><img className="imageChat" src={event.target.result} alt='imageChat'/></Zoom></div>{message}</span>, li);
                 await api.post(`/message/add`, {user: consignee.data._id, message: message, image: event.target.result}, { headers: {'userToken': userToken} });
             };
 
@@ -139,7 +139,7 @@ export default function Chat({ history }) {
                     alreadySentMessages.push(
                         <li className="to" key={i}>
                             <div className="imageChatContainer">
-                                <Zoom>
+                                <Zoom overlayBgColorStart='rgba(43, 45, 66, 0)' overlayBgColorEnd='rgba(43, 45, 66, 0.95)'>
                                     <img src={message.image} className="imageChat" alt={'imageMessage'+i}/>
                                 </Zoom>
                             </div>
@@ -155,7 +155,7 @@ export default function Chat({ history }) {
                     alreadySentMessages.push(
                         <li className="from" key={i}>
                             <div className="imageChatContainer">
-                                <Zoom>
+                                <Zoom overlayBgColorStart='rgba(43, 45, 66, 0)' overlayBgColorEnd='rgba(43, 45, 66, 0.95)'>
                                     <img src={message.image} className="imageChat" alt={'imageMessage'+i}/>
                                 </Zoom>
                             </div>

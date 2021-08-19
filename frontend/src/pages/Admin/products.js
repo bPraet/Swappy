@@ -33,7 +33,7 @@ export default function AdminProducts({ history }){
 
     const getImage = (params) => {
         return(
-            <Zoom>
+            <Zoom overlayBgColorStart='rgba(43, 45, 66, 0)' overlayBgColorEnd='rgba(43, 45, 66, 0.95)'>
                 <img src={adress + '/files/' + params.row.image} alt={params.row.name} className="adminGridImg"></img>
             </Zoom>
         );

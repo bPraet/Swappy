@@ -34,7 +34,7 @@ export default function ProductDetails({ history }) {
         <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
             <div id='productDetails'>
                 <div id="productName" className="productDetail"><h1>{product.data.name}</h1></div>
-                <Zoom>
+                <Zoom overlayBgColorStart='rgba(43, 45, 66, 0)' overlayBgColorEnd='rgba(43, 45, 66, 0.95)'>
                     <img alt="productImg" id="productImg" src= {adress + '/files/' + product.data.image} draggable="false"/>
                 </Zoom>
                 <div id="productDetailsContainer">

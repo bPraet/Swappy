@@ -132,7 +132,7 @@ export default function ModifyProduct( {history} ){
                 </Snackbar>
                 <form id="addProductForm" onSubmit={handleSubmit}>
                     <div id="productImageContainer">
-                        <Zoom><img id="productFormImg" src={adress + '/files/' + product.data.image} draggable="false" alt="productImg"></img></Zoom>
+                        <Zoom overlayBgColorStart='rgba(43, 45, 66, 0)' overlayBgColorEnd='rgba(43, 45, 66, 0.95)'><img id="productFormImg" src={adress + '/files/' + product.data.image} draggable="false" alt="productImg"></img></Zoom>
                     </div>
                     <FormControl className="productForm">
                         <TextField id="name" label="Nom" defaultValue={product.data.name}

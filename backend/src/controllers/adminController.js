@@ -72,7 +72,6 @@ module.exports = {
 
                     await Product.find({user: userId})
                     .then(async (products) => {
-                        console.log(products);
                         for(const product of products) {
                             await Product.deleteOne({"_id" : product._id});
                             fs.unlink(`./files/${product.image}`, () => {});

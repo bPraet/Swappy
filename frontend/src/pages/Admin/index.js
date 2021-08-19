@@ -142,7 +142,7 @@ export default function Admin({ history }){
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description"
                 >
-                    <DialogTitle id="alert-dialog-title">{"Supprimer le produit ?"}</DialogTitle>
+                    <DialogTitle id="alert-dialog-title">{"Supprimer l'utilisateur ?"}</DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
                             Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action est irréversible !
