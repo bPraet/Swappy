@@ -32,6 +32,7 @@ export default function Chat({ history }) {
         api.get('/user', { headers: {'userToken': userToken} }).then( result => {
             setUser(result);
         }).catch((err) => {
+            localStorage.removeItem('userToken');
             history.push('/');
         });
 
@@ -182,7 +183,7 @@ export default function Chat({ history }) {
                 <div id="isWriting"></div>
                 <form id="form" action="">
                     <label htmlFor="imageChat"><Add /></label>
-                    <input id="imageChat" onChange={() => document.getElementById('previewChat').style.backgroundImage = `url(${URL.createObjectURL(document.getElementById('imageChat').files[0])})`} type="file" accept=".jpg, .jpeg, .png"/>
+                    <input id="imageChat" onChange={() => document.getElementById('previewChat').style.backgroundImage = `url(${URL.createObjectURL(document.getElementById('imageChat').files[0])})`} type="file" accept=".jpg, .jpeg"/>
                     <input id="message" autoComplete="off" onChange={ () => socket.emit('isWriting', user.data.pseudo) }/>
                     <button onClick={ (event) => sendMessage(event, document.getElementById('message').value, document.getElementById('imageChat').files[0]) }>Envoyer</button>
                 </form>

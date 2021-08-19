@@ -23,6 +23,7 @@ export default function Matchs({ history }) {
             api.get('/matchs', { headers: { 'userToken': userToken } }).then(result => {
                 setMatchs(result);
             }).catch((err) => {
+                localStorage.removeItem('userToken');
                 history.push('/');
             });
         }

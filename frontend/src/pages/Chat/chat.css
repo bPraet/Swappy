@@ -24,6 +24,7 @@ html {
     flex-grow: 1; 
     border-radius: 10px; 
     margin: 0.25rem; 
+    width: 10%;
 }
 
 #message:focus { 

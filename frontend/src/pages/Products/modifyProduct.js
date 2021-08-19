@@ -38,6 +38,7 @@ export default function ModifyProduct( {history} ){
         api.get('/transports', { headers: {'userToken': userToken} }).then( result => {
             setTransports(result);
         }).catch((err) => {
+            localStorage.removeItem('userToken');
             history.push('/');
         });
         api.get('/conditions', { headers: {'userToken': userToken} }).then(result => {

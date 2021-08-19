@@ -23,6 +23,7 @@ export default function Finder({ history }) {
             result.data.reverse();
             setProducts(result);
         }).catch((err) => {
+            localStorage.removeItem('userToken');
             history.push('/');
         });
     }, [history, update]);

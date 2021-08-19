@@ -81,7 +81,7 @@ export default function Proposal({ history }) {
             }
         }
         else{
-            products.push("Vous n'avez pas encore de produit à échanger, veuillez en ajouter !")
+            products.push(<h1 key='noProducts'>Vous n'avez pas encore de produit à échanger, veuillez en ajouter !</h1>)
         }
 
         return products;

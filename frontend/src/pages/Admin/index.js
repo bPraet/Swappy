@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import { DataGrid } from '@material-ui/data-grid';
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Snackbar } from '@material-ui/core';
+import MuiAlert from '@material-ui/lab/Alert';
 import { Mail, Block } from '@material-ui/icons';
 
 import './admin.css';
@@ -12,23 +13,56 @@ import api from '../../services/api';
 export default function Admin({ history }){
 
     const [users, setUsers] = useState([]);
+    const [open, setOpen] = useState(false);
+    const [openMessage, setOpenMessage] = useState(false);
+    const [userChoice, setUserChoice] = useState('');
+    const [message, setMessage] = useState('');
+    const userToken = localStorage.getItem('userToken');
 
     useEffect(() => {
-        const userToken = localStorage.getItem('userToken');
-
         api.get('/admin/users', { headers: { 'userToken': userToken } }).then(result => {
             result.data.forEach((user, i) => {
                 user.id = i + 1
-                user.actions = <button>coucou</button>
             });
             setUsers(result.data);
         }).catch((err) => {
             history.push('/');
         });
-    }, [history]);
+    }, [history, userToken]);
 
     if(users === undefined)
         return <CircularProgress size="100px"/>;
+
+
+    const deleteUser = async () => {
+        try {
+            await api.delete(`/admin/delete/${userChoice}`, { headers: {'userToken': userToken} });
+            setOpen(false);
+            setMessage('Utilisateur supprimé avec succès !');
+            setOpenMessage(true);
+            setUsers(users.filter(user => user._id !== userChoice));
+        } catch (error) {
+            console.log(error);
+            return;
+        }
+    }
+
+    const setChoice = (userId) => {
+        setOpen(true);
+        setUserChoice(userId);
+    }
+
+    const handleCloseMessage = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        setOpenMessage(false);
+      };
+
+    const Alert = (props) => {
+        return <MuiAlert elevation={6} variant="filled" {...props} />;
+    }
 
     const renderActions = (params) => {
         return (
@@ -36,7 +70,7 @@ export default function Admin({ history }){
             <Link to={`/admin/mail/${params.row.email}`}>
                 <Mail />
             </Link>
-            <Link to={`/admin/block/${params.row._id}`}>
+            <Link to={'#'} onClick={() => setChoice(params.row._id)}>
                 <Block />
             </Link>
         </div>
@@ -82,6 +116,11 @@ export default function Admin({ history }){
     return(
        <div id="adminContainer">
             <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}}>
+                <Snackbar open={openMessage} autoHideDuration={6000} onClose={handleCloseMessage}>
+                    <Alert onClose={handleCloseMessage} severity="error">
+                        {message}
+                    </Alert>
+                </Snackbar>
                 <h1>Panneau d'administration</h1>
 
                 <div id="usersGridContainer">
@@ -90,8 +129,31 @@ export default function Admin({ history }){
                         columns={columns}
                         pageSize={20}
                         rowsPerPageOptions={[20]}
+                        disableSelectionOnClick
                     />
                 </div>
+
+                <Dialog
+                    open={open}
+                    onClose={() => setOpen(false)}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">{"Supprimer le produit ?"}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action est irréversible !
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => setOpen(false)} color="primary">
+                            Non
+                        </Button>
+                        <Button onClick={() => deleteUser()} color="primary" autoFocus>
+                            Oui
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </motion.div>
             
         </div>

@@ -76,5 +76,6 @@ routes.post('/login', authController.login);
 routes.get('/admin/users', verifyToken, adminController.getUsers);
 routes.post('/admin/mail', verifyToken, adminController.sendEmail);
 routes.get('/isAdmin', verifyToken, adminController.isAdmin);
+routes.delete('/admin/delete/:userId', verifyToken, adminController.deleteUser);
 
 module.exports = routes;

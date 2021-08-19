@@ -31,6 +31,7 @@ export default function AddProduct( {history} ){
             setTransports(result);
             setTransportId(result.data[0]._id);
         }).catch((err) => {
+            localStorage.removeItem('userToken');
             history.push('/');
         });
         api.get('/conditions', { headers: {'userToken': userToken} }).then(result => {

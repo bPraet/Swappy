@@ -21,6 +21,7 @@ export default function Matchs({ history }) {
         api.get('/user', { headers: {'userToken': userToken} }).then(result => {
             setUser(result);
         }).catch((err) => {
+            localStorage.removeItem('userToken');
             history.push('/');
         });
 

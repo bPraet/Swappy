@@ -22,6 +22,7 @@ export default function ProductDetails({ history }) {
         api.get(`/product/${productId}`, { headers: { 'userToken': userToken } }).then(result => {
             setProduct(result);
         }).catch((err) => {
+            localStorage.removeItem('userToken');
             history.push('/');
         });
     }, [history, productId, userToken]);

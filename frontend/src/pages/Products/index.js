@@ -20,6 +20,7 @@ export default function Products({ history }){
         api.get('/productsUser', { headers: { 'userToken': userToken } }).then(result => {
             setProductsUser(result);
         }).catch((err) => {
+            localStorage.removeItem('userToken');
             history.push('/');
         });
 

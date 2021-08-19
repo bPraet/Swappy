@@ -30,6 +30,8 @@ export default function Profile({ history }) {
         api.get('/user', { headers: {'userToken': userToken} }).then( result => {
             setUser(result);
         }).catch((err) => {
+            console.log(err);
+            localStorage.removeItem('userToken');
             history.push('/');
         });
 
