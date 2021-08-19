@@ -16,6 +16,7 @@ import Swaps from './pages/Swaps';
 import ErrorPage from './pages/ErrorPage';
 import Admin from './pages/Admin/';
 import Mail from './pages/Admin/mail';
+import AdminProducts from './pages/Admin/products';
 
 import { AppBar, BottomNavigation, BottomNavigationAction } from '@material-ui/core';
 import { Favorite, LocalMall, SwapHoriz, Person, Search } from '@material-ui/icons';
@@ -48,6 +49,7 @@ export default function Routes(){
                 <Route path='/swaps' exact component={Swaps} />
                 <Route path='/admin' exact component={Admin} />
                 <Route path='/admin/mail/:email' exact component={Mail} />
+                <Route path='/admin/products/:userId' exact component={AdminProducts} />
                 <Route component={ErrorPage} />
             </Switch>
         </HashRouter>

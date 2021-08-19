@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { DataGrid } from '@material-ui/data-grid';
 import { CircularProgress, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
-import { Mail, Block } from '@material-ui/icons';
+import { Mail, Block, LocalMall } from '@material-ui/icons';
 
 import './admin.css';
 
@@ -67,6 +67,9 @@ export default function Admin({ history }){
     const renderActions = (params) => {
         return (
         <div id="adminActions">
+            <Link to={`/admin/products/${params.row._id}`}>
+                <LocalMall />
+            </Link>
             <Link to={`/admin/mail/${params.row.email}`}>
                 <Mail />
             </Link>

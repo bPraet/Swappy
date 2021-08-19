@@ -1,0 +1,19 @@
+#errorContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(90vh - 40px);
+}
+
+#error404{
+    font-size: 20vw;
+    color: rgba(255, 0, 0, 0.5);
+    text-align: center;
+}
+
+#error404message{
+    text-align: center;
+    font-size: min(max(4vw, 4px), 30px);
+    max-width: 1500px;
+    color: white;
+}
