@@ -7,7 +7,8 @@ import './profile.css';
 import { FormControl, TextField, Fab, CircularProgress, Button,
 Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Snackbar, Input, InputLabel, InputAdornment, IconButton } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
-import { Done, RotateLeft, ArrowBack, ExitToApp, Visibility, VisibilityOff, Star } from '@material-ui/icons';
+import { Done, RotateLeft, ArrowBack, ExitToApp, Visibility, VisibilityOff } from '@material-ui/icons';
+import logo from '../../assets/logo.png';
 import { motion } from 'framer-motion';
 
 export default function Profile({ history }) {
@@ -155,7 +156,7 @@ export default function Profile({ history }) {
                         </Fab>
                         {isAdmin ? 
                         <Fab arial-label="admin" id="adminBtn" component={Link} to="/admin">
-                            <Star />
+                            <img src={logo} height="40px" alt="logo"></img>
                         </Fab> : ''}
                         <Fab aria-label="update" id="updateBtn" type="submit">
                             <Done />

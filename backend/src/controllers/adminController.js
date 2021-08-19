@@ -30,6 +30,11 @@ module.exports = {
                 res.sendStatus(403);
             }
             else{
+                if(authData.user.role !== userTypes.ADMIN){
+                    res.sendStatus(403);
+                    return;
+                }
+                    
                 try {
                     const user = await User.find({});
 
@@ -50,6 +55,11 @@ module.exports = {
             }
             else {
                 const { userId } = req.params;
+
+                if(authData.user.role !== userTypes.ADMIN){
+                    res.sendStatus(403);
+                    return;
+                }
 
                 try{
                     await User.deleteMany({ "_id" : userId});
@@ -78,6 +88,32 @@ module.exports = {
         });
     },
 
+    getProducts(req, res) {
+        jwt.verify(req.token, process.env.SECRET, async(err, authData) => {
+            if(err){
+                res.sendStatus(403);
+            }
+            else{
+                const { userId } = req.params;
+
+                if(authData.user.role !== userTypes.ADMIN){
+                    res.sendStatus(403);
+                    return;
+                }
+                
+                try {
+                    const products = await Product.find({user: userId}).populate('transport').populate('condition');
+
+                    return res.json(products);
+                } catch (error) {
+                    return res.status(400).json({
+                        message: 'User does not exist'
+                    });
+                }
+            }
+        });
+    },
+
     sendEmail(req, res) {
         jwt.verify(req.token, process.env.SECRET, async (err, authData) => {
             if(err) {
@@ -85,6 +121,11 @@ module.exports = {
             }
             else {
                 const { email, message } = req.body;
+
+                if(authData.user.role !== userTypes.ADMIN){
+                    res.sendStatus(403);
+                    return;
+                }
 
                 if(!email || !message){
                     return res.json('Field missing');
@@ -100,7 +141,6 @@ module.exports = {
                     },
                 });
 
-                //test
                 readHTMLFile('email/index.html', async (err, html) => {
                     const template = handlebars.compile(html);
                     const replacements = {
