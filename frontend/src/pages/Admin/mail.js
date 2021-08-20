@@ -83,6 +83,7 @@ export default function Mail({ history }) {
               toolbar:
                 "undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | help",
               skin: "oxide-dark",
+              language: 'fr_FR'
             }}
             onChange={(event) => setMessage(event.target.getContent())}
           />

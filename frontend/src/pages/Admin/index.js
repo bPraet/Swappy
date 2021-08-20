@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { DataGrid } from "@material-ui/data-grid";
+import { DataGrid, frFR } from "@material-ui/data-grid";
 import {
   CircularProgress,
   Dialog,
@@ -152,6 +152,7 @@ export default function Admin({ history }) {
             pageSize={20}
             rowsPerPageOptions={[20]}
             disableSelectionOnClick
+            localeText={frFR.props.MuiDataGrid.localeText}
           />
         </div>
 
