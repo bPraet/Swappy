@@ -22,10 +22,24 @@ const readHTMLFile = (path, callback) => {
 
 module.exports = {
   adminControl(role) {
-    if (role !== userTypes.ADMIN) {
+    if (role.toString() !== userTypes.ADMIN) {
       return false;
     }
     return true;
+  },
+
+  async getUsers() {
+    const users = await User.find({});
+
+    return users;
+  },
+
+  async getProducts(userId) {
+    const products = await Product.find({ user: userId })
+      .populate("transport")
+      .populate("condition");
+
+    return products;
   },
 
   async deleteUser(userId) {
@@ -46,7 +60,7 @@ module.exports = {
   },
 
   mailControl(email, message) {
-    if (!email || !message) {
+    if (!email || !message || email === "" || message === "") {
       return false;
     }
     return true;

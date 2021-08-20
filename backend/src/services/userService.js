@@ -153,4 +153,16 @@ module.exports = {
       return "Impossible de mettre à jour votre profil !";
     }
   },
+
+  async getProfile(userId) {
+    const user = await User.findById(userId);
+
+    return user;
+  },
+
+  async getById(userId) {
+    const user = await User.findById(userId).populate("role");
+
+    return user;
+  },
 };

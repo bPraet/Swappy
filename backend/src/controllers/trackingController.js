@@ -1,38 +1,23 @@
-const AlreadySeen = require("../models/AlreadySeen");
-const jwt = require("jsonwebtoken");
+const trackingService = require("../services/trackingService");
 
 module.exports = {
   addAlreadySeen(req, res) {
-    jwt.verify(req.token, process.env.SECRET, async (err, authData) => {
-      if (err) {
-        res.sendStatus(403);
-      } else {
-        const { productId } = req.body;
+    const { productId } = req.body;
 
-        const alreadySeen = await AlreadySeen.create({
-          user: authData.user.userId,
-          product: productId,
-        });
-
-        return res.json(alreadySeen);
-      }
-    });
+    try {
+      trackingService
+        .add(req.loggedUser._id, productId)
+        .then((alreadySeen) => res.json(alreadySeen));
+    } catch (error) {
+      return res.status(400).json("Impossible de l'ajouter dans l'historique");
+    }
   },
 
   resetAlreadySeen(req, res) {
-    jwt.verify(req.token, process.env.SECRET, async (err, authData) => {
-      if (err) {
-        res.sendStatus(403);
-      } else {
-        try {
-          await AlreadySeen.deleteMany({ user: authData.user.userId });
-          return res.json({ message: "Successfully deleted" });
-        } catch (error) {
-          return res.status(400).json({
-            message: "Impossible to delete already seen products",
-          });
-        }
-      }
-    });
+    try {
+      trackingService.reset(req.loggedUser._id).then(alreadySeen => res.json(alreadySeen));
+    } catch (error) {
+      return res.status(400).json("Impossible de supprimer l'historique");
+    }
   },
 };

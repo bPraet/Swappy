@@ -23,8 +23,14 @@ module.exports = {
         { user: { $nin: userId } },
       ],
     })
-      .sort({ _id: 1 })
+      .sort({ _id: -1 })
       .limit(3);
+
+    return products;
+  },
+
+  async getProductsByUserId(userId) {
+    const products = await Product.find({ user: userId });
 
     return products;
   },
@@ -38,6 +44,12 @@ module.exports = {
       .execPopulate();
 
     return product;
+  },
+
+  async getAll(){
+    const products = await Product.find({});
+
+    return products;
   },
 
   addControl(name, description, conditionId, transportId, image) {
@@ -58,10 +70,23 @@ module.exports = {
     return false;
   },
 
+  async add(name, description, userId, image, conditionId, transportId) {
+    const product = await Product.create({
+      name: name,
+      description: description,
+      user: userId,
+      image: image,
+      condition: conditionId,
+      transport: transportId,
+    });
+
+    return product;
+  },
+
   updateControl(product, userId, name, description, conditionId, transportId) {
     if (!product) return "Le produit n'existe pas !";
 
-    if (userId != product.user) return "Tu ne possèdes pas ce produit !";
+    if (userId.toString() !== product.user._id.toString()) return "Tu ne possèdes pas ce produit !";
 
     if (!name || !description || !conditionId || !transportId)
       return "Champs requis manquant !";
@@ -87,6 +112,20 @@ module.exports = {
     return image;
   },
 
+  async update(productId, name, description, image, conditionId, transportId){
+    await Product.findByIdAndUpdate(
+      productId,
+      {
+        name: name,
+        description: description,
+        image: image,
+        condition: conditionId,
+        transport: transportId,
+      },
+      { useFindAndModify: false }
+    );
+  },
+
   async delete(productId, userId) {
     let product;
 
@@ -98,7 +137,7 @@ module.exports = {
 
     if (!product) return "Ce produit n'existe pas";
 
-    if (userId != product.user) return "Tu ne possèdes pas ce produit !";
+    if (userId.toString() !== product.user._id.toString()) return "Tu ne possèdes pas ce produit !";
 
     try {
       await Product.findByIdAndDelete(productId);

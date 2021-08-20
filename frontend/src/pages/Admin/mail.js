@@ -25,8 +25,8 @@ export default function Mail({ history }) {
           { email, message },
           { headers: { userToken: userToken } }
         )
-        .then(() => {
-          setInfoMessage("Email envoyé avec succès !");
+        .then((response) => {
+          setInfoMessage(response.data);
           setOpenMessage(true);
         })
         .catch(

@@ -1,79 +1,43 @@
 const User = require("../models/User");
-const Role = require("../models/Role");
 const jwt = require("jsonwebtoken");
 const userService = require("../services/userService");
+const roleService = require("../services/roleService");
 
 module.exports = {
   getUserById(req, res) {
-    jwt.verify(req.token, process.env.SECRET, async (err, authData) => {
-      if (err) {
-        res.sendStatus(403);
-      } else {
-        const { userId } = req.params;
+    const { userId } = req.params;
 
-        try {
-          const user = await User.findById(userId);
-          await user.populate("role").execPopulate();
-
-          return res.json(user);
-        } catch (error) {
-          return res.status(400).json({
-            message: "User does not exist, do you want to register instead ?",
-          });
-        }
-      }
-    });
+    try {
+      userService.getById(userId).then((user) => res.json(user));
+    } catch (error) {
+      return res.status(400).json("Impossible de récupérer l'utilisateur");
+    }
   },
 
   addRole(req, res) {
-    jwt.verify(req.token, process.env.SECRET, async (err, authData) => {
-      if (err) {
-        res.sendStatus(403);
-      } else {
-        const { name, description } = req.body;
+    const { name, description } = req.body;
 
-        const role = await Role.create({
-          name: name,
-          description: description,
-        });
-
-        return res.json(role);
-      }
-    });
+    try {
+      roleService.add(name, description);
+    } catch (error) {
+      return res.status(400).json("Impossible d'ajouter le rôle");
+    }
   },
 
   getProfile(req, res) {
-    jwt.verify(req.token, process.env.SECRET, async (err, authData) => {
-      if (err) {
-        res.sendStatus(403);
-      } else {
-        try {
-          const user = await User.findById(authData.user.userId);
-          return res.json(user);
-        } catch (error) {
-          return res.status(400).json({
-            message: "User does not exist",
-          });
-        }
-      }
-    });
+    try {
+      userService.getProfile(req.loggedUser._id).then((user) => res.json(user));
+    } catch (error) {
+      return res.status(400).json("Impossible de récupérer le profil");
+    }
   },
 
   updateProfile(req, res) {
-    jwt.verify(req.token, process.env.SECRET, async (err, authData) => {
-      if (err) {
-        res.sendStatus(403);
-      } else {
-        const { email, password, lastName, firstName, pseudo, adress } =
-          req.body;
-        const user = await User.findById(authData.user.userId);
-        const control = await userService.updateControl(
-          password,
-          email,
-          pseudo,
-          user
-        );
+    const { email, password, lastName, firstName, pseudo, adress } = req.body;
 
+    userService
+      .updateControl(password, email, pseudo, req.loggedUser)
+      .then((control) => {
         if (control === true) {
           try {
             userService
@@ -84,18 +48,17 @@ module.exports = {
                 firstName,
                 pseudo,
                 adress,
-                authData.user.userId
+                req.loggedUser._id
               )
               .then((response) => res.send(response));
           } catch (error) {
             return res.status(400).json({
-              message: "User does not exist",
+              message: "Impossible de mettre à jour le profil",
             });
           }
         } else {
           return res.send(control);
         }
-      }
-    });
+      });
   },
 };

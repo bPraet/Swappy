@@ -13,6 +13,7 @@ const verifyToken = (req, res, next) => {
                 await User.findById(authData.user.userId).then(user => {
                     if(user){
                         req.token = bearerToken;
+                        req.loggedUser = user;
                         next();
                     }
                     else{

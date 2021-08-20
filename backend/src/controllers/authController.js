@@ -39,7 +39,7 @@ module.exports = {
         message: control,
       });
     } catch (error) {
-      throw Error(`Error while registering a new user: ${error}`);
+      throw Error(`Erreur lors de l'enregistrement du nouvel utilisateur: ${error}`);
     }
   },
 
@@ -63,7 +63,7 @@ module.exports = {
 
       return res.json({ message: control });
     } catch (error) {
-      throw Error(`Error while Authenticating a user ${error}`);
+      throw Error(`Erreur lors de l'authentification du nouvel utilisateur: ${error}`);
     }
   },
 };

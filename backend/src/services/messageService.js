@@ -16,4 +16,15 @@ module.exports = {
 
     return messages;
   },
+
+  async addMessage(userId, user, message, image) {
+    const response = await Message.create({
+      user1: userId,
+      user2: user,
+      message: message,
+      image: image,
+    });
+
+    return response;
+  },
 };

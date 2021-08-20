@@ -3,280 +3,185 @@ const Product = require("../models/Product");
 const Transport = require("../models/Transport");
 const productService = require("../services/productService");
 const jwt = require("jsonwebtoken");
+const conditionService = require("../services/conditionService");
+const transportService = require("../services/transportService");
 
 module.exports = {
   addProduct(req, res) {
-    jwt.verify(req.token, process.env.SECRET, async (err, authData) => {
-      if (err) {
-        res.sendStatus(403);
-      } else {
-        const { name, description, conditionId, transportId } = req.body;
+    const { name, description, conditionId, transportId } = req.body;
 
-        if (
-          (message = productService.addControl(
-            name,
-            description,
-            conditionId,
-            transportId,
-            req.file
-          ))
-        ) {
-          return res.status(400).json(message);
-        }
+    if (
+      (message = productService.addControl(
+        name,
+        description,
+        conditionId,
+        transportId,
+        req.file
+      ))
+    ) {
+      return res.status(400).json(message);
+    }
 
-        const image = req.file.filename;
-        const product = await Product.create({
-          name: name,
-          description: description,
-          user: authData.user.userId,
-          image: image,
-          condition: conditionId,
-          transport: transportId,
-        });
-
-        return res.json(product);
-      }
-    });
+    const image = req.file.filename;
+    try {
+      productService
+        .add(
+          name,
+          description,
+          req.loggedUser._id,
+          image,
+          conditionId,
+          transportId
+        )
+        .then((product) => res.json(product));
+    } catch (error) {
+      res.status(400).json("Impossible d'ajouter le produit");
+    }
   },
 
   getProductById(req, res) {
-    jwt.verify(req.token, process.env.SECRET, async (err, authData) => {
-      if (err) {
-        res.sendStatus(403);
-      } else {
-        const { productId } = req.params;
+    const { productId } = req.params;
 
-        try {
-          const product = await productService.getDetails(productId);
-
-          return res.json(product);
-        } catch (error) {
-          return res.status(400).json({
-            message: "Product does not exist",
-          });
-        }
-      }
-    });
+    try {
+      productService.getDetails(productId).then((product) => res.json(product));
+    } catch (error) {
+      return res.status(400).json("Impossible de récupérer le produit");
+    }
   },
 
   getProductsByUserId(req, res) {
-    jwt.verify(req.token, process.env.SECRET, async (err, authData) => {
-      if (err) {
-        res.sendStatus(403);
-      } else {
-        try {
-          const products = await Product.find({ user: authData.user.userId });
-          return res.json(products);
-        } catch (error) {
-          return res.status(400).json({
-            message: "No products yet",
-          });
-        }
-      }
-    });
+    try {
+      productService
+        .getProductsByUserId(req.loggedUser._id)
+        .then((products) => res.json(products));
+    } catch (error) {
+      return res.status(400).json("Impossible de récupérer les produits");
+    }
   },
 
   getNotSeenProductsByUserId(req, res) {
-    jwt.verify(req.token, process.env.SECRET, async (err, authData) => {
-      if (err) {
-        res.sendStatus(403);
-      } else {
-        try {
-          const products = await productService.getNotSeenProducts(
-            authData.user.userId
-          );
-          return res.json(products);
-        } catch (error) {
-          return res.status(400).json({
-            message: "No products yet",
-          });
-        }
-      }
-    });
+    try {
+      productService
+        .getNotSeenProducts(req.loggedUser._id)
+        .then((products) => res.json(products));
+    } catch (error) {
+      return res.status(400).json("Impossible de récupérer les produits");
+    }
   },
 
   getProducts(req, res) {
-    jwt.verify(req.token, process.env.SECRET, async (err, authData) => {
-      if (err) {
-        res.sendStatus(403);
-      } else {
-        try {
-          const products = await Product.find({});
-
-          return res.json(products);
-        } catch (error) {
-          return res.status(400).json({
-            message: "No products yet",
-          });
-        }
-      }
-    });
+    try {
+      productService.getAll().then((products) => res.json(products));
+    } catch (error) {
+      return res.status(400).json({
+        message: "Impossible de récupérer les produits",
+      });
+    }
   },
 
   updateProduct(req, res) {
-    jwt.verify(req.token, process.env.SECRET, async (err, authData) => {
-      if (err) {
-        res.sendStatus(403);
-      } else {
-        const { name, description, conditionId, transportId } = req.body;
-        const { productId } = req.params;
-        const product = await Product.findById(productId);
-        let image = req.file;
+    const { name, description, conditionId, transportId } = req.body;
+    const { productId } = req.params;
+    let image = req.file;
+    productService.getDetails(productId).then((product) => {
+      if (
+        (message = productService.updateControl(
+          product,
+          req.loggedUser._id,
+          name,
+          description,
+          conditionId,
+          transportId
+        ))
+      ) {
+        return res.status(400).json(message);
+      }
 
-        if (
-          (message = productService.updateControl(
-            product,
-            authData.user.userId,
-            name,
-            description,
-            conditionId,
-            transportId
-          ))
-        ) {
-          return res.status(400).json(message);
-        }
+      image = productService.updateImage(image, product);
 
-        image = productService.updateImage(image, product);
-
-        try {
-          await Product.findByIdAndUpdate(
-            productId,
-            {
-              name: name,
-              description: description,
-              image: image,
-              condition: conditionId,
-              transport: transportId,
-            },
-            { useFindAndModify: false }
-          );
-          return res.json("Produit mis à jour avec succès");
-        } catch (error) {
-          return res.status(400).json("Le produit n'existe pas");
-        }
+      try {
+        productService
+          .update(productId, name, description, image, conditionId, transportId)
+          .then(res.json("Produit mis à jour avec succès"));
+      } catch (error) {
+        return res.status(400).json("Impossible de mettre le produit à jour");
       }
     });
   },
 
   delProduct(req, res) {
-    jwt.verify(req.token, process.env.SECRET, async (err, authData) => {
-      if (err) {
-        res.sendStatus(403);
-      } else {
-        const { productId } = req.params;
+    const { productId } = req.params;
 
-        productService
-          .delete(productId, authData.user.userId)
-          .then((response) => res.send(response));
-      }
-    });
+    try {
+      productService
+        .delete(productId, req.loggedUser._id)
+        .then((response) => res.send(response));
+    } catch (error) {
+      return res.status(400).json("Impossible de supprimer le produit");
+    }
   },
 
   addCondition(req, res) {
-    jwt.verify(req.token, process.env.SECRET, async (err, authData) => {
-      if (err) {
-        res.sendStatus(403);
-      } else {
-        const { name, description } = req.body;
+    const { name, description } = req.body;
 
-        const condition = await Condition.create({
-          name: name,
-          description: description,
-        });
-
-        return res.json(condition);
-      }
-    });
+    try {
+      conditionService
+        .add(name, description)
+        .then((condition) => res.json(condition));
+    } catch (error) {
+      return res.status(400).json("Impossible d'ajouter la condition");
+    }
   },
 
   addTransport(req, res) {
-    jwt.verify(req.token, process.env.SECRET, async (err, authData) => {
-      if (err) {
-        res.sendStatus(403);
-      } else {
-        const { name, description } = req.body;
+    const { name, description } = req.body;
 
-        const transport = await Transport.create({
-          name: name,
-          description: description,
-        });
-
-        return res.json(transport);
-      }
-    });
+    try {
+      transportService
+        .add(name, description)
+        .then((transport) => res.json(transport));
+    } catch (error) {
+      return res.status(400).json("Impossible d'ajouter le transport");
+    }
   },
 
   getConditions(req, res) {
-    jwt.verify(req.token, process.env.SECRET, async (err, authData) => {
-      if (err) {
-        res.sendStatus(403);
-      } else {
-        try {
-          const conditions = await Condition.find({});
-
-          return res.json(conditions);
-        } catch (error) {
-          return res.status(400).json({
-            message: "No conditions yet",
-          });
-        }
-      }
-    });
+    try {
+      conditionService.getAll().then((conditions) => res.json(conditions));
+    } catch (error) {
+      return res.status(400).json("Impossible de récupérer les conditions");
+    }
   },
 
   getConditionById(req, res) {
-    jwt.verify(req.token, process.env.SECRET, async (err, authData) => {
-      if (err) {
-        res.sendStatus(403);
-      } else {
-        const { conditionId } = req.params;
+    const { conditionId } = req.params;
 
-        try {
-          const condition = await Condition.findById(conditionId);
-          return res.json(condition);
-        } catch (error) {
-          return res.status(400).json({
-            message: "Condition does not exist",
-          });
-        }
-      }
-    });
+    try {
+      conditionService
+        .getById(conditionId)
+        .then((condition) => res.json(condition));
+    } catch (error) {
+      return res.status(400).json("Impossible de récupérer la condition");
+    }
   },
 
   getTransports(req, res) {
-    jwt.verify(req.token, process.env.SECRET, async (err, authData) => {
-      if (err) {
-        res.sendStatus(403);
-      } else {
-        try {
-          const transports = await Transport.find({});
-
-          return res.json(transports);
-        } catch (error) {
-          return res.status(400).json({
-            message: "No transports yet",
-          });
-        }
-      }
-    });
+    try {
+      transportService.getAll().then((transports) => res.json(transports));
+    } catch (error) {
+      return res.status(400).json("Impossible de récupérer les transports");
+    }
   },
 
   getTransportById(req, res) {
-    jwt.verify(req.token, process.env.SECRET, async (err, authData) => {
-      if (err) {
-        res.sendStatus(403);
-      } else {
-        const { transportId } = req.params;
+    const { transportId } = req.params;
 
-        try {
-          const transport = await Transport.findById(transportId);
-          return res.json(transport);
-        } catch (error) {
-          return res.status(400).json({
-            message: "Transport does not exist",
-          });
-        }
-      }
-    });
+    try {
+      transportService
+        .getById(transportId)
+        .then((transport) => res.json(transport));
+    } catch (error) {
+      return res.status(400).json("Impossible de récupérer le transport");
+    }
   },
 };

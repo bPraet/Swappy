@@ -43,6 +43,7 @@ export default function Register({ history }) {
       pseudo,
       adress,
     });
+    console.log(response);
     const userToken = response.data.userToken || false;
 
     if (userToken) {
@@ -91,7 +92,6 @@ export default function Register({ history }) {
             <TextField
               id="email"
               label="Email"
-              type="email"
               onChange={(event) => setEmail(event.target.value)}
             />
           </FormControl>

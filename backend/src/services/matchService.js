@@ -11,6 +11,17 @@ module.exports = {
     return true;
   },
 
+  async addMatch(userId, productOwner, owner, productConsignee){
+    const match = await Match.create({
+      consignee: userId,
+      productOwner: productOwner,
+      owner: owner,
+      productConsignee: productConsignee,
+    });
+
+    return match;
+  },
+
   async getMatchsByUser(userId) {
     let results = await Match.aggregate([
       { $match: { owner: mongoose.Types.ObjectId(userId) } },
@@ -55,5 +66,35 @@ module.exports = {
     });
 
     return propositions;
+  },
+
+  async getMatchDetails(owner, consignee, productId) {
+    const matchs = await Match.find().and([
+      { owner: owner, consignee: consignee, productOwner: productId },
+    ]);
+
+    return matchs;
+  },
+
+  async delMatchById(matchId) {
+    await Match.findByIdAndDelete(matchId);
+
+    return "Supprimé avec succès !";
+  },
+
+  async delMatchesByProductId(productId) {
+    await Match.deleteMany({ productOwner: productId });
+    await Match.deleteMany({ productConsignee: productId });
+
+    return "Supprimés avec succès !";
+  },
+
+  async delMatchesByProductIdAndConsignee(productId, consigneeId) {
+    await Match.deleteMany({
+      productOwner: productId,
+      consignee: consigneeId,
+    });
+
+    return "Supprimés avec succès !";
   },
 };
