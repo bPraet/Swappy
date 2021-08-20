@@ -1,19 +1,19 @@
-#loginForm{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    flex-direction: column;
+#loginForm {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
 }
 
-#registerBtn{
-    margin:30px;
+#registerBtn {
+  margin: 30px;
 }
 
-#logBtn{
-    margin: 30px;
+#logBtn {
+  margin: 30px;
 }
 
-.loginForm{
-    min-width: 320px !important;
+.loginForm {
+  min-width: 320px !important;
 }

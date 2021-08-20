@@ -1,16 +1,16 @@
-#profileForm{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: calc(100vh - 40px);
-    flex-direction: column;
+#profileForm {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 40px);
+  flex-direction: column;
 }
 
-#updateBtn{
-    margin: 10px 40px;
+#updateBtn {
+  margin: 10px 40px;
 }
 
 #adminBtn {
-    margin: -10px;
-    color: red;
+  margin: -10px;
+  color: red;
 }

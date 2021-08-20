@@ -1,167 +1,140 @@
-const Match = require('../models/Match');
-
-const jwt = require('jsonwebtoken');
-const mongoose = require('mongoose');
-const User = require('../models/User');
-const Product = require('../models/Product');
+const Match = require("../models/Match");
+const jwt = require("jsonwebtoken");
+const matchService = require("../services/matchService");
 
 module.exports = {
-    addMatch(req, res){
-        jwt.verify(req.token, process.env.SECRET, async (err, authData) => {
-            if(err) {
-                res.sendStatus(403);
-            }
-            else {
-                const { productOwner, productConsignee, owner } = req.body;
-                
-                if(!productOwner || !productConsignee || !owner){
-                    return res.json('Field missing');
-                }
+  addMatch(req, res) {
+    jwt.verify(req.token, process.env.SECRET, async (err, authData) => {
+      if (err) {
+        res.sendStatus(403);
+      } else {
+        const { productOwner, productConsignee, owner } = req.body;
 
-                const match = await Match.create({
-                    consignee: authData.user.userId,
-                    productOwner: productOwner,
-                    owner: owner,
-                    productConsignee: productConsignee
-                });
+        if (!matchService.addControl(productOwner, productConsignee, owner)) {
+          return res.status(400).json("Field missing");
+        }
 
-                return res.json(match);
-            }
+        const match = await Match.create({
+          consignee: authData.user.userId,
+          productOwner: productOwner,
+          owner: owner,
+          productConsignee: productConsignee,
         });
-    },
 
-    getMatchsByUser(req, res){
-        jwt.verify(req.token, process.env.SECRET, async(err, authData) => {
-            if(err){
-                res.sendStatus(403);
-            }
-            else{
-                try {
-                    let results = await Match.aggregate([
-                        {$match : {"owner" : mongoose.Types.ObjectId(authData.user.userId)}},
-                        {$group : { _id: { consignee: "$consignee", productOwner: "$productOwner" }}}
-                    ]).sort('field _id');;
-            
-                    results = results.map((result) => {
-                        result.consignee = result._id.consignee;
-                        result.productOwner = result._id.productOwner;
-                        delete(result._id);
-                        return result;
-                    });
+        return res.json(match);
+      }
+    });
+  },
 
-                    const matchsConsignee = await User.populate(results, {path: 'consignee'});
-                    const matchs = await Product.populate(matchsConsignee, {path: 'productOwner'});
+  getMatchsByUser(req, res) {
+    jwt.verify(req.token, process.env.SECRET, async (err, authData) => {
+      if (err) {
+        res.sendStatus(403);
+      } else {
+        try {
+          matchService
+            .getMatchsByUser(authData.user.userId)
+            .then((matchs) => res.json(matchs));
+        } catch (error) {
+          res
+            .status(400)
+            .json("Impossible de récupérer les matchs de l'utilisateur");
+        }
+      }
+    });
+  },
 
-                    return res.json(matchs);
-                } catch (error) {
-                    console.log(error);
-                }
-            }
-        });
-    },
+  getPropositionsByUser(req, res) {
+    jwt.verify(req.token, process.env.SECRET, async (err, authData) => {
+      if (err) {
+        res.sendStatus(403);
+      } else {
+        try {
+          matchService
+            .getPropositionsByUser(authData.user.userId)
+            .then((propositions) => res.json(propositions));
+        } catch (error) {
+          res
+            .status(400)
+            .json("Impossible de récupérer les propositions de l'utilisateur");
+        }
+      }
+    });
+  },
 
-    getPropositionsByUser(req, res){
-        jwt.verify(req.token, process.env.SECRET, async(err, authData) => {
-            if(err){
-                res.sendStatus(403);
-            }
-            else{
-                try {
-                    let results = await Match.aggregate([
-                        {$match : {"consignee" : mongoose.Types.ObjectId(authData.user.userId)}},
-                        {$group : { _id: { owner: "$owner", productOwner: "$productOwner" }}}
-                    ]).sort('field _id');
+  getMatchDetails(req, res) {
+    jwt.verify(req.token, process.env.SECRET, async (err, authData) => {
+      if (err) {
+        res.sendStatus(403);
+      } else {
+        const { owner, consignee, productId } = req.params;
+        try {
+          const matchs = await Match.find().and([
+            { owner: owner, consignee: consignee, productOwner: productId },
+          ]);
 
-                    results = results.map((result) => {
-                        result.owner = result._id.owner;
-                        result.productOwner = result._id.productOwner;
-                        delete(result._id);
-                        return result;
-                    });
+          return res.json(matchs);
+        } catch (error) {
+          res
+            .status(400)
+            .json("Impossible de récupérer les détails du produit");
+        }
+      }
+    });
+  },
 
-                    const matchsOwner = await User.populate(results, {path: 'owner'});
-                    const propositions = await Product.populate(matchsOwner, {path: 'productOwner'});
+  delMatchById(req, res) {
+    jwt.verify(req.token, process.env.SECRET, async (err, authData) => {
+      if (err) {
+        res.sendStatus(403);
+      } else {
+        const { matchId } = req.params;
 
-                    return res.json(propositions);
-                } catch (error) {
-                    console.log(error);
-                }
-            }
-        });
-    },
+        try {
+          await Match.findByIdAndDelete(matchId);
+        } catch (err) {
+          return res.status(400).json("Match not found");
+        }
+      }
+    });
+  },
 
-    getMatchDetails(req, res){
-        jwt.verify(req.token, process.env.SECRET, async(err, authData) => {
-            if(err){
-                res.sendStatus(403);
-            }
-            else{
-                const { owner, consignee, productId } = req.params;
-                try {
-                    const matchs = await Match.find().and([{owner: owner, consignee: consignee, productOwner: productId}]);
+  delMatchesByProductId(req, res) {
+    jwt.verify(req.token, process.env.SECRET, async (err, authData) => {
+      if (err) {
+        res.sendStatus(403);
+      } else {
+        const { productId } = req.params;
+        try {
+          await Match.deleteMany({ productOwner: productId });
+          await Match.deleteMany({ productConsignee: productId });
+          return res.send("Successfully deleted");
+        } catch (error) {
+          return res.status(400).json("No match found");
+        }
+      }
+    });
+  },
 
-                    return res.json(matchs);
-                } catch (error) {
-                    console.log(error);
-                }
-            }
-        });
-    },
+  delMatchesByProductIdAndConsignee(req, res) {
+    jwt.verify(req.token, process.env.SECRET, async (err, authData) => {
+      if (err) {
+        res.sendStatus(403);
+      } else {
+        const { productId, consigneeId } = req.params;
+        try {
+          await Match.deleteMany({
+            productOwner: productId,
+            consignee: consigneeId,
+          });
 
-    delMatchById(req, res){
-        jwt.verify(req.token, process.env.SECRET, async(err, authData) => {
-            if(err){
-                res.sendStatus(403);
-            }
-            else{
-                const { matchId } = req.params;
-
-                try{
-                    await Match.findByIdAndDelete(matchId);
-                } catch(err){
-                    return res.status(400).json("Match not found");
-                }
-            }
-        });
-    },
-
-    delMatchesByProductId(req, res){
-        jwt.verify(req.token, process.env.SECRET, async(err, authData) => {
-            if(err){
-                res.sendStatus(403);
-            }
-            else{
-                const { productId } = req.params;
-                try {
-                    await Match.deleteMany({ "productOwner" : productId});
-                    await Match.deleteMany({ "productConsignee" : productId});
-                    return res.json({message: "Successfully deleted"});
-                } catch (error) {
-                    return res.status(400).json({
-                        message: 'No match found'
-                    });
-                }
-            }
-        });
-    },
-
-    delMatchesByProductIdAndConsignee(req, res){
-        jwt.verify(req.token, process.env.SECRET, async(err, authData) => {
-            if(err){
-                res.sendStatus(403);
-            }
-            else{
-                const { productId, consigneeId } = req.params;
-                try {
-                    await Match.deleteMany({ "productOwner" : productId, "consignee" : consigneeId});
-
-                    return res.json({message: "Successfully deleted"});
-                } catch (error) {
-                    return res.status(400).json({
-                        message: 'No match found'
-                    });
-                }
-            }
-        });
-    }
-}
+          return res.json({ message: "Successfully deleted" });
+        } catch (error) {
+          return res.status(400).json({
+            message: "No match found",
+          });
+        }
+      }
+    });
+  },
+};

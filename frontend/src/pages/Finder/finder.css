@@ -1,62 +1,62 @@
-#bottomBar{
-    position: fixed;
-    top: auto;
-    bottom: 0;
+#bottomBar {
+  position: fixed;
+  top: auto;
+  bottom: 0;
 }
 
-#swipeContainer{
-    height: 95vh;
-    margin-top: 5vh;
+#swipeContainer {
+  height: 95vh;
+  margin-top: 5vh;
 }
 
-.card{
-    position: absolute;
-    left: 0;
-    right: 0;
-    background-size: cover;
-    background-color: white;
-    background-position: center;
-    background-repeat: no-repeat;
-    height: 85vh;
-    width: 80vw;
-    max-width: 1500px;
-    margin: auto;
-    border-radius: 10px;
+.card {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background-size: cover;
+  background-color: white;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 85vh;
+  width: 80vw;
+  max-width: 1500px;
+  margin: auto;
+  border-radius: 10px;
 }
 
-#emptyCard{
-    position: absolute;
-    left: 0;
-    right: 0;
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-image: url('../../assets/logo.png');
-    height: 85vh;
-    width: 80vw;
-    max-width: 1500px;
-    margin: auto;
-    border-radius: 10px;
-    box-shadow: 0px 18px 53px 0px rgba(0, 0, 0, 0.8);
+#emptyCard {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url("../../assets/logo.png");
+  height: 85vh;
+  width: 80vw;
+  max-width: 1500px;
+  margin: auto;
+  border-radius: 10px;
+  box-shadow: 0px 18px 53px 0px rgba(0, 0, 0, 0.8);
 }
 
-#infoBtn{
-    color:rgb(141, 153, 174);
-    font-size: 40px;
+#infoBtn {
+  color: rgb(141, 153, 174);
+  font-size: 40px;
 }
 
 .MuiIconButton-root {
-    padding: 5px !important;
+  padding: 5px !important;
 }
 
-#infoContainer{
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    border-radius: 10px;
-    background-color: black;
+#infoContainer {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  border-radius: 10px;
+  background-color: black;
 }
 
-#finder{
-    overflow: hidden !important;
+#finder {
+  overflow: hidden !important;
 }

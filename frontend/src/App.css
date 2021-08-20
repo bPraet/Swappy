@@ -1,99 +1,101 @@
-html{
-    background-color: rgb(43, 45, 66);
-    overflow: hidden;
+html {
+  background-color: rgb(43, 45, 66);
+  overflow: hidden;
 }
 
 h1 {
-    text-align: center;
-    color: white;
-    border-top: 1px solid red;
-    border-bottom: 1px solid red;
+  text-align: center;
+  color: white;
+  border-top: 1px solid red;
+  border-bottom: 1px solid red;
 }
 
-.MuiBottomNavigationAction-root{
-    min-width: 60px !important;
-    color: rgb(141, 153, 174) !important;
+.MuiBottomNavigationAction-root {
+  min-width: 60px !important;
+  color: rgb(141, 153, 174) !important;
 }
 
-.MuiBottomNavigation-root{
-    height: 40px !important;
-    background-color: black !important;
+.MuiBottomNavigation-root {
+  height: 40px !important;
+  background-color: black !important;
 }
 
 .MuiInputBase-root {
-    color: #fff !important;
+  color: #fff !important;
 }
 
 .MuiFormLabel-root {
-    color: #fff !important;
+  color: #fff !important;
 }
 
 .MuiTextField-root {
-    margin: 5px 0 !important;
+  margin: 5px 0 !important;
 }
 
 .MuiInput-underline:after {
-    border-bottom: 2px solid rgb(153,8,37) !important;
+  border-bottom: 2px solid rgb(153, 8, 37) !important;
 }
 
 /* Change color autofill input */
 input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
-input:-webkit-autofill:active
-{
-    box-shadow: 0 0 0 30px rgb(43, 45, 66) inset !important;
- -webkit-box-shadow: 0 0 0 30px rgb(43, 45, 66) inset !important;
- -webkit-text-fill-color: #fff !important;
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  box-shadow: 0 0 0 30px rgb(43, 45, 66) inset !important;
+  -webkit-box-shadow: 0 0 0 30px rgb(43, 45, 66) inset !important;
+  -webkit-text-fill-color: #fff !important;
 }
 
 .MuiFab-root {
-    border-radius: 10px !important;
+  border-radius: 10px !important;
 }
 
 .MuiAlert-root {
-    border-radius: 10px !important;
+  border-radius: 10px !important;
 }
 
 .MuiButton-root {
-    border-radius: 10px !important;
-    width: 200px !important;
-    margin: 10px 40px !important;
+  border-radius: 10px !important;
+  width: 200px !important;
+  margin: 10px 40px !important;
 }
 
-.MuiNativeSelect-select:not([multiple]) option, .MuiNativeSelect-select:not([multiple]) optgroup {
-    background-color: black !important;
+.MuiNativeSelect-select:not([multiple]) option,
+.MuiNativeSelect-select:not([multiple]) optgroup {
+  background-color: black !important;
 }
 
 .MuiTypography-colorTextSecondary {
-    color: rgba(255, 255, 255, 0.7) !important;
+  color: rgba(255, 255, 255, 0.7) !important;
 }
 
 .MuiListItem-root {
-    color: white !important;
+  color: white !important;
 }
 
 .MuiDivider-root {
-    background-color: rgba(255, 0, 0, 0.5) !important;
+  background-color: rgba(255, 0, 0, 0.5) !important;
 }
 
 .MuiPaper-root {
-    background-color: black !important;
-    color: white !important;
+  background-color: black !important;
+  color: white !important;
 }
 
 .MuiSnackbar-root {
-    margin-bottom: 30px;
+  margin-bottom: 30px;
 }
 
-
-a:link, a:visited, a:hover, a:active {
-    color: white;
+a:link,
+a:visited,
+a:hover,
+a:active {
+  color: white;
 }
 
 a {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 /*Scrollbar

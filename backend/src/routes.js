@@ -2,15 +2,12 @@ const express = require('express');
 const multer = require('multer');
 const verifyToken = require('./config/verifyToken');
 const verifyImageSize = require('./config/verifyImageSize');
-
 const routes = express.Router();
-
 const userController = require('./controllers/userController');
 const productController = require('./controllers/productController');
 const authController = require('./controllers/authController');
 const trackingController = require('./controllers/trackingController');
 const matchController = require('./controllers/matchController');
-
 const uploadConfig = require('./config/upload');
 const swapController = require('./controllers/swapController');
 const messageController = require('./controllers/messageController');
@@ -18,7 +15,7 @@ const adminController = require('./controllers/adminController');
 const upload = multer(uploadConfig);
 
 routes.get("/", (req, res) => {
-    res.send("Hello World");
+    res.send("API SWAPPY");
 });
 
 //Product

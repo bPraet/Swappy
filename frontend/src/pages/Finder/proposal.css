@@ -1,46 +1,46 @@
-.productImgContainer{
-    width: 100%;
-    margin: 0 !important;
+.productImgContainer {
+  width: 100%;
+  margin: 0 !important;
 }
 
 .proposalProduct {
-    height: 18vh !important;
+  height: 18vh !important;
 }
 
 #proposalContainer {
-    justify-content: center;
-    width: 100vw !important;
+  justify-content: center;
+  width: 100vw !important;
 }
 
 #proposalBtn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    bottom: 40px;
-    width: 100vw;
-    position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  bottom: 40px;
+  width: 100vw;
+  position: absolute;
 }
 
-.MuiFormControlLabel-label{
-    margin:auto !important;
+.MuiFormControlLabel-label {
+  margin: auto !important;
 }
 
-.MuiCheckbox-root{
-    position: absolute !important;
+.MuiCheckbox-root {
+  position: absolute !important;
 }
 
-.MuiGrid-item{
-    min-width: 20vw;
-    border: 1px solid black;
-    background-color: rgb(141, 153, 174);
+.MuiGrid-item {
+  min-width: 20vw;
+  border: 1px solid black;
+  background-color: rgb(141, 153, 174);
 }
 
-.MuiGrid-item:hover{
-    box-shadow: 10px 5px 5px black;
+.MuiGrid-item:hover {
+  box-shadow: 10px 5px 5px black;
 }
 
-.MuiCircularProgress-root{
-    position: fixed;
-    left: calc(50% - 50px);
-    top: calc(50% - 50px);
+.MuiCircularProgress-root {
+  position: fixed;
+  left: calc(50% - 50px);
+  top: calc(50% - 50px);
 }

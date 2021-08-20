@@ -1,25 +1,25 @@
-#logo{
-    width: 150px;
-    margin-bottom: 50px;
+#logo {
+  width: 150px;
+  margin-bottom: 50px;
 }
 
-#registerForm{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    flex-direction: column;
+#registerForm {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
 }
 
-.registerForm{
-    min-width: 320px !important;
-    width: 30vw;
+.registerForm {
+  min-width: 320px !important;
+  width: 30vw;
 }
 
-#backBtn{
-    margin: 10px 40px;
+#backBtn {
+  margin: 10px 40px;
 }
 
-#registerBtn{
-    color: rgba(0, 0, 0, 0.87);
+#registerBtn {
+  color: rgba(0, 0, 0, 0.87);
 }

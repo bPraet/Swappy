@@ -1,60 +1,117 @@
-const AlreadySeen = require('../models/AlreadySeen');
-const Match = require('../models/Match');
-const Product = require('../models/Product');
+const AlreadySeen = require("../models/AlreadySeen");
+const Match = require("../models/Match");
+const Product = require("../models/Product");
+const fs = require("fs");
 
 module.exports = {
-    async getNotSeenProducts(userId){
-        const alreadySeenProducts = await AlreadySeen.find({user: userId});
-        const matchedProducts = await Match.find().or([{owner: userId}, {consignee: userId}]);
-        const toRemoveSeen = alreadySeenProducts.map((seenProduct) => {return {"_id" : seenProduct.product};});
-        const toRemoveMatch = matchedProducts.map((matchedProducts) => {return {"_id" : matchedProducts.productOwner};});
-        const products = await Product.find({$and: [{_id: { $nin: toRemoveSeen } }, {_id: { $nin: toRemoveMatch } }, {user: { $nin: userId } }]}).sort({"_id":1}).limit(3);
+  async getNotSeenProducts(userId) {
+    const alreadySeenProducts = await AlreadySeen.find({ user: userId });
+    const matchedProducts = await Match.find().or([
+      { owner: userId },
+      { consignee: userId },
+    ]);
+    const toRemoveSeen = alreadySeenProducts.map((seenProduct) => {
+      return { _id: seenProduct.product };
+    });
+    const toRemoveMatch = matchedProducts.map((matchedProducts) => {
+      return { _id: matchedProducts.productOwner };
+    });
+    const products = await Product.find({
+      $and: [
+        { _id: { $nin: toRemoveSeen } },
+        { _id: { $nin: toRemoveMatch } },
+        { user: { $nin: userId } },
+      ],
+    })
+      .sort({ _id: 1 })
+      .limit(3);
 
-        return products;
-    },
-    
-    async getDetails(id){
-        const product = await Product.findById(id);
-        await product.populate('user', '-password')
-            .populate('condition')
-            .populate('transport')
-            .execPopulate();
+    return products;
+  },
 
-        return product;
-    },
+  async getDetails(id) {
+    const product = await Product.findById(id);
+    await product
+      .populate("user", "-password")
+      .populate("condition")
+      .populate("transport")
+      .execPopulate();
 
-    addControl(name, description, conditionId, transportId, image){
-        if(!name || !description || !conditionId || !transportId)
-            return 'Champs requis manquant !';
+    return product;
+  },
 
-        if(name === 'undefined' || description === 'undefined')
-            return 'Champs requis manquant !';
+  addControl(name, description, conditionId, transportId, image) {
+    if (!name || !description || !conditionId || !transportId)
+      return "Champs requis manquant !";
 
-        if(name.length > 50)
-            return 'Nom de maximum 50 caractères !';
-                
-        if(description.length > 1500)
-            return 'Description de maximum 1500 caractères !';
+    if (name === "undefined" || description === "undefined")
+      return "Champs requis manquant !";
 
-        if(!image)
-            return "Veuillez uploader une image de 5Mo ou moins s'il vous plait ! (.jpg, .jpeg)";
+    if (name.length > 50) return "Nom de maximum 50 caractères !";
 
-        return false;
-    },
+    if (description.length > 1500)
+      return "Description de maximum 1500 caractères !";
 
-    updateControl(name, description, conditionId, transportId){
-        if(!name || !description || !conditionId || !transportId)
-            return 'Champs requis manquant !';
+    if (!image)
+      return "Veuillez uploader une image de 5Mo ou moins s'il vous plait ! (.jpg, .jpeg)";
 
-        if(name === 'undefined' || description === 'undefined')
-            return 'Champs requis manquant !';
+    return false;
+  },
 
-        if(name.length > 50)
-            return 'Nom de maximum 50 caractères !';
-                
-        if(description.length > 1500)
-            return 'Description de maximum 1500 caractères !';
+  updateControl(product, userId, name, description, conditionId, transportId) {
+    if (!product) return "Le produit n'existe pas !";
 
-        return false;
+    if (userId != product.user) return "Tu ne possèdes pas ce produit !";
+
+    if (!name || !description || !conditionId || !transportId)
+      return "Champs requis manquant !";
+
+    if (name === "undefined" || description === "undefined")
+      return "Champs requis manquant !";
+
+    if (name.length > 50) return "Nom de maximum 50 caractères !";
+
+    if (description.length > 1500)
+      return "Description de maximum 1500 caractères !";
+
+    return false;
+  },
+
+  updateImage(image, product) {
+    if (!image) image = product.image;
+    else {
+      image = image.filename;
+      fs.unlink(`./files/${product.image}`, () => {});
     }
-}
+
+    return image;
+  },
+
+  async delete(productId, userId) {
+    let product;
+
+    try {
+      product = await Product.findById(productId);
+    } catch (err) {
+      return "Ce produit n'existe pas";
+    }
+
+    if (!product) return "Ce produit n'existe pas";
+
+    if (userId != product.user) return "Tu ne possèdes pas ce produit !";
+
+    try {
+      await Product.findByIdAndDelete(productId);
+    } catch (err) {
+      return "Ce produit n'existe pas";
+    }
+
+    try {
+      fs.unlink(`./files/${product.image}`, () => {});
+    } catch (err) {
+      return "Aucune image a supprimer";
+    }
+
+    return "Supprimé avec succès";
+  },
+};
