@@ -1,8 +1,4 @@
-const Condition = require("../models/Condition");
-const Product = require("../models/Product");
-const Transport = require("../models/Transport");
 const productService = require("../services/productService");
-const jwt = require("jsonwebtoken");
 const conditionService = require("../services/conditionService");
 const transportService = require("../services/transportService");
 
@@ -52,7 +48,7 @@ module.exports = {
   getProductsByUserId(req, res) {
     try {
       productService
-        .getProductsByUserId(req.loggedUser._id)
+        .getByUserId(req.loggedUser._id)
         .then((products) => res.json(products));
     } catch (error) {
       return res.status(400).json("Impossible de récupérer les produits");
@@ -62,7 +58,7 @@ module.exports = {
   getNotSeenProductsByUserId(req, res) {
     try {
       productService
-        .getNotSeenProducts(req.loggedUser._id)
+        .getNotSeen(req.loggedUser._id)
         .then((products) => res.json(products));
     } catch (error) {
       return res.status(400).json("Impossible de récupérer les produits");

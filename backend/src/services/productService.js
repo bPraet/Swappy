@@ -4,7 +4,7 @@ const Product = require("../models/Product");
 const fs = require("fs");
 
 module.exports = {
-  async getNotSeenProducts(userId) {
+  async getNotSeen(userId) {
     const alreadySeenProducts = await AlreadySeen.find({ user: userId });
     const matchedProducts = await Match.find().or([
       { owner: userId },
@@ -29,7 +29,7 @@ module.exports = {
     return products;
   },
 
-  async getProductsByUserId(userId) {
+  async getByUserId(userId) {
     const products = await Product.find({ user: userId });
 
     return products;
