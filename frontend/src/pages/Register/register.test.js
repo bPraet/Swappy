@@ -51,3 +51,19 @@ it('returns "already exists pseudo" message', async () => {
 
   expect(response.data.message).toEqual("L’utilisateur existe déjà !");
 });
+
+it('returns "best Password" message', async () => {
+  const response = await api.post("/user/register", {
+    email: "azerty@qwerty.test",
+    password: "Password",
+    firstName: "ok",
+    lastName: "ok",
+    pseudo: "Pottekepis",
+    adress: "ok",
+    roleid: "ok",
+  });
+
+  expect(response.data.message).toEqual(
+    "Mot de passe invalide (Minimum 8 caractères dont 1 majuscule, 1 nombre et 1 caractère spécial(@$!%*?&+))"
+  );
+});

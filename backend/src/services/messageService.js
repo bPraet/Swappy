@@ -1,4 +1,5 @@
 const Message = require("../models/Message");
+const mongoose = require('mongoose');
 
 module.exports = {
   addControl(user, message, image) {
@@ -9,6 +10,8 @@ module.exports = {
   },
 
   async getMessagesByUsers(user1, user2) {
+    if(!mongoose.Types.ObjectId.isValid(user2))
+      return [];
     const messages = await Message.find().or([
       { $and: [{ user1: user1 }, { user2: user2 }] },
       { $and: [{ user1: user2 }, { user2: user1 }] },

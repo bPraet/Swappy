@@ -87,10 +87,10 @@ export default function Profile({ history }) {
         { headers: { userToken: userToken } }
       );
       setMessage(response.data);
-      setOpenMessage(true);
     } catch (error) {
-      console.log(error);
+      setMessage(error.response.data);
     }
+    setOpenMessage(true);
   };
 
   const handleClickOpen = () => {

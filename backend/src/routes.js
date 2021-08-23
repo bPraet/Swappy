@@ -30,12 +30,10 @@ routes.put('/product/update/:productId', verifyImageSize, verifyToken, upload.si
 //Condition
 routes.get('/conditions', verifyToken, productController.getConditions);
 routes.get('/condition/:conditionId', verifyToken, productController.getConditionById);
-routes.post('/condition/add', verifyToken, productController.addCondition);
 
 //Transport
 routes.get('/transports', verifyToken, productController.getTransports);
 routes.get('/transport/:transportId', verifyToken, productController.getTransportById);
-routes.post('/transport/add', verifyToken, productController.addTransport);
 
 //User
 routes.get('/user', verifyToken, userController.getProfile);
@@ -75,5 +73,7 @@ routes.get('/admin/products/:userId', verifyToken, adminController.getProducts);
 routes.post('/admin/mail', verifyToken, adminController.sendEmail);
 routes.get('/isAdmin', verifyToken, adminController.isAdmin);
 routes.delete('/admin/delete/:userId', verifyToken, adminController.deleteUser);
+routes.post('/condition/add', verifyToken, adminController.addCondition);
+routes.post('/transport/add', verifyToken, adminController.addTransport);
 
 module.exports = routes;

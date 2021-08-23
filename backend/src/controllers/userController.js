@@ -57,7 +57,7 @@ module.exports = {
             });
           }
         } else {
-          return res.send(control);
+          return res.status(400).json(control);
         }
       });
   },

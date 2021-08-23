@@ -28,18 +28,25 @@ module.exports = {
           roleid
         );
 
-        return jwt.sign({ user: user }, process.env.SECRET, (err, token) => {
-          return res.json({
-            userToken: token,
-          });
-        });
+        return jwt.sign(
+          { user: user },
+          process.env.SECRET,
+          { expiresIn: "24h" },
+          (err, token) => {
+            return res.json({
+              userToken: token,
+            });
+          }
+        );
       }
 
       return res.json({
         message: control,
       });
     } catch (error) {
-      throw Error(`Erreur lors de l'enregistrement du nouvel utilisateur: ${error}`);
+      throw Error(
+        `Erreur lors de l'enregistrement du nouvel utilisateur: ${error}`
+      );
     }
   },
 
@@ -63,7 +70,9 @@ module.exports = {
 
       return res.json({ message: control });
     } catch (error) {
-      throw Error(`Erreur lors de l'authentification du nouvel utilisateur: ${error}`);
+      throw Error(
+        `Erreur lors de l'authentification du nouvel utilisateur: ${error}`
+      );
     }
   },
 };

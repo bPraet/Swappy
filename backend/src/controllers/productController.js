@@ -121,30 +121,6 @@ module.exports = {
     }
   },
 
-  addCondition(req, res) {
-    const { name, description } = req.body;
-
-    try {
-      conditionService
-        .add(name, description)
-        .then((condition) => res.json(condition));
-    } catch (error) {
-      return res.status(400).json("Impossible d'ajouter la condition");
-    }
-  },
-
-  addTransport(req, res) {
-    const { name, description } = req.body;
-
-    try {
-      transportService
-        .add(name, description)
-        .then((transport) => res.json(transport));
-    } catch (error) {
-      return res.status(400).json("Impossible d'ajouter le transport");
-    }
-  },
-
   getConditions(req, res) {
     try {
       conditionService.getAll().then((conditions) => res.json(conditions));

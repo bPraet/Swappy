@@ -76,4 +76,36 @@ module.exports = {
     if (adminService.adminControl(req.loggedUser.role)) res.send(true);
     else res.send(false);
   },
+
+  addCondition(req, res) {
+    const { name, description } = req.body;
+
+    if (!adminService.adminControl(req.loggedUser.role)) {
+      res.sendStatus(403);
+      return;
+    }
+    try {
+      conditionService
+        .add(name, description)
+        .then((condition) => res.json(condition));
+    } catch (error) {
+      return res.status(400).json("Impossible d'ajouter la condition");
+    }
+  },
+
+  addTransport(req, res) {
+    const { name, description } = req.body;
+
+    if (!adminService.adminControl(req.loggedUser.role)) {
+      res.sendStatus(403);
+      return;
+    }
+    try {
+      transportService
+        .add(name, description)
+        .then((transport) => res.json(transport));
+    } catch (error) {
+      return res.status(400).json("Impossible d'ajouter le transport");
+    }
+  },
 };

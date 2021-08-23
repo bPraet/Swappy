@@ -11,10 +11,10 @@ beforeAll((done) => {
     });
 });
 
-it("returns array of products", async () => {
-  const products = await api.get("/products/notseen", {
+it("returns array of messages", async () => {
+  const messages = await api.get("/messages/ok", {
     headers: { userToken: token },
   });
 
-  expect(Array.isArray(products.data)).toBe(true);
+  expect(Array.isArray(messages.data)).toBe(true);
 });

@@ -96,6 +96,10 @@ module.exports = {
     const existentEmail = await User.findOne({ email });
     const existentPseudo = await User.findOne({ pseudo });
 
+    if (email && !email.match(regexEmail)) {
+      return "Veuillez entrer un email valide !";
+    }
+
     if (password && !password.match(regexPassword)) {
       return "Mot de passe invalide (Minimum 8 caractères dont 1 majuscule, 1 nombre et 1 caractère spécial(@$!%*?&+))";
     }

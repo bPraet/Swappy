@@ -36,17 +36,15 @@ module.exports = {
   },
 
   async getDetails(id) {
-    const product = await Product.findById(id);
-    await product
+    const product = await Product.findById(id)
       .populate("user", "-password")
       .populate("condition")
-      .populate("transport")
-      .execPopulate();
+      .populate("transport");
 
     return product;
   },
 
-  async getAll(){
+  async getAll() {
     const products = await Product.find({});
 
     return products;
@@ -86,7 +84,8 @@ module.exports = {
   updateControl(product, userId, name, description, conditionId, transportId) {
     if (!product) return "Le produit n'existe pas !";
 
-    if (userId.toString() !== product.user._id.toString()) return "Tu ne possèdes pas ce produit !";
+    if (userId.toString() !== product.user._id.toString())
+      return "Tu ne possèdes pas ce produit !";
 
     if (!name || !description || !conditionId || !transportId)
       return "Champs requis manquant !";
@@ -112,7 +111,7 @@ module.exports = {
     return image;
   },
 
-  async update(productId, name, description, image, conditionId, transportId){
+  async update(productId, name, description, image, conditionId, transportId) {
     await Product.findByIdAndUpdate(
       productId,
       {
@@ -137,7 +136,8 @@ module.exports = {
 
     if (!product) return "Ce produit n'existe pas";
 
-    if (userId.toString() !== product.user._id.toString()) return "Tu ne possèdes pas ce produit !";
+    if (userId.toString() !== product.user._id.toString())
+      return "Tu ne possèdes pas ce produit !";
 
     try {
       await Product.findByIdAndDelete(productId);
