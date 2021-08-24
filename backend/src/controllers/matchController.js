@@ -11,7 +11,7 @@ module.exports = {
     }
     try {
       matchService
-        .addMatch(req.loggedUser._id, productOwner, owner, productConsignee)
+        .add(req.loggedUser._id, productOwner, owner, productConsignee)
         .then((match) => res.json(match));
     } catch (error) {
       res.status(400).json("Impossible d'ajouter le match");
@@ -47,7 +47,7 @@ module.exports = {
 
     try {
       matchService
-        .getMatchDetails(owner, consignee, productId)
+        .getDetails(owner, consignee, productId)
         .then((match) => res.json(match));
     } catch (error) {
       res.status(400).json("Impossible de récupérer les détails du produit");
@@ -58,7 +58,7 @@ module.exports = {
     const { matchId } = req.params;
 
     try {
-      matchService.delMatchById(matchId).then((response) => res.json(response));
+      matchService.delById(matchId).then((response) => res.json(response));
     } catch (err) {
       return res.status(400).json("Impossible de supprimer le match");
     }
@@ -69,7 +69,7 @@ module.exports = {
 
     try {
       matchService
-        .delMatchesByProductId(productId)
+        .delByProductId(productId)
         .then((response) => res.json(response));
     } catch (error) {
       return res.status(400).json("Impossible de supprimer les matchs");
@@ -81,7 +81,7 @@ module.exports = {
 
     try {
       matchService
-        .delMatchesByProductIdAndConsignee(productId, consigneeId)
+        .delByProductIdAndConsignee(productId, consigneeId)
         .then((response) => res.json(response));
     } catch (error) {
       return res.status(400).json("Impossible de supprimer les matchs");

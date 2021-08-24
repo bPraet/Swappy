@@ -11,7 +11,7 @@ module.exports = {
 
     try {
       messageService
-        .addMessage(req.loggedUser._id, user, message, image)
+        .add(req.loggedUser._id, user, message, image)
         .then((response) => res.json(response));
     } catch (error) {
       return res.status(400).json("Impossible d'ajouter le message");
@@ -23,7 +23,7 @@ module.exports = {
 
     try {
       messageService
-        .getMessagesByUsers(req.loggedUser._id, user)
+        .getByUsers(req.loggedUser._id, user)
         .then((messages) => res.json(messages));
     } catch (error) {
       return res.status(400).json("Impossible de récupérer les messages");

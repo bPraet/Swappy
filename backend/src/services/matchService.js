@@ -11,7 +11,7 @@ module.exports = {
     return true;
   },
 
-  async addMatch(userId, productOwner, owner, productConsignee){
+  async add(userId, productOwner, owner, productConsignee){
     const match = await Match.create({
       consignee: userId,
       productOwner: productOwner,
@@ -68,7 +68,7 @@ module.exports = {
     return propositions;
   },
 
-  async getMatchDetails(owner, consignee, productId) {
+  async getDetails(owner, consignee, productId) {
     const matchs = await Match.find().and([
       { owner: owner, consignee: consignee, productOwner: productId },
     ]);
@@ -76,20 +76,20 @@ module.exports = {
     return matchs;
   },
 
-  async delMatchById(matchId) {
+  async delById(matchId) {
     await Match.findByIdAndDelete(matchId);
 
     return "Supprimé avec succès !";
   },
 
-  async delMatchesByProductId(productId) {
+  async delByProductId(productId) {
     await Match.deleteMany({ productOwner: productId });
     await Match.deleteMany({ productConsignee: productId });
 
     return "Supprimés avec succès !";
   },
 
-  async delMatchesByProductIdAndConsignee(productId, consigneeId) {
+  async delByProductIdAndConsignee(productId, consigneeId) {
     await Match.deleteMany({
       productOwner: productId,
       consignee: consigneeId,

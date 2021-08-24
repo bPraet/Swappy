@@ -9,7 +9,7 @@ module.exports = {
     return true;
   },
 
-  async getMessagesByUsers(user1, user2) {
+  async getByUsers(user1, user2) {
     if(!mongoose.Types.ObjectId.isValid(user2))
       return [];
     const messages = await Message.find().or([
@@ -20,7 +20,7 @@ module.exports = {
     return messages;
   },
 
-  async addMessage(userId, user, message, image) {
+  async add(userId, user, message, image) {
     const response = await Message.create({
       user1: userId,
       user2: user,
