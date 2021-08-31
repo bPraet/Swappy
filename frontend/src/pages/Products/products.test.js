@@ -4,7 +4,7 @@ let token;
 
 beforeAll((done) => {
   api
-    .post("/login", { email: "benoit.praet@hotmail.be", password: "test" })
+    .post("/login", { email: "benoit.praet@hotmail.be", password: "Password1$" })
     .then((res) => {
       token = res.data.userToken;
       done();
@@ -12,11 +12,11 @@ beforeAll((done) => {
 });
 
 it("returns details of product", async () => {
-  const product = await api.get("/product/6113a2b15d0c0c3a98730e02", {
+  const product = await api.get("/product/612e13e75019b626c8d85526", {
     headers: { userToken: token },
   });
 
-  expect(product.data.name).toEqual("i");
+  expect(product.data.name).toEqual("ok");
 });
 
 it("returns products of user", async () => {
@@ -24,7 +24,7 @@ it("returns products of user", async () => {
     headers: { userToken: token },
   });
 
-  expect(products.data[0].name).toEqual("i");
+  expect(products.data[0].name).toEqual("ok");
 });
 
 it("returns 400 due to missing field", async () => {
@@ -42,7 +42,7 @@ it("returns 400 due to missing field", async () => {
 it("returns 400 due to missing field", async () => {
   try {
     await api.put(
-      `/product/update/611b72fc9fb22c283c961e83`,
+      `/product/update/612e13e75019b626c8d85526`,
       {
         name: "testtttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt",
         description: "ok",
@@ -59,7 +59,7 @@ it("returns 400 due to missing field", async () => {
 it("returns 400 due to description to big", async () => {
   try {
     await api.put(
-      `/product/update/611b72fc9fb22c283c961e83`,
+      `/product/update/612e13e75019b626c8d85526`,
       {
         name: "ok",
         description:
@@ -77,7 +77,7 @@ it("returns 400 due to description to big", async () => {
 it("returns 400 due to image missing", async () => {
   try {
     await api.put(
-      `/product/update/611b72fc9fb22c283c961e83`,
+      `/product/update/612e13e75019b626c8d85526`,
       {
         name: "ok",
         description:

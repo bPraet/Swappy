@@ -33,7 +33,7 @@ it('returns "incorrect password" message', async () => {
 it("returns token", async () => {
   const response = await api.post("/login", {
     email: "benoit.praet@hotmail.be",
-    password: "test",
+    password: "Password1$",
   });
 
   expect(response.data).toHaveProperty("userToken");

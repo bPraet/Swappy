@@ -125,7 +125,7 @@ module.exports = {
     );
   },
 
-  async delete(productId, userId) {
+  async delete(productId) {
     let product;
 
     try {
@@ -135,9 +135,6 @@ module.exports = {
     }
 
     if (!product) return "Ce produit n'existe pas";
-
-    if (userId.toString() !== product.user._id.toString())
-      return "Tu ne possèdes pas ce produit !";
 
     try {
       await Product.findByIdAndDelete(productId);

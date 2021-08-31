@@ -5,7 +5,6 @@ import "./matchs.css";
 import {
   Grid,
   CircularProgress,
-  Fab,
   Button,
   Dialog,
   DialogTitle,
@@ -335,23 +334,6 @@ export default function MatchDetails({ history }) {
       </div>
     );
   } else {
-    return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-      >
-        <div>
-          <h1>Ce match n'existe plus, il a déjà été géré</h1>
-          <Fab
-            aria-label="previous"
-            id="backBtnMatchFail"
-            onClick={history.goBack}
-          >
-            <ArrowBack />
-          </Fab>
-        </div>
-      </motion.div>
-    );
+    return '';
   }
 }

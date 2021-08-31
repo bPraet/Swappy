@@ -110,7 +110,7 @@ module.exports = {
 
     try {
       productService
-        .delete(productId, req.loggedUser._id)
+        .delete(productId)
         .then((response) => res.send(response));
     } catch (error) {
       return res.status(400).json("Impossible de supprimer le produit");

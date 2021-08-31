@@ -5,12 +5,12 @@ let tokenUser;
 
 beforeAll((done) => {
   api
-    .post("/login", { email: "benoit.praet@hotmail.be", password: "test" })
+    .post("/login", { email: "benoit.praet@hotmail.be", password: "Password1$" })
     .then((res) => {
       tokenAdmin = res.data.userToken;
 
       api
-        .post("/login", { email: "ola@ola.ola", password: "Password1$" })
+        .post("/login", { email: "test@test.test", password: "Password1$" })
         .then((res) => {
           tokenUser = res.data.userToken;
           done();

@@ -4,7 +4,7 @@ let token;
 
 beforeAll((done) => {
   api
-    .post("/login", { email: "benoit.praet@hotmail.be", password: "test" })
+    .post("/login", { email: "benoit.praet@hotmail.be", password: "Password1$" })
     .then((res) => {
       token = res.data.userToken;
       done();

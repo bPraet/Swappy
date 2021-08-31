@@ -46,6 +46,10 @@ export default function Matchs({ history }) {
 
   if (swaps.data === undefined) return <CircularProgress size="100px" />;
 
+  const dateFormat = (date) => {
+    return `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} à ${date.getHours()}h${date.getMinutes()}`;
+  }
+
   const getSwaps = () => {
     for (const [i, swap] of swaps.data.entries()) {
       const swapDetails =
@@ -60,8 +64,8 @@ export default function Matchs({ history }) {
               primary={swapDetails}
               secondary={
                 user.data._id === swap.consignee._id
-                  ? swap.owner.pseudo
-                  : swap.consignee.pseudo
+                  ? `${swap.owner.pseudo} - ${dateFormat(new Date(swap.createdAt.toString()))}`
+                  : `${swap.consignee.pseudo} - ${dateFormat(new Date(swap.createdAt.toString()))}`
               }
             />
             <ListItemSecondaryAction>

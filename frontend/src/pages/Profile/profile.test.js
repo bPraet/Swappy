@@ -4,7 +4,7 @@ let token;
 
 beforeAll((done) => {
   api
-    .post("/login", { email: "benoit.praet@hotmail.be", password: "test" })
+    .post("/login", { email: "benoit.praet@hotmail.be", password: "Password1$" })
     .then((res) => {
       token = res.data.userToken;
       done();
@@ -16,7 +16,7 @@ it("returns profile of logged user", async () => {
     headers: { userToken: token },
   });
 
-  expect(user.data._id).toBe("5ff5df48330d2610ec4f7c72");
+  expect(user.data._id).toBe("5ffadaa0040ac15c3067fba0");
 });
 
 it("returns profile of user", async () => {
@@ -31,7 +31,7 @@ it("returns already exists message", async () => {
   try {
     await api.put(
       `/user/update`,
-      { pseudo: "Stimouk" },
+      { pseudo: "Pottekepis" },
       { headers: { userToken: token } }
     );
   } catch (error) {
