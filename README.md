@@ -13,5 +13,3 @@ Et voilà, si vous voulez lancer le projet avec les serveurs de développement i
 Pour ce qui est de l’application mobile, il suffit d’installer le fichier .apk sur votre téléphone !
 
 Pour un déploiement réel il faudra compiler le projet et faire un npm run build avant afin d’avoir la version optimisée de production. La base de données est également déjà en ligne, c’est donc celle utilisée par défaut. 
-
-Cette version optimisée peut être donnée à Cordova pour en faire une application mobile
